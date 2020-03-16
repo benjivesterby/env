@@ -41,6 +41,12 @@ then
 
                 echo "Installing tmux"
                 sudo apt-get install tmux
+                
+                which go>/dev/null 2>&1
+                if [ $? -ne 0 ]; then
+                        echo "Installing Go"
+                        install_go "go1.14.linux-amd64.tar.gz" "/usr/local"
+                fi
 
                 echo "Installing Git Auto Completion"
                 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
@@ -76,7 +82,7 @@ then
                 which go>/dev/null 2>&1
                 if [ $? -ne 0 ]; then
                         echo "Installing Go"
-                        install_go "go1.14.linux-amd64.tar.gz" "/usr/local"
+                        install_go "go1.14.darwin-amd64.pkg" "/usr/local"
                 fi
 
                 echo "Installing powerline-go"
