@@ -41,6 +41,9 @@ then
 
                 echo "Installing tmux"
                 sudo apt-get install tmux
+
+                echo "Installing Git Auto Completion"
+                curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 # Checking for brew and installing
@@ -52,8 +55,14 @@ then
                 echo "Updating brew"
                 brew update
 
+                echo "Installing / Updating python"
+                install_or_upgrade "python"
+
                 echo "Installing / Updating wget"
                 install_or_upgrade "wget"
+
+                echo "Installing / Updating git"
+                install_or_upgrade "git"
 
                 echo "Installing / Updating neovim"
                 install_or_upgrade "neovim"
@@ -69,6 +78,9 @@ then
                         echo "Installing Go"
                         install_go "go1.14.linux-amd64.tar.gz" "/usr/local"
                 fi
+
+                echo "Installing powerline-go"
+                go get -u github.com/justjanne/powerline-go
 
         elif [[ "$OSTYPE" == "cygwin" ]] ; then
                 # POSIX compatibility layer and Linux environment emulation for Windows
@@ -87,7 +99,12 @@ then
                 echo $OSTYPE
         fi
 
+        git config --global commit.gpgsign true
+        git config --global tag.gpgsign true
+        git config --global core.hookspath ${HOME}/hooks
+        git config --global core.editor "vim"
 
+        # TODO: setup to pull latest for current branch in this folder if it exists
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d $folder ]; then
                 # Remove the existing tpm installation if it exists and reinstall
@@ -96,6 +113,7 @@ then
                 git clone https://github.com/tmux-plugins/tpm $folder
         fi
 
+        # TODO: setup to pull latest for current branch in this folder if it exists
         folder="${HOME}/hooks"
         if [ ! -d $folder ]; then
                 # Remove the existing Git Hooks installation if it exists and reinstall
@@ -103,16 +121,60 @@ then
                 [ -e $folder ] && rm -rf $folder
                 git clone https://github.com/benjivesterby/gogithooks $folder
         fi
+
+        echo "Installing Git Auto Completion"
+        # Create the folder structure
+        mkdir -p ~/.zsh
+
+        # Download the scripts
+        curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+        curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+        
+        # Clear out auto complete cache
+        rm ~/.zcompdump
 fi
 
 # override the environment settings
-cp -Rf ./nvim ~/.config/
-cp -f ./.tmux.conf ~/
-cp -f ./.env ~/
-chmod +x ~/.env
 
-vim +PlugInstall
-vim +GoInstallBinaries
+echo "Updating nvim configuration"
+cp -Rf ./nvim ~/.config/
+
+echo "Updating tmux configuration"
+cp -f ./.tmux.conf ~/
+
+echo "Updating environment script"
+if [[ "$OSTYPE" == "linux-gnu" ]] ; then
+        cp -f ./.env ~/
+        chmod +x ~/.env
+elif [[ "$OSTYPE" == "darwin"* ]] ; then
+        cp -f ./.env.darwin ~/
+        chmod +x ~/.env.darwin
+
+        if ! grep -q "source ~/.env.darwin" ~/.zshrc; then
+            echo "source ~/.env.darwin" >> ~/.zshrc
+        fi
+
+        # Update the running terminal instance
+        zsh ~/.zshrc
+elif [[ "$OSTYPE" == "cygwin" ]] ; then
+        # POSIX compatibility layer and Linux environment emulation for Windows
+        echo $OSTYPE
+elif [[ "$OSTYPE" == "msys" ]] ; then
+        # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+        echo $OSTYPE
+elif [[ "$OSTYPE" == "win32" ]] ; then
+        # I'm not sure this can happen.
+        echo $OSTYPE
+elif [[ "$OSTYPE" == "freebsd"* ]] ; then
+        # ...
+        echo $OSTYPE
+else
+        # Unknown.
+        echo $OSTYPE
+fi
+
+# vim +PlugInstall
+# vim +GoInstallBinaries
 
 # if [ -f "~/.zshrc" ]; then
 # 	# echo env loader to .zshrc here
