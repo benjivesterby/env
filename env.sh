@@ -128,6 +128,26 @@ then
                 git clone https://github.com/benjivesterby/gogithooks $folder
         fi
 
+        # nf="./nerd-fonts"
+        # if [ ! -d $nf ]; then
+        #         echo "Cloning Nerd Fonts"
+        #         git clone https://github.com/ryanoasis/nerd-fonts.git
+        # fi
+        
+        # cd $nf
+        # echo "Nerd Fonts: Checking out verion v2.1.0"
+        # git checkout v2.1.0
+        # echo "Nerd Fonts: Installing"
+        # ./install.sh
+        # cd ../
+
+        pf="./fonts"
+        if [ ! -d $pf ]; then
+                git clone git@github.com:powerline/fonts.git
+        fi
+        echo "Powerline Fonts: Installing"
+        $pf/install.sh
+
         echo "Installing Git Auto Completion"
         # Create the folder structure
         mkdir -p ~/.zsh
@@ -149,6 +169,7 @@ echo "Updating tmux configuration"
 cp -f ./.tmux.conf ~/
 
 echo "Updating environment script"
+cp -f ./.env.shared ~/
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
         cp -f ./.env ~/
         chmod +x ~/.env
