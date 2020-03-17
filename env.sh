@@ -173,6 +173,9 @@ then
                 git clone https://github.com/benjivesterby/gogithooks $folder
         fi
 
+        echo 'Installing vim-plug'
+        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>/dev/null 2>&1
+
         # nf="./nerd-fonts"
         # if [ ! -d $nf ]; then
         #         echo "Cloning Nerd Fonts"
@@ -204,6 +207,13 @@ echo '############################################'
 
 echo 'Updating nvim configuration'
 cp -Rf ./nvim ~/.config/
+
+echo 'VIM plugin installation'
+nvim +'PlugInstall --sync' +qall +slient &> /dev/null
+
+echo 'VIM-GO Install Binaries'
+nvim +GoInstallBinaries +qall +slient &> /dev/null
+nvim +GoUpdateBinaries +qall +slient &> /dev/null
 
 echo 'Updating tmux configuration'
 cp -f ./.tmux.conf ~/
@@ -248,9 +258,6 @@ else
         # Unknown.
         echo $OSTYPE
 fi
-
-# vim +PlugInstall
-# vim +GoInstallBinaries
 
 # if [ -f "~/.zshrc" ]; then
 # 	# echo env loader to .zshrc here
