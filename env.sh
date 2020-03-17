@@ -88,6 +88,28 @@ then
                 echo "Installing powerline-go"
                 go get -u github.com/justjanne/powerline-go
 
+                echo "############################################"
+                echo "Installing Go Linters"
+                echo "############################################"
+
+                echo "Installing golint"
+                go get -u golang.org/x/lint/golint
+
+                echo "Installing ineffassign"
+                go get -u github.com/gordonklaus/ineffassign
+
+                echo "Installing misspell"
+                go get -u github.com/client9/misspell/cmd/misspell
+
+                echo "Installing errcheck"
+                go get -u github.com/kisielk/errcheck
+
+                echo "Installing gosec"
+                go get -u github.com/securego/gosec/cmd/gosec
+
+                echo "Installing staticcheck"
+                go get -u honnef.co/go/tools/cmd/staticcheck
+
         elif [[ "$OSTYPE" == "cygwin" ]] ; then
                 # POSIX compatibility layer and Linux environment emulation for Windows
                 echo $OSTYPE
@@ -105,6 +127,7 @@ then
                 echo $OSTYPE
         fi
 
+        echo "Setting up git global"
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         git config --global core.hookspath ${HOME}/hooks
@@ -150,6 +173,10 @@ then
 
         echo "Installing Git Auto Completion"
         # Create the folder structure
+        if [ -d ~/.zsh ]; then
+                rm -rf ~/.zsh
+        fi
+
         mkdir -p ~/.zsh
 
         # Download the scripts
@@ -157,7 +184,9 @@ then
         curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
         
         # Clear out auto complete cache
-        rm ~/.zcompdump
+        if [ -d ~/.zcompdump ]; then
+                rm ~/.zcompdump
+        fi
 fi
 
 # override the environment settings
