@@ -192,6 +192,8 @@ then
         fi
         echo 'Powerline Fonts: Installing'
         ./fonts/install.sh
+else
+        echo 'Mode: Update Environment'
 fi
 
 echo '############################################'
@@ -211,8 +213,15 @@ cp -f ./.env.shared ~/
 chmod +x ~/.env.shared
 
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
-        cp -f ./.env ~/
-        chmod +x ~/.env
+        cp -f ./.env.bash ~/
+        chmod +x ~/.env.bash
+
+        if ! grep -q "source ~/.env.bash" ~/.bashrc; then
+            echo "source ~/.env.bash" >> ~/.bashrc
+        fi
+
+        # Update the running terminal instance
+        exec bash
 elif [[ "$OSTYPE" == "darwin"* ]] ; then
         cp -f ./.env.darwin ~/
         chmod +x ~/.env.darwin
