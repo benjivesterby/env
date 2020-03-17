@@ -16,7 +16,11 @@ Execute the installation script
 
 ## Updating your environment
 
-Execute the script without the -i flag `./env/env.sh`
+Execute the script without the -i flag
+
+```bash
+./env/env.sh
+```
 
 ### Setting up Font in Terminal - MAC ZSH
 
