@@ -3,9 +3,9 @@
 # Mac update / install function
 function install_or_upgrade() {
     if brew ls --versions "$1" >/dev/null; then
-        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade "$1"
+        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade "$1">/dev/null 2>&1
     else
-        HOMEBREW_NO_AUTO_UPDATE=1 brew install "$1"
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install "$1">/dev/null 2>&1
     fi
 }
 
@@ -34,7 +34,7 @@ function install_go() {
 
 if [[ "$1" == "-i" ]]
 then
-
+        echo 'Mode: Install Environment'
         if [[ "$OSTYPE" == "linux-gnu" ]] ; then
                 echo "Installing neovim"
                 sudo apt-get install neovim
@@ -49,17 +49,21 @@ then
                 fi
 
                 echo "Installing Git Auto Completion"
-                curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+                curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null 2>&1
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
+
+                echo '############################################'
+                echo 'MAC Environment Installation'
+                echo '############################################'
 
                 # Checking for brew and installing
                 # Check to see if Homebrew is installed, and install it if it is not
                 # command from: https://gist.github.com/ryanmaclean/4094dfdbb13e43656c3d41eccdceae05
                 command -v brew >/dev/null 2>&1 || { echo >&2 "Installing Homebrew Now"; \
-                /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }
+                /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }>/dev/null 2>&1
 
                 echo "Updating brew"
-                brew update
+                brew update>/dev/null 2>&1
 
                 echo "Installing / Updating python"
                 install_or_upgrade "python"
@@ -85,30 +89,23 @@ then
                         install_go "go1.14.darwin-amd64.pkg" "/usr/local"
                 fi
 
-                echo "Installing powerline-go"
-                go get -u github.com/justjanne/powerline-go
+                echo "Installing Git Auto Completion"
+                # Create the folder structure
+                if [ -d ~/.zsh ]; then
+                        rm -rf ~/.zsh
+                fi
 
-                echo "############################################"
-                echo "Installing Go Linters"
-                echo "############################################"
+                mkdir -p ~/.zsh
 
-                echo "Installing golint"
-                go get -u golang.org/x/lint/golint
-
-                echo "Installing ineffassign"
-                go get -u github.com/gordonklaus/ineffassign
-
-                echo "Installing misspell"
-                go get -u github.com/client9/misspell/cmd/misspell
-
-                echo "Installing errcheck"
-                go get -u github.com/kisielk/errcheck
-
-                echo "Installing gosec"
-                go get -u github.com/securego/gosec/cmd/gosec
-
-                echo "Installing staticcheck"
-                go get -u honnef.co/go/tools/cmd/staticcheck
+                # Download the scripts
+                echo 'Pulling Git Auto Completion Scripts'
+                curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash>/dev/null 2>&1
+                curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh>/dev/null 2>&1
+                
+                # Clear out auto complete cache
+                if [ -d ~/.zcompdump ]; then
+                        rm ~/.zcompdump
+                fi
 
         elif [[ "$OSTYPE" == "cygwin" ]] ; then
                 # POSIX compatibility layer and Linux environment emulation for Windows
@@ -127,7 +124,32 @@ then
                 echo $OSTYPE
         fi
 
-        echo "Setting up git global"
+        echo "Installing powerline-go"
+        go get -u github.com/justjanne/powerline-go
+
+        echo '############################################'
+        echo 'Installing Go Linters'
+        echo '############################################'
+
+        echo "Installing golint"
+        go get -u golang.org/x/lint/golint
+
+        echo "Installing ineffassign"
+        go get -u github.com/gordonklaus/ineffassign
+
+        echo "Installing misspell"
+        go get -u github.com/client9/misspell/cmd/misspell
+
+        echo "Installing errcheck"
+        go get -u github.com/kisielk/errcheck
+
+        echo "Installing gosec"
+        go get -u github.com/securego/gosec/cmd/gosec
+
+        echo 'Installing staticcheck'
+        go get -u honnef.co/go/tools/cmd/staticcheck
+
+        echo 'Setting up git global'
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         git config --global core.hookspath ${HOME}/hooks
@@ -137,7 +159,7 @@ then
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d $folder ]; then
                 # Remove the existing tpm installation if it exists and reinstall
-                echo "Installing tmux plugin manager"
+                echo 'Installing tmux plugin manager'
                 [ -e $folder ] && rm -rf $folder
                 git clone https://github.com/tmux-plugins/tpm $folder
         fi
@@ -146,7 +168,7 @@ then
         folder="${HOME}/hooks"
         if [ ! -d $folder ]; then
                 # Remove the existing Git Hooks installation if it exists and reinstall
-                echo "Installing GIT hooks"
+                echo 'Installing GIT hooks'
                 [ -e $folder ] && rm -rf $folder
                 git clone https://github.com/benjivesterby/gogithooks $folder
         fi
@@ -168,36 +190,23 @@ then
         if [ ! -d $pf ]; then
                 git clone git@github.com:powerline/fonts.git
         fi
-        echo "Powerline Fonts: Installing"
-        $pf/install.sh
-
-        echo "Installing Git Auto Completion"
-        # Create the folder structure
-        if [ -d ~/.zsh ]; then
-                rm -rf ~/.zsh
-        fi
-
-        mkdir -p ~/.zsh
-
-        # Download the scripts
-        curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-        curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
-        
-        # Clear out auto complete cache
-        if [ -d ~/.zcompdump ]; then
-                rm ~/.zcompdump
-        fi
+        echo 'Powerline Fonts: Installing'
+        ./fonts/install.sh
 fi
+
+echo '############################################'
+echo 'Global Environment Installation'
+echo '############################################'
 
 # override the environment settings
 
-echo "Updating nvim configuration"
+echo 'Updating nvim configuration'
 cp -Rf ./nvim ~/.config/
 
-echo "Updating tmux configuration"
+echo 'Updating tmux configuration'
 cp -f ./.tmux.conf ~/
 
-echo "Updating environment script"
+echo 'Updating environment script'
 cp -f ./.env.shared ~/
 chmod +x ~/.env.shared
 
