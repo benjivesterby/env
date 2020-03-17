@@ -12,9 +12,27 @@ function install_or_upgrade() {
 # Install Go into the correct directory
 function install_go() {
         wget https://dl.google.com/go/$1
+
+	rm -rf $s
         mkdir -p $2
         tar -C $2 -xzf $1
 }
+
+# Install Go into the correct directory
+function install_go_linux() {
+        wget https://dl.google.com/go/$1
+
+	sudo rm -rf $s
+        sudo mkdir -p $2
+        sudo tar -C $2 -xzf $1
+}
+
+function check() {
+	if [ $1 -ne 0 ]; then
+		exit 0
+	fi
+}
+
 
 # UPSTREAM=${1:-'@{u}'}
 # LOCAL=$(git rev-parse @)
@@ -36,20 +54,31 @@ if [[ "$1" == "-i" ]]
 then
         echo 'Mode: Install Environment'
         if [[ "$OSTYPE" == "linux-gnu" ]] ; then
-                echo "Installing neovim"
+                echo '############################################'
+                echo 'Linux Environment Installation'
+                echo '############################################'
+
+        	echo 'apt-get update'
+		sudo apt-get update
+		check $?
+	
+		echo "Installing neovim"
                 sudo apt-get install neovim
+		check $?
 
                 echo "Installing tmux"
                 sudo apt-get install tmux
+		check $?
                 
-                which go>/dev/null 2>&1
+                which go>/dev/null
                 if [ $? -ne 0 ]; then
                         echo "Installing Go"
-                        install_go "go1.14.linux-amd64.tar.gz" "/usr/local"
+                        install_go_linux "go1.14.linux-amd64.tar.gz" "/usr/local"
+			check $?
                 fi
 
                 echo "Installing Git Auto Completion"
-                curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null 2>&1
+                curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
@@ -59,9 +88,7 @@ then
                 # Checking for brew and installing
                 # Check to see if Homebrew is installed, and install it if it is not
                 # command from: https://gist.github.com/ryanmaclean/4094dfdbb13e43656c3d41eccdceae05
-                command -v brew >/dev/null 2>&1 || { echo >&2 "Installing Homebrew Now"; \
-                /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }>/dev/null 2>&1
-
+                command -v brew >/dev/null 2>&1 || { echo >&2 "Installing Homebrew Now"; \ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }>/dev/null 2>&1 
                 echo "Updating brew"
                 brew update>/dev/null 2>&1
 

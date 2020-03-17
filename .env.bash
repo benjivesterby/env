@@ -3,6 +3,13 @@ parse_git_branch() {
 }
 
 # export PS1="\u | \[\033[32m\]\W\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+function _update_ps1() {
+    PS1="$($GOPATH/bin/powerline-go -error $? -modules "venv,ssh,cwd,perms,git,hg,jobs,exit,root" -cwd-mode dironly)"
+}
+
+if [ "$TERM" != "linux" ] && [ -f "$GOPATH/bin/powerline-go" ]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
 
 export GOPATH=~/go
 export GOBIN=$GOPATH/bin
@@ -13,10 +20,6 @@ export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 
 alias pbcopy="xclip -sel clip"
-
-export GOPATH=~/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:/usr/local/go/bin:$GOBIN
 
 alias vim="nvim"
 alias vi="nvim"
