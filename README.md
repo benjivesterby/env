@@ -1,28 +1,22 @@
-# env
-Development Environment Setup and Notes
+# Go vim/tmux Environment Installation
 
-### Install TMUX
+## Installation
 
-#### Linux
-
-#### Mac
+Clone the repository
 
 ```bash
-brew install tmux
+git clone https://github.com/benjivesterby/env.git
 ```
 
-### Install TMUX plugin manager
-```bash
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
-### Install NVIM
-
-Source: https://github.com/neovim/neovim/wiki/Installing-Neovim
+Execute the installation script
 
 ```bash
-brew install neovim
+./env/env.sh -i
 ```
+
+## Updating your environment
+
+Execute the script without the -i flag `./env/env.sh`
 
 ### Setting up Font in Terminal - MAC ZSH
 
