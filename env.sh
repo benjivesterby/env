@@ -170,6 +170,8 @@ cp -f ./.tmux.conf ~/
 
 echo "Updating environment script"
 cp -f ./.env.shared ~/
+chmod +x ~/.env.shared
+
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
         cp -f ./.env ~/
         chmod +x ~/.env
@@ -182,7 +184,7 @@ elif [[ "$OSTYPE" == "darwin"* ]] ; then
         fi
 
         # Update the running terminal instance
-        zsh ~/.zshrc
+        exec zsh
 elif [[ "$OSTYPE" == "cygwin" ]] ; then
         # POSIX compatibility layer and Linux environment emulation for Windows
         echo $OSTYPE
