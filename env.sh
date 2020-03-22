@@ -33,7 +33,6 @@ function check() {
 	fi
 }
 
-
 # UPSTREAM=${1:-'@{u}'}
 # LOCAL=$(git rev-parse @)
 # REMOTE=$(git rev-parse "$UPSTREAM")
@@ -231,31 +230,42 @@ echo 'Global Environment Installation'
 echo '############################################'
 
 # override the environment settings
+diff -r ./nvim/ ~/.config/nvim/ &> /dev/null
+if [ $? -ne 0 ]; then
+	echo 'Updating nvim configuration'
+	cp -Rf ./nvim ~/.config/
 
-echo 'Updating nvim configuration'
-cp -Rf ./nvim ~/.config/
+	echo 'VIM plugin installation'
+	nvim +'PlugInstall --sync' +qall +slient &> /dev/null
+fi
 
-echo 'VIM plugin installation'
-nvim +'PlugInstall --sync' +qall +slient &> /dev/null
-
-echo 'VIM-GO Install Binaries'
+echo 'VIM-GO Install / Update Binaries'
 nvim +GoInstallBinaries +qall +slient &> /dev/null
 nvim +GoUpdateBinaries +qall +slient &> /dev/null
 
-echo 'Updating tmux configuration'
-cp -f ./.tmux.conf ~/
+diff ./.tmux.conf ~/.tmux.conf&> /dev/null
+if [ $? -ne 0 ]; then
+	echo 'Updating tmux configuration'
+	cp -f ./.tmux.conf ~/
+fi
 
-echo 'Updating environment script'
-cp -f ./.env.shared ~/
-chmod +x ~/.env.shared
+diff ./.env.shared ~/.env.shared&> /dev/null
+if [ $? -ne 0 ]; then
+	echo 'Updating environment script'
+	cp -f ./.env.shared ~/
+	chmod +x ~/.env.shared
+fi
 
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
-        cp -f ./.env.bash ~/
-        chmod +x ~/.env.bash
+	diff ./.env.bash ~/.env.bash&> /dev/null
+	if [ $? -ne 0 ]; then
+	        cp -f ./.env.bash ~/
+        	chmod +x ~/.env.bash
 
-        if ! grep -q "source ~/.env.bash" ~/.bashrc; then
-            echo "source ~/.env.bash" >> ~/.bashrc
-        fi
+        	if ! grep -q "source ~/.env.bash" ~/.bashrc; then
+	            echo "source ~/.env.bash" >> ~/.bashrc
+        	fi
+	fi
 
         # Update the running terminal instance
         exec bash
