@@ -7,9 +7,7 @@ function install_or_upgrade() {
     else
         HOMEBREW_NO_AUTO_UPDATE=1 brew install "$1">/dev/null 2>&1
     fi
-}
-
-# Install Go into the correct directory
+} # Install Go into the correct directory
 function install_go() {
         wget https://dl.google.com/go/$1
 
@@ -48,9 +46,11 @@ function check() {
 # else
 #     echo "Diverged"
 # fi
+wd=$(pwd)
 
 if [[ "$1" == "-i" ]]
 then
+
         echo 'Mode: Install Environment'
         if [[ "$OSTYPE" == "linux-gnu" ]] ; then
                 echo '############################################'
@@ -181,26 +181,37 @@ then
         git config --global core.hookspath ${HOME}/hooks
         git config --global core.editor "vim"
 
-        # TODO: setup to pull latest for current branch in this folder if it exists
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d $folder ]; then
                 # Remove the existing tpm installation if it exists and reinstall
                 echo 'Installing tmux plugin manager'
                 [ -e $folder ] && rm -rf $folder
-                git clone https://github.com/tmux-plugins/tpm $folder
+                git clone https://github.com/tmux-plugins/tpm $folder &> /dev/null
+	else
+		echo 'Updating tmux plugin manager *master* branch'
+		cd $folder
+		git pull origin master &> /dev/null
+		cd $wd
         fi
 
-        # TODO: setup to pull latest for current branch in this folder if it exists
         folder="${HOME}/hooks"
         if [ ! -d $folder ]; then
                 # Remove the existing Git Hooks installation if it exists and reinstall
                 echo 'Installing GIT hooks'
                 [ -e $folder ] && rm -rf $folder
-                git clone https://github.com/benjivesterby/gogithooks $folder
+                git clone https://github.com/benjivesterby/gogithooks $folder &> /dev/null
+	else
+		echo 'Updating hooks *master* branch'
+		cd $folder
+		git pull origin master &> /dev/null
+		cd $wd
         fi
 
-        echo 'Installing vim-plug'
-        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>/dev/null 2>&1
+	file="${HOME}/.local/share/nvim/site/autoload/plug.vim" 
+	if [ ! -f $file ]; then
+        	echo 'Installing vim-plug'
+	        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>/dev/null 2>&1
+	fi
 
         # nf="./nerd-fonts"
         # if [ ! -d $nf ]; then
@@ -217,9 +228,16 @@ then
 
         pf="./fonts"
         if [ ! -d $pf ]; then
-                git clone git@github.com:powerline/fonts.git
+		echo 'Cloning fonts'
+                git clone git@github.com:powerline/fonts.git &> /dev/null
+	else
+		echo 'Updating fonts *master* branch'
+		cd $pf
+		git pull origin master &> /dev/null
+		cd $wd
         fi
-        echo 'Powerline Fonts: Installing'
+
+	echo 'Powerline Fonts: Installing'
         ./fonts/install.sh
 else
         echo 'Mode: Update Environment'
