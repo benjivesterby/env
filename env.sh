@@ -239,6 +239,19 @@ then
 
 	echo 'Powerline Fonts: Installing'
         ./fonts/install.sh
+	
+	if [ ! -d ~/.fzf ]; then
+		echo 'Cloning fzf plugin'
+		git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	else
+		echo 'Updating fzf plugin repository'
+		cd ~/.fzf 
+		git pull origin master
+		cd $wd
+	fi
+
+	echo 'Executing fzf plugin installer'
+	~/.fzf/install
 else
         echo 'Mode: Update Environment'
 fi

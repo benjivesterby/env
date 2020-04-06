@@ -4,6 +4,9 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'fatih/vim-go'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" Install the fzf plugin that is cloned in from git
+Plug '~/.fzf'
+
 call plug#end()
 
 let g:coc_global_extensions = [
