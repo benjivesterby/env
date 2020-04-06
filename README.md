@@ -23,6 +23,7 @@ Execute the script without the -i flag
 ```
 
 ### Current Font
+
 `Monoid Nerd Font`
 
 ### Setting up Font in Terminal - MAC ZSH
@@ -31,13 +32,14 @@ Terminal: You must set the font in terminal properly after installation for Powe
 
 `Preferences -> Startup Theme -> Text (tab) -> Font (Change) -> Select Font`
 
-You must setup the fonts in the settings for ITerm in order for the chevrons to show properly.
+You must setup the fonts in the settings for ITerm in order for the chevrons to
+show properly.
 
 `Preferences -> Profiles -> User -> Text (tab) -> Font Dropdown -> Select Font`
 
 ### Setting the font for the VSCode terminal
 
-https://dev.to/mattstratton/making-powerline-work-in-visual-studio-code-terminal-1m7
+[How To](https://dev.to/mattstratton/making-powerline-work-in-visual-studio-code-terminal-1m7)
 
 Add setting: to VSCode json configuration
 
