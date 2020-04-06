@@ -254,12 +254,12 @@ if [ $? -ne 0 ]; then
 	cp -Rf ./nvim ~/.config/
 
 	echo 'VIM plugin installation'
-	nvim +'PlugInstall --sync' +qall +slient &> /dev/null
+	nvim +'PlugInstall --sync' +qall &> /dev/null
 fi
 
 echo 'VIM-GO Install / Update Binaries'
-nvim +GoInstallBinaries +qall +slient &> /dev/null
-nvim +GoUpdateBinaries +qall +slient &> /dev/null
+nvim +GoInstallBinaries +qall &> /dev/null
+nvim +GoUpdateBinaries +qall &> /dev/null
 
 diff ./.tmux.conf ~/.tmux.conf&> /dev/null
 if [ $? -ne 0 ]; then

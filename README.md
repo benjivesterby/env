@@ -22,6 +22,9 @@ Execute the script without the -i flag
 ./env/env.sh
 ```
 
+### Current Font
+`Monoid Nerd Font`
+
 ### Setting up Font in Terminal - MAC ZSH
 
 Terminal: You must set the font in terminal properly after installation for Powerline fonts
@@ -40,6 +43,6 @@ Add setting: to VSCode json configuration
 
 ```json
 {
-    "terminal.integrated.fontFamily": "Inconsolata for Powerline",
+    "terminal.integrated.fontFamily": "Monoid Nerd Font",
 }
 ```

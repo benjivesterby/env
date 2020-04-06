@@ -6,6 +6,23 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
+let g:coc_global_extensions = [
+	\ 'coc-css',
+	\ 'coc-git',
+	\ 'coc-html',
+	\ 'coc-json',
+	\ 'coc-markdownlint',
+	\ 'coc-snippets',
+	\ 'coc-spell-checker',
+	\ 'coc-stylelint',
+	\ 'coc-tag',
+	\ 'coc-tabnine',
+	\ 'coc-todolist',
+	\ 'coc-tsserver',
+	\ 'coc-yaml',
+	\ 'coc-yank'
+\ ]
+
 set t_Co=256
 set background=dark
 colorscheme PaperColor
@@ -13,11 +30,29 @@ colorscheme PaperColor
 filetype on
 filetype plugin on
 filetype indent on
-set nu
 
 let g:go_version_warning = 0
-
 let g:go_def_mapping_enabled = 0
+
+" Settings
+set nu
+
+" yank to clipboard
+set clipboard=unnamed
+
+" setting up the leader key as ,
+let mapleader=","
+
+" setting the plugin on coc to handle go to definition based
+" on the filetype of the file you're in
+autocmd FileType go nmap <silent> gd <Plug>(coc-definition)
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Setup mapping for formatting using leader
+nmap <silent> <leader>ff :call CocAction('format')<CR>
+
 
 " -------------------------------------------------------------------------------------------------
 " coc.nvim default settings
