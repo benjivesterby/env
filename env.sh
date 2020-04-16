@@ -68,7 +68,11 @@ then
                 echo "Installing tmux"
                 sudo apt-get install tmux
 		check $?
-                
+
+		#echo "Installing gnome-tweak-tool"
+		#sudo apt-get install gnome-tweak-tool
+		#check $?
+
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
                         echo "Installing Go"
