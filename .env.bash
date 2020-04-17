@@ -12,3 +12,5 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 setxkbmap -layout us -option ctrl:nocaps
+
+source ~/.env.shared
