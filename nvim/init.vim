@@ -40,8 +40,11 @@ let g:go_def_mapping_enabled = 0
 " Settings
 set nu
 
+"setup color column for max len
+set colorcolumn=78
+
 " yank to clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " setting up the leader key as ,
 let mapleader=","
