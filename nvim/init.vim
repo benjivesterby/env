@@ -56,6 +56,9 @@ autocmd FileType go nmap <silent> gd <Plug>(coc-definition)
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
+"Setup add to dictionary
+nmap <leader>a <Plug>(coc-codeaction-selected)
+
 " Setup mapping for formatting using leader
 nmap <silent> <leader>ff :call CocAction('format')<CR>
 
