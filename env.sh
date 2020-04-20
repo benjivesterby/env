@@ -256,6 +256,9 @@ then
 
 	echo 'Executing fzf plugin installer'
 	~/.fzf/install
+
+	echo 'Upgrading pynvim support'
+	pip3 install --upgrade pynvim
 else
         echo 'Mode: Update Environment'
 fi
