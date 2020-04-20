@@ -13,7 +13,7 @@ fi
 
 setxkbmap -layout us -option ctrl:nocaps
 
-reset() {
+re() {
 	source ~/.bashrc
 }
 
