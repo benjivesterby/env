@@ -13,4 +13,8 @@ fi
 
 setxkbmap -layout us -option ctrl:nocaps
 
+reset() {
+	source ~/.bashrc
+}
+
 source ~/.env.shared

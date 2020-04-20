@@ -297,6 +297,7 @@ fi
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
 	if [ $? -ne 0 ]; then
+		echo "Updating .env.bash"
 	        cp -f ./.env.bash ~/
         	chmod +x ~/.env.bash
 
@@ -310,6 +311,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 elif [[ "$OSTYPE" == "darwin"* ]] ; then
 	diff ./.env.darwin ~/.env.darwin&> /dev/null
 	if [ $? -ne 0 ]; then
+		echo "Updating .env.darwin"
         	cp -f ./.env.darwin ~/
         	chmod +x ~/.env.darwin
 
