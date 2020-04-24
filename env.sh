@@ -1,5 +1,11 @@
 #!/bin/bash
 
+goversion=1.14.2
+
+checkgov() {
+	go version | grep $goversion
+}
+
 # Mac update / install function
 function install_or_upgrade() {
     if brew ls --versions "$1" >/dev/null; then
@@ -7,7 +13,9 @@ function install_or_upgrade() {
     else
         HOMEBREW_NO_AUTO_UPDATE=1 brew install "$1">/dev/null 2>&1
     fi
-} # Install Go into the correct directory
+} 
+
+# Install Go into the correct directory
 function install_go() {
         wget https://dl.google.com/go/$1
 
@@ -31,21 +39,6 @@ function check() {
 	fi
 }
 
-# UPSTREAM=${1:-'@{u}'}
-# LOCAL=$(git rev-parse @)
-# REMOTE=$(git rev-parse "$UPSTREAM")
-# BASE=$(git merge-base @ "$UPSTREAM")
-
-# if [ $LOCAL = $REMOTE ]; then
-#     echo "Environment Up To Date"
-# elif [ $LOCAL = $BASE ]; then
-#         echo "Pull master env"
-#         git pull origin master
-# elif [ $REMOTE = $BASE ]; then
-#     echo "Need to push"
-# else
-#     echo "Diverged"
-# fi
 wd=$(pwd)
 
 if [[ "$1" == "-i" ]]
@@ -63,20 +56,36 @@ then
 	
 		echo "Installing pre-reqs"
 
-                sudo apt-get install neovim tmux nodejs npm yarn autotools-dev \
-		ng-common gcc g++ make fonts-powerline python3 powerline-gitstatus
+                sudo apt-get install neovim tmux nodejs npm autotools-dev \
+		ng-common gcc g++ make fonts-powerline python3 python3-pip \
+		powerline-gitstatus
 
 		check $?
 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
                         echo "Installing Go"
-                        install_go_linux "go1.14.linux-amd64.tar.gz" "/usr/local"
+                        install_go_linux "go$goversion.linux-amd64.tar.gz" "/usr/local"
 			check $?
                 fi
 
+		checkgov
+                if [ $? -ne 0 ]; then
+			echo "Upgrading Go"
+			sudo rm -rf /usr/local/go
+                        install_go_linux "go$goversion.linux-amd64.tar.gz" "/usr/local"
+			check $?
+		fi
+
                 echo "Installing Git Auto Completion"
                 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null
+
+		echo "Yarn installation"
+  		curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+	  	echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+	  	sudo apt update && sudo apt install yarn
+  		sudo apt update && sudo apt install --no-install-recommends yarn
+
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
@@ -108,11 +117,19 @@ then
                 echo "Installing / Updating gnupg"
                 install_or_upgrade "gnupg"
                 
-                which go>/dev/null 2>&1
+                which go>/dev/null
                 if [ $? -ne 0 ]; then
                         echo "Installing Go"
-                        install_go "go1.14.darwin-amd64.pkg" "/usr/local"
+                        install_go "go$goversion.darwin-amd64.pkg" "/usr/local"
                 fi
+
+		checkgov
+                if [ $? -ne 0 ]; then
+			echo "Upgrading Go"
+			sudo rm -rf /usr/local/go
+                        install_go "go$goversion.darwin-amd64.pkg" "/usr/local"
+			check $?
+		fi
 
                 echo "Installing Git Auto Completion"
                 # Create the folder structure
@@ -250,7 +267,7 @@ then
 	fi
 
 	echo 'Executing fzf plugin installer'
-	~/.fzf/install
+	~/.fzf/install --all
 
 	echo 'Upgrading pynvim support'
 	pip3 install --upgrade pynvim
