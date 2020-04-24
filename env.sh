@@ -61,17 +61,12 @@ then
 		sudo apt-get update
 		check $?
 	
-		echo "Installing neovim"
-                sudo apt-get install neovim
-		check $?
+		echo "Installing pre-reqs"
 
-                echo "Installing tmux"
-                sudo apt-get install tmux
-		check $?
+                sudo apt-get install neovim tmux nodejs npm yarn autotools-dev \
+		ng-common gcc g++ make fonts-powerline python3 powerline-gitstatus
 
-		#echo "Installing gnome-tweak-tool"
-		#sudo apt-get install gnome-tweak-tool
-		#check $?
+		check $?
 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
