@@ -1,0 +1,135 @@
+has_error=0
+wd=$(pwd)
+gitd=$(git rev-parse --show-toplevel)
+
+# get all go files but exclude protobuf generated files 
+gofiles=$(ls $gitd | grep -v '\.pb.go$'| grep '\.go$')
+
+[ -z "$gofiles" ] && exit 0
+
+gofmt -s -w $gitd 
+
+#-----------------------------------
+# pull a copy Linters that will be used against the go files if they
+# are not already pulled
+#-----------------------------------
+which golint>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u github.com/x/lint/golint
+fi
+
+which misspell>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u github.com/client9/misspell/cmd/misspell
+fi
+
+which ineffassign>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u github.com/gordonklaus/ineffassign
+fi
+
+which errcheck>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u github.com/kisielk/errcheck
+fi
+
+which gosec>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u github.com/securego/gosec/cmd/gosec
+fi
+
+which staticcheck>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u honnef.co/go/tools/cmd/staticcheck 
+fi
+
+#-----------------------------------
+# Build the application 
+#-----------------------------------
+go build $gitd/...
+if [ $? -ne 0 ]; then
+	echo "build failed"
+       	exit 1 
+fi
+
+#-----------------------------------
+# Execute the linters 
+#-----------------------------------
+echo "executing golint"
+for file in ${gofiles}; do
+    golint -set_exit_status ${file}
+    if [ $? -ne 0 ]; then
+        has_error=1
+    fi
+done
+
+echo "executing go vet"
+go vet -race $gitd/...
+if [ $? -ne 0 ]; then
+        has_error=1
+fi
+
+echo "executing misspell"
+misspell -error $gitd 
+if [ $? -ne 0 ]; then
+    has_error=1
+fi
+
+echo "executing ineffassign"
+ineffassign $gitd
+if [ $? -ne 0 ]; then
+    has_error=1
+fi
+
+echo "executing errcheck"
+errcheck $gitd/...
+if [ $? -ne 0 ]; then
+    has_error=1
+fi
+
+echo "executing gosec"
+gosec -quiet $gitd/...
+if [ $? -ne 0 ]; then
+    has_error=1
+fi
+
+echo "executing staticcheck"
+staticcheck -tests=0 $gitd/...
+if [ $? -ne 0 ]; then
+    has_error=1
+fi
+
+#-----------------------------------
+# Evaluate the go.mod file 
+#-----------------------------------
+ls $gitd | grep go.mod>/dev/null 2>&1
+if [ $? == 0 ]; then
+	cd $gitd
+
+	go mod tidy
+	git add go.mod
+	git add go.sum
+
+	# Determine if there is a replace directive in the go.mod file
+	rep=$(grep -n replace go.mod)
+	if [ $? == 0 ]; then
+		echo "remove replace directive from go.mod file"
+		echo " " $rep
+		has_error=1
+	fi
+
+	cd $wd
+fi
+
+#-----------------------------------
+# Execute the unit tests 
+#-----------------------------------
+go test -race -cover $gitd/...
+if [ $? -ne 0 ]; then
+    has_error=1
+fi
+
+if [ ${has_error} -ne 0 ]; then
+    echo "One or more linter errors. Fix them and try again."
+    exit 1 
+fi
