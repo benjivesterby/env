@@ -215,7 +215,7 @@ then
                 # Remove the existing Git Hooks installation if it exists and reinstall
                 echo 'Installing GIT hooks'
                 [ -e $folder ] && rm -rf $folder
-                git clone https://github.com/benjivesterby/gogithooks $folder &> /dev/null
+                git clone https://github.com/devnw/hooks $folder &> /dev/null
 	else
 		echo 'Updating hooks *master* branch'
 		cd $folder
