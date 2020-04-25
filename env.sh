@@ -210,19 +210,6 @@ then
 		cd $wd
         fi
 
-        folder="${HOME}/hooks"
-        if [ ! -d $folder ]; then
-                # Remove the existing Git Hooks installation if it exists and reinstall
-                echo 'Installing GIT hooks'
-                [ -e $folder ] && rm -rf $folder
-                git clone https://github.com/devnw/hooks $folder &> /dev/null
-	else
-		echo 'Updating hooks *master* branch'
-		cd $folder
-		git pull origin master &> /dev/null
-		cd $wd
-        fi
-
 	file="${HOME}/.local/share/nvim/site/autoload/plug.vim" 
 	if [ ! -f $file ]; then
         	echo 'Installing vim-plug'
@@ -278,6 +265,20 @@ fi
 echo '############################################'
 echo 'Global Environment Installation'
 echo '############################################'
+
+folder="${HOME}/hooks"
+if [ ! -d $folder ]; then
+        # Remove the existing Git Hooks installation if it exists and reinstall
+        echo 'Installing GIT hooks'
+        [ -e $folder ] && rm -rf $folder
+        git clone https://github.com/devnw/hooks $folder &> /dev/null
+else
+	echo 'Updating hooks *master* branch'
+	cd $folder
+	git pull origin master &> /dev/null
+	cd $wd
+fi
+
 
 # override the environment settings
 diff -r ./nvim/ ~/.config/nvim/ &> /dev/null
