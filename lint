@@ -100,10 +100,10 @@ fi
 #-----------------------------------
 # Evaluate the go.mod file 
 #-----------------------------------
-ls $gitd | grep go.mod>/dev/null 2>&1
-if [ $? -ne 1 ]; then
-	cd $gitd
-
+cd $gitd
+find . -type f -name go.mod | while read fname; do 
+	DIR=$(dirname $fname)
+	cd $DIR
 	go mod tidy
 	git add go.mod
 	git add go.sum
@@ -111,13 +111,14 @@ if [ $? -ne 1 ]; then
 	# Determine if there is a replace directive in the go.mod file
 	rep=$(grep -n replace go.mod)
 	if [ $? -ne 1 ]; then
-		echo "remove replace directive from go.mod file"
+		echo "remove replace directive from $fname"
 		echo " " $rep
 		has_error=1
 	fi
 
-	cd $wd
-fi
+	cd $gitd
+done
+cd $wd
 
 #-----------------------------------
 # Execute the unit tests 
