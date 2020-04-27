@@ -20,8 +20,7 @@ function install_go() {
         wget https://dl.google.com/go/$1
 
 	rm -rf $s
-        mkdir -p $2
-        tar -C $2 -xzf $1
+        sudo installer -pkg ./$1 -target /
 }
 
 # Install Go into the correct directory
