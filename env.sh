@@ -21,6 +21,7 @@ function install_go() {
 
 	rm -rf $s
         sudo installer -pkg ./$1 -target /
+	rm ./$1
 }
 
 # Install Go into the correct directory
@@ -30,6 +31,7 @@ function install_go_linux() {
 	sudo rm -rf $s
         sudo mkdir -p $2
         sudo tar -C $2 -xzf $1
+	rm ./$1
 }
 
 function check() {
