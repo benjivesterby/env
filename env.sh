@@ -295,7 +295,7 @@ echo 'VIM-GO Install / Update Binaries'
 nvim +GoInstallBinaries +qall &> /dev/null
 nvim +GoUpdateBinaries +qall &> /dev/null
 
-cp -f ./lint ~/bin
+cp -f ./bin/* ~/bin
 
 diff ./.tmux.conf ~/.tmux.conf&> /dev/null
 if [ $? -ne 0 ]; then

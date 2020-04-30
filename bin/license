@@ -1,0 +1,50 @@
+#!/bin/sh
+
+has_error=0
+gitd=$(git rev-parse --show-toplevel)
+
+files=()
+allfiles=$(find $gitd -type f -name '*.go' ! -path '*test*')
+for file in $allfiles; do
+	grep '^// Code generated .* DO NOT EDIT\.$' $file>/dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		files+=($file)
+	fi
+done
+
+gofiles="${files[@]}"
+
+which addlicense>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+	go get -u github.com/google/addlicense
+fi
+
+if [ ! -f "$gitd/LICENSE" ]; then
+	echo "Missing LICENSE file"
+	has_error=1
+fi
+
+# check to see if the LICENSE environment variable is set
+if [ -z "$LICENSE_HEADER" ]
+then
+	echo "LICENSE_HEADER variable not found using parent directory" 
+	
+	# LICENSE environment variable is not set so attempt
+	# to check the parent directory of the dit repo for
+	# a LICENSE file to pull from
+	LICENSE_HEADER=$gitd/../LICENSE_HEADER.txt
+fi
+
+# if the license file exists at the LICENSE environment variable path
+# then iterate over the .go files and add the license if it doesn't 
+# already exist
+if [ -f "$LICENSE_HEADER" ]; then
+	for file in $gofiles; do
+		addlicense -f $LICENSE_HEADER $file
+	done	
+else
+	echo "LICENSE_HEADER not found at $LICENSE_HEADER"
+	has_error=1
+fi
+
+exit $has_error
