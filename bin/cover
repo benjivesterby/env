@@ -1,0 +1,6 @@
+#!/bin/sh
+
+gitd=$(git rev-parse --show-toplevel)
+
+go test -v -race -cover -coverprofile=$gitd/c.out $gitd/...
+go tool cover -html=$gitd/c.out
