@@ -48,3 +48,10 @@ Add setting: to VSCode json configuration
     "terminal.integrated.fontFamily": "Monoid Nerd Font",
 }
 ```
+
+### Notes
+
+For Ubuntu the lint script will not properly work unless you reconfigure the 
+default shell from dash => bash using `sudo dpkg-reconfigure dash` and selecting
+`NO` as the option to unlink dash from `/bin/sh` otherwise the list of git files
+will not work in the lint script. 
