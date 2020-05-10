@@ -59,7 +59,7 @@ then
 
                 sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs npm autotools-dev \
 		ng-common gcc g++ make fonts-powerline python3 python3-pip \
-		powerline-gitstatus
+		powerline-gitstatus tree
 
 		check $?
 
@@ -117,6 +117,12 @@ then
 
                 echo "Installing / Updating gnupg"
                 install_or_upgrade "gnupg"
+
+                echo "Installing / Updating tree"
+                install_or_upgrade "tree"
+
+                echo "Installing / Updating pbcopy"
+                install_or_upgrade "pbcopy"
                 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
