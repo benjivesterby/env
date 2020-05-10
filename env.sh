@@ -57,7 +57,7 @@ then
 	
 		echo "Installing pre-reqs"
 
-                sudo apt-get install neovim tmux nodejs npm autotools-dev \
+                sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs npm autotools-dev \
 		ng-common gcc g++ make fonts-powerline python3 python3-pip \
 		powerline-gitstatus
 
