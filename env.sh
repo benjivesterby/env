@@ -59,7 +59,7 @@ then
 
                 sudo apt-get install neovim tmux nodejs npm autotools-dev \
 		ng-common gcc g++ make fonts-powerline python3 python3-pip \
-		powerline-gitstatus tree
+		powerline-gitstatus tree graphviz
 
 		check $?
 
@@ -123,6 +123,9 @@ then
 
                 echo "Installing / Updating pbcopy"
                 install_or_upgrade "pbcopy"
+
+                echo "Installing / Updating graphviz"
+                install_or_upgrade "graphviz"
                 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
