@@ -57,9 +57,12 @@ then
 	
 		echo "Installing pre-reqs"
 
+		sudo add-apt-repository ppa:nm-l2tp/network-manager-l2tp
+
                 sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs npm autotools-dev \
 		ng-common gcc g++ make fonts-powerline python3 python3-pip \
-		powerline-gitstatus tree kazam nmap graphviz
+		powerline-gitstatus tree kazam nmap graphviz network-manager-l2tp \
+		network-manager-l2tp-gnome
 
 		check $?
 
