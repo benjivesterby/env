@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.14.2
+goversion=1.14.3
 
 checkgov() {
 	go version | grep $goversion
