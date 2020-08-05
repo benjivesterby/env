@@ -210,6 +210,7 @@ then
         git config --global core.hookspath ${HOME}/hooks
         git config --global core.editor "vim"
 	git config --global rerere.enabled true
+	git config --global pull.rebase true
 
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d $folder ]; then
