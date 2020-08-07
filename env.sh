@@ -60,9 +60,9 @@ then
 		sudo add-apt-repository ppa:nm-l2tp/network-manager-l2tp
 
                 sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs npm autotools-dev \
-		ng-common gcc g++ make fonts-powerline python3 python3-pip \
+		ng-common gcc g++ make fonts-powerline python3 python3-pip curl \
 		powerline-gitstatus tree kazam nmap graphviz network-manager-l2tp \
-		network-manager-l2tp-gnome
+		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
 
 		check $?
 
@@ -85,10 +85,10 @@ then
                 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null
 
 		echo "Yarn installation"
-  		curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-	  	echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-	  	sudo apt update && sudo apt install yarn
-  		sudo apt update && sudo apt install --no-install-recommends yarn
+		curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --nightly
+
+		echo "Setting gpg2 as default GIT gpg handler"
+        	git config --global gpg.program gpg2 
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
@@ -177,6 +177,12 @@ then
         else
                 # Unknown.
                 echo $OSTYPE
+        fi
+
+        folder="${HOME}/bin"
+        if [ ! -d $folder ]; then
+		echo "Creating ~/bin directory"
+		mkdir $folder
         fi
 
         echo "Installing powerline-go"
