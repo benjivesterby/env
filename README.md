@@ -1,6 +1,6 @@
 # Go vim/tmux Environment Installation
 
-## Pre-Installation
+## LINUX Pre-Installation
 
 ```bash
 wget https://raw.githubusercontent.com/benjivesterby/env/master/env_installer.sh && \
@@ -13,6 +13,10 @@ a fresh setup.
 
 There is a 4th argument to `env_installer.sh` which is the signingkey ID of the
 GPG key you wish to use for signing code commits.
+
+### Post Installation
+
+Open TMUX and execute `<prefix>+I` to load the TMUX plugins
 
 ## Updating your environment
 
