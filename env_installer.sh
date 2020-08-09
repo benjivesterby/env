@@ -36,7 +36,7 @@ git config --global user.name "$1"
 git config --global user.email $2
 
 # set the signing key if the user supplied it
-if [ -z "$4" ]
+if [ ! -z "$4" ]
 then
 	git config --global user.signingkey $4 
 fi
