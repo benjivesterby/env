@@ -115,6 +115,8 @@ then
 
 		sudo usermod -aG docker $USER
 
+		sudo systemctl enable docker
+
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
