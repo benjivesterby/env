@@ -2,27 +2,10 @@
 
 ## Pre-Installation
 
-Configure SSH Keys [instructions](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-
 ```bash
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
-cat ~/.ssh/id_rsa.pub
-```
-
-After the keys are generated then copy the public key to Github.
-
-## Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/benjivesterby/env.git
-```
-
-Execute the installation script
-
-```bash
-./env/env.sh -i
+wget https://raw.githubusercontent.com/benjivesterby/env/master/env_installer.sh && \
+chmod +x ./env_installer.sh && \
+./env_installer.sh
 ```
 
 ## Updating your environment
@@ -36,9 +19,11 @@ Execute the script without the -i flag
 ### Current Font
 
 `Monoid Nerd Font`
+
 ### Setting up Font in Terminal - MAC ZSH
 
-Terminal: You must set the font in terminal properly after installation for Powerline fonts
+Terminal: You must set the font in terminal properly after installation for
+Powerline fonts
 
 `Preferences -> Startup Theme -> Text (tab) -> Font (Change) -> Select Font`
 
@@ -72,8 +57,9 @@ NOTE: if the key ids are not showing properly then execute the following
 gpg --card-edit
 gpg/card> fetch
 ```
+
 Ths will pull the public key from the keyserver. If this doesn't work it's because
-the URL in the Yubikey is not set for where to pull the public key. 
+the URL in the Yubikey is not set for where to pull the public key.
 
 Once the card status shows the keys stored on the yubikey
 
@@ -85,7 +71,7 @@ git config --global user.signingkey <KEYID>
 
 ### Notes
 
-For Ubuntu the lint script will not properly work unless you reconfigure the 
+For Ubuntu the lint script will not properly work unless you reconfigure the
 default shell from dash => bash using `sudo dpkg-reconfigure dash` and selecting
 `NO` as the option to unlink dash from `/bin/sh` otherwise the list of git files
-will not work in the lint script. 
+will not work in the lint script.
