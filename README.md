@@ -5,8 +5,14 @@
 ```bash
 wget https://raw.githubusercontent.com/benjivesterby/env/master/env_installer.sh && \
 chmod +x ./env_installer.sh && \
-./env_installer.sh
+./env_installer.sh "Firstname Lastname" email@email.com http://github.com/benjivesterby/env.git
 ```
+
+This will setup the local enviornment by installing the full Go environment from
+a fresh setup.
+
+There is a 4th argument to `env_installer.sh` which is the signingkey ID of the
+GPG key you wish to use for signing code commits.
 
 ## Updating your environment
 
