@@ -59,7 +59,8 @@ then
 
 		sudo add-apt-repository ppa:nm-l2tp/network-manager-l2tp
 
-                sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs npm autotools-dev \
+                sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs \
+		npm autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make fonts-powerline python3 python3-pip curl \
 		powerline-gitstatus tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
