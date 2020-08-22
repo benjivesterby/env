@@ -86,10 +86,13 @@ if [ $? -ne 0 ]; then
 	go get -u honnef.co/go/tools/cmd/staticcheck 
 fi
 
+# Move to repo root directory
+cd $gitd
+
 #-----------------------------------
 # Build the application 
 #-----------------------------------
-go build $gitd/...
+go build ./...
 if [ $? -ne 0 ]; then
 	echo "build failed"
 fi
@@ -98,8 +101,6 @@ fi
 # Execute the linters 
 #-----------------------------------
 
-# Move to repo root directory
-cd $gitd
 
 echo "executing golint"
 golint -set_exit_status ./... 
@@ -191,5 +192,3 @@ if [ ${has_error} -ne 0 ]; then
     echo "One or more linter errors. Fix them and try again."
     exit 1
 fi
-
-cd $wd
