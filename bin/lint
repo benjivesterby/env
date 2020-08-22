@@ -97,45 +97,56 @@ fi
 #-----------------------------------
 # Execute the linters 
 #-----------------------------------
+
+# Move to repo root directory
+cd $gitd
+
 echo "executing golint"
-golint -set_exit_status $gitd/... 
+golint -set_exit_status ./... 
 if [ $? -ne 0 ]; then
+    echo "lint err"
     has_error=1
 fi
 
 echo "executing go vet"
-go vet -race $gitd/...
+go vet -race ./...
 if [ $? -ne 0 ]; then
+    echo "vet err"
         has_error=1
 fi
 
 echo "executing misspell"
-misspell -error $gitd 
+misspell -error . 
 if [ $? -ne 0 ]; then
+    echo "misspell err"
     has_error=1
 fi
 
 echo "executing ineffassign"
-ineffassign $gitd
+ineffassign . 
 if [ $? -ne 0 ]; then
+    echo "ineffassign err"
     has_error=1
 fi
 
 echo "executing errcheck"
-errcheck $gitd/...
+errcheck ./...
 if [ $? -ne 0 ]; then
+    echo "errcheck err"
     has_error=1
 fi
 
 echo "executing gosec"
-gosec -quiet $gitd/...
+gosec -quiet ./...
 if [ $? -ne 0 ]; then
+    echo "gosec error"
     has_error=1
 fi
 
 echo "executing staticcheck"
-staticcheck -tests=0 $gitd/...
+staticcheck -tests=0 ./...
 if [ $? -ne 0 ]; then
+    echo "staticcheck error"
     has_error=1
 fi
 
@@ -172,6 +183,7 @@ cd $wd
 #-----------------------------------
 go test -race -cover $gitd/...
 if [ $? -ne 0 ]; then
+    echo "testing error"
     has_error=1
 fi
 
@@ -179,3 +191,5 @@ if [ ${has_error} -ne 0 ]; then
     echo "One or more linter errors. Fix them and try again."
     exit 1
 fi
+
+cd $wd
