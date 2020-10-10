@@ -51,6 +51,11 @@ then
                 echo 'Linux Environment Installation'
                 echo '############################################'
 
+		# update the symbols file so that it's the right
+		# control button that swaps with capslock
+        	echo 'updating caps-swap with RCTRL'
+		sudo cp ./ctrl /usr/share/X11/xkb/symbols
+
         	echo 'apt-get update'
 		sudo apt-get update
 		check $?
