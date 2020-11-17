@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.15.3
+goversion=1.15.5
 
 checkgov() {
 	go version | grep $goversion
@@ -19,7 +19,7 @@ function install_or_upgrade() {
 function install_go() {
         wget https://dl.google.com/go/$1
 
-	rm -rf $s
+	sudo rm -rf $s
         sudo installer -pkg ./$1 -target /
 	rm ./$1
 }
@@ -123,6 +123,10 @@ then
 
 		sudo systemctl enable docker
 
+		echo 'Upgrading pynvim support'
+		sudo pip3 install --upgrade pip3
+		sudo pip3 install --upgrade pynvim
+
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
@@ -138,6 +142,15 @@ then
 
                 echo "Installing / Updating python"
                 install_or_upgrade "python"
+
+                echo "Installing / Updating python3"
+                install_or_upgrade "python3"
+
+                echo "Installing / Updating pip"
+                install_or_upgrade "pip"
+
+                echo "Installing / Updating pip3"
+                install_or_upgrade "pip3"
 
                 echo "Installing / Updating wget"
                 install_or_upgrade "wget"
@@ -180,7 +193,7 @@ then
                 echo "Installing Git Auto Completion"
                 # Create the folder structure
                 if [ -d ~/.zsh ]; then
-                        rm -rf ~/.zsh
+                        sudo rm -rf ~/.zsh
                 fi
 
                 mkdir -p ~/.zsh
@@ -192,8 +205,13 @@ then
                 
                 # Clear out auto complete cache
                 if [ -d ~/.zcompdump ]; then
-                        rm ~/.zcompdump
+                        sudo rm ~/.zcompdump
                 fi
+
+		echo 'Upgrading pynvim support'
+		pip install --user --upgrade pip
+		pip install --user --upgrade pynvim
+
 
         elif [[ "$OSTYPE" == "cygwin" ]] ; then
                 # POSIX compatibility layer and Linux environment emulation for Windows
@@ -217,31 +235,45 @@ then
 		echo "Creating ~/bin directory"
 		mkdir $folder
         fi
-
-        echo "Installing powerline-go"
-        go get -u github.com/justjanne/powerline-go
-
         echo '############################################'
         echo 'Installing Go Linters'
         echo '############################################'
 
         echo "Installing golint"
-        go get -u golang.org/x/lint/golint
+	sudo rm -rf ~/go/src/golang.org/x/lint
+        go get -u golang.org/x/lint/...
+
+        echo 'Installing staticcheck'
+	sudo rm -rf ~/go/src/honnef.co/go/tools
+        go get -u honnef.co/go/tools/...
+	
+        echo "Installing go tools"
+	sudo rm -rf ~/go/src/golang.org/x/tools
+	go get -u golang.org/x/tools/...
+
+        echo "Installing gopsutil"
+	sudo rm -rf ~/go/src/github.com/shirou/gopsutil
+	go get -u github.com/shirou/gopsutil
 
         echo "Installing ineffassign"
+	sudo rm -rf ~/go/src/github.com/gordonklaus/ineffassign
         go get -u github.com/gordonklaus/ineffassign
 
         echo "Installing misspell"
-        go get -u github.com/client9/misspell/cmd/misspell
+	sudo rm -rf ~/go/src/github.com/client9/misspell
+        go get -u github.com/client9/misspell/...
 
         echo "Installing errcheck"
+	sudo rm -rf ~/go/src/github.com/kisielk/errcheck
         go get -u github.com/kisielk/errcheck
 
         echo "Installing gosec"
-        go get -u github.com/securego/gosec/cmd/gosec
+	sudo rm -rf ~/go/src/github.com/securego/gosec
+        go get -u github.com/securego/gosec/...
 
-        echo 'Installing staticcheck'
-        go get -u honnef.co/go/tools/cmd/staticcheck
+        echo "Installing powerline-go"
+	sudo rm -rf ~/go/src/github.com/justjanne/powerline-go
+        go get -u github.com/justjanne/powerline-go
 
         echo 'Setting up git global'
         git config --global commit.gpgsign true
@@ -310,8 +342,6 @@ then
 	echo 'Executing fzf plugin installer'
 	~/.fzf/install --all
 
-	echo 'Upgrading pynvim support'
-	pip3 install --upgrade pynvim
 else
         echo 'Mode: Update Environment'
 fi
@@ -364,11 +394,11 @@ if [ $? -ne 0 ]; then
 fi
 
 # NODE installs
-echo "Installing Typescript and Angular CLI"
-sudo npm install -g typescript@latest
-sudo npm install typescript@latest --save-dev
-sudo npm uninstall -g @angular/cli
-sudo npm install -g @angular/cli@latest
+#echo "Installing Typescript and Angular CLI"
+#sudo npm install -g typescript@latest
+#sudo npm install typescript@latest --save-dev
+#sudo npm uninstall -g @angular/cli
+#sudo npm install -g @angular/cli@latest
 
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
