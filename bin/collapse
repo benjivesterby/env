@@ -1,2 +1,2 @@
 #!/bin/sh
-git rebase -i $1~$(git rev-list --count $2..$1)
+git rebase -i HEAD~$(git rev-list --count $1..HEAD)
