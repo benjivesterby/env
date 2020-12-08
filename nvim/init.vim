@@ -57,6 +57,9 @@ autocmd FileType go nmap <silent> gd <Plug>(coc-definition)
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
+" activate FZF 
+noremap <silent> <leader>f :FZF<CR>
+
 "Setup add to dictionary
 nmap <leader>a <Plug>(coc-codeaction-selected)
 
