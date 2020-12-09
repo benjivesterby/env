@@ -60,6 +60,10 @@ nmap <leader>rn <Plug>(coc-rename)
 " activate FZF 
 noremap <silent> <leader>f :FZF<CR>
 
+" Add go bindings 
+noremap <silent> <leader><tab> :GoImports<CR>
+noremap <silent> <leader>b :GoBuild<CR>
+
 "Setup add to dictionary
 nmap <leader>a <Plug>(coc-codeaction-selected)
 
