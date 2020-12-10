@@ -58,7 +58,7 @@ autocmd FileType go nmap <silent> gd <Plug>(coc-definition)
 nmap <leader>rn <Plug>(coc-rename)
 
 " activate FZF 
-noremap <silent> <leader>f :FZF<CR>
+noremap <silent> <leader>s FZF<CR>
 
 " Add go bindings 
 noremap <silent> <leader><tab> :GoImports<CR>
