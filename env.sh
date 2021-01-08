@@ -282,6 +282,7 @@ then
         git config --global core.editor "vim"
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
+	git config --global init.defaultBranch main 
 
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d $folder ]; then
