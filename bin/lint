@@ -92,10 +92,10 @@ cd $gitd
 #-----------------------------------
 # Build the application 
 #-----------------------------------
-go build ./...
-if [ $? -ne 0 ]; then
-	echo "build failed"
-fi
+#go build ./...
+#if [ $? -ne 0 ]; then
+#	echo "build failed"
+#fi
 
 #-----------------------------------
 # Execute the linters 

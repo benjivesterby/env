@@ -54,11 +54,15 @@ let mapleader=","
 " on the filetype of the file you're in
 autocmd FileType go nmap <silent> gd <Plug>(coc-definition)
 
+" markdown settings
+au BufRead,BufNewFile *.md setlocal textwidth=80
+autocmd BufRead,BufNewFile *.md setlocal spell
+
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
 " activate FZF 
-noremap <silent> <leader>s FZF<CR>
+noremap <silent> <leader>ss :FZF<CR>
 
 " Add go bindings 
 noremap <silent> <leader><tab> :GoImports<CR>
