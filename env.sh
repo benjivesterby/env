@@ -51,6 +51,9 @@ then
                 echo 'Linux Environment Installation'
                 echo '############################################'
 
+		echo 'adding correct repository for git'
+		sudo add-apt-repository ppa:git-core/ppa
+
 		# update the symbols file so that it's the right
 		# control button that swaps with capslock
         	echo 'updating caps-swap with RCTRL'
