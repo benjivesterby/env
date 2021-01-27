@@ -130,6 +130,22 @@ then
 		sudo pip3 install --upgrade pip3
 		sudo pip3 install --upgrade pynvim
 
+        	menlo="./menlofonts"
+        	fonts="~/.fonts"
+        	if [ ! -d $menlo ]; then
+        	        echo "Cloning Menlo Fonts"
+			git clone git@github.com:abertsch/Menlo-for-Powerline.git menlofonts
+        		
+			if [ ! -d $fonts ]; then
+        	        	echo "Creating the fonts directory"
+				mkdir $fonts
+			fi
+
+			cp "$menlo/Menlo for Powerline.ttf" $fonts
+			fc-cache -vf ~/.fonts
+        	fi
+        
+
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
@@ -305,13 +321,6 @@ then
         	echo 'Installing vim-plug'
 	        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>/dev/null 2>&1
 	fi
-
-        # nf="./nerd-fonts"
-        # if [ ! -d $nf ]; then
-        #         echo "Cloning Nerd Fonts"
-        #         git clone https://github.com/ryanoasis/nerd-fonts.git
-        # fi
-        
         # cd $nf
         # echo "Nerd Fonts: Checking out verion v2.1.0"
         # git checkout v2.1.0
