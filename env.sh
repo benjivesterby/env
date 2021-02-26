@@ -65,9 +65,9 @@ then
 	
 		echo "Installing pre-reqs"
 
-		sudo add-apt-repository ppa:nm-l2tp/network-manager-l2tp
+		sudo add-apt-repository -y ppa:nm-l2tp/network-manager-l2tp
 
-                sudo apt-get install net-tools nscd resolvconf neovim tmux nodejs \
+                sudo apt-get install -y net-tools nscd resolvconf neovim tmux nodejs \
 		npm autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make fonts-powerline python3 python3-pip curl \
 		powerline-gitstatus tree kazam nmap graphviz network-manager-l2tp \
@@ -144,6 +144,9 @@ then
 			cp "$menlo/Menlo for Powerline.ttf" $fonts
 			fc-cache -vf ~/.fonts
         	fi
+
+		# clean up menlo fonts
+		rm -rf $menlo
         
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
