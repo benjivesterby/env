@@ -52,7 +52,7 @@ then
                 echo '############################################'
 
 		echo 'adding correct repository for git'
-		sudo add-apt-repository ppa:git-core/ppa
+		sudo add-apt-repository -y ppa:git-core/ppa
 
 		# update the symbols file so that it's the right
 		# control button that swaps with capslock
@@ -60,7 +60,7 @@ then
 		sudo cp ./ctrl /usr/share/X11/xkb/symbols
 
         	echo 'apt-get update'
-		sudo apt-get update
+		sudo apt-get -y update
 		check $?
 	
 		echo "Installing pre-reqs"
@@ -102,7 +102,7 @@ then
 
 		##### DOCKER INSTALLATION / Configuration
 		echo "INSTALLING DOCKER"
-		sudo apt-get install \
+		sudo apt-get install -y \
     			apt-transport-https \
     			ca-certificates \
     			curl \
@@ -111,14 +111,14 @@ then
 
 		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-		sudo add-apt-repository \
+		sudo add-apt-repository -y \
    			"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    			$(lsb_release -cs) \
    			stable"
 
-		sudo apt-get update
+		sudo apt-get -y update
 
-		sudo apt-get install docker-ce docker-ce-cli containerd.io
+		sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 		sudo groupadd docker
 
@@ -126,9 +126,9 @@ then
 
 		sudo systemctl enable docker
 
-		echo 'Upgrading pynvim support'
-		sudo pip3 install --upgrade pip3
-		sudo pip3 install --upgrade pynvim
+		#echo 'Upgrading pynvim support'
+		#sudo pip3 install --upgrade pip3
+		#sudo pip3 install --upgrade pynvim
 
         	menlo="./menlofonts"
         	fonts="~/.fonts"
@@ -147,6 +147,9 @@ then
 
 		# clean up menlo fonts
 		rm -rf $menlo
+
+                curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.37.1
+                golangci-lint --version
         
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
@@ -197,6 +200,9 @@ then
 
                 echo "Installing / Updating graphviz"
                 install_or_upgrade "graphviz"
+
+                echo "Installing / Updating golangci-lint"
+                install_or_upgrade "golangci-lint"
                 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
