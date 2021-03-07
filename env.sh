@@ -69,8 +69,8 @@ then
 
                 sudo apt-get install -y net-tools nscd resolvconf neovim tmux nodejs \
 		npm autotools-dev ecryptfs-utils cryptsetup \
-		ng-common gcc g++ make fonts-powerline python3 python3-pip curl \
-		powerline-gitstatus tree kazam nmap graphviz network-manager-l2tp \
+		ng-common gcc g++ make python3 python3-pip curl \
+                tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
 
 		check $?
@@ -125,28 +125,6 @@ then
 		sudo usermod -aG docker $USER
 
 		sudo systemctl enable docker
-
-		#echo 'Upgrading pynvim support'
-		#sudo pip3 install --upgrade pip3
-		#sudo pip3 install --upgrade pynvim
-
-        	menlo="./menlofonts"
-        	fonts="~/.fonts"
-        	if [ ! -d $menlo ]; then
-        	        echo "Cloning Menlo Fonts"
-			git clone git@github.com:abertsch/Menlo-for-Powerline.git menlofonts
-        		
-			if [ ! -d $fonts ]; then
-        	        	echo "Creating the fonts directory"
-				mkdir $fonts
-			fi
-
-			cp "$menlo/Menlo for Powerline.ttf" $fonts
-			fc-cache -vf ~/.fonts
-        	fi
-
-		# clean up menlo fonts
-		rm -rf $menlo
 
                 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.37.1
                 golangci-lint --version
@@ -267,14 +245,6 @@ then
         echo 'Installing Go Linters'
         echo '############################################'
 
-        echo "Installing golint"
-	sudo rm -rf ~/go/src/golang.org/x/lint
-        go install golang.org/x/lint/...@latest
-
-        echo 'Installing staticcheck'
-	sudo rm -rf ~/go/src/honnef.co/go/tools
-        go install honnef.co/go/tools/...@latest
-	
         echo "Installing go tools"
 	sudo rm -rf ~/go/src/golang.org/x/tools
 	go install golang.org/x/tools/...@latest
@@ -283,31 +253,11 @@ then
 	sudo rm -rf ~/go/src/github.com/shirou/gopsutil
 	go install github.com/shirou/gopsutil@latest
 
-        echo "Installing ineffassign"
-	sudo rm -rf ~/go/src/github.com/gordonklaus/ineffassign
-        go install github.com/gordonklaus/ineffassign@latest
-
-        echo "Installing misspell"
-	sudo rm -rf ~/go/src/github.com/client9/misspell
-        go install github.com/client9/misspell/...@latest
-
-        echo "Installing errcheck"
-	sudo rm -rf ~/go/src/github.com/kisielk/errcheck
-        go install github.com/kisielk/errcheck@latest
-
-        echo "Installing gosec"
-	sudo rm -rf ~/go/src/github.com/securego/gosec
-        go install github.com/securego/gosec/...@latest
-
-        echo "Installing powerline-go"
-	sudo rm -rf ~/go/src/github.com/justjanne/powerline-go
-        go install github.com/justjanne/powerline-go@latest
-
         echo 'Setting up git global'
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         git config --global core.hookspath ${HOME}/hooks
-        git config --global core.editor "vim"
+        git config --global core.editor "code"
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
 	git config --global init.defaultBranch main 
@@ -330,26 +280,6 @@ then
         	echo 'Installing vim-plug'
 	        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>/dev/null 2>&1
 	fi
-        # cd $nf
-        # echo "Nerd Fonts: Checking out verion v2.1.0"
-        # git checkout v2.1.0
-        # echo "Nerd Fonts: Installing"
-        # ./install.sh
-        # cd ../
-
-        pf="./fonts"
-        if [ ! -d $pf ]; then
-		echo 'Cloning fonts'
-                git clone git@github.com:powerline/fonts.git &> /dev/null
-	else
-		echo 'Updating fonts *master* branch'
-		cd $pf
-		git pull origin master &> /dev/null
-		cd $wd
-        fi
-
-	echo 'Powerline Fonts: Installing'
-        ./fonts/install.sh
 	
 	if [ ! -d ~/.fzf ]; then
 		echo 'Cloning fzf plugin'
@@ -428,6 +358,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 		echo "Updating .env.bash"
 	        cp -f ./.env.bash ~/
         	chmod +x ~/.env.bash
+                echo 'source <(golangci-lint completion bash)' >>~/.env.bash
 
         	if ! grep -q "source ~/.env.bash" ~/.bashrc; then
 	            echo "source ~/.env.bash" >> ~/.bashrc

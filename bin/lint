@@ -52,103 +52,21 @@ else
 	has_error=1
 fi
 
-#-----------------------------------
-# pull a copy Linters that will be used against the go files if they
-# are not already pulled
-#-----------------------------------
-which golint>/dev/null 2>&1
-if [ $? -ne 0 ]; then
-	go get -u github.com/x/lint/golint
-fi
-
-which misspell>/dev/null 2>&1
-if [ $? -ne 0 ]; then
-	go get -u github.com/client9/misspell/cmd/misspell
-fi
-
-which ineffassign>/dev/null 2>&1
-if [ $? -ne 0 ]; then
-	go get -u github.com/gordonklaus/ineffassign
-fi
-
-which errcheck>/dev/null 2>&1
-if [ $? -ne 0 ]; then
-	go get -u github.com/kisielk/errcheck
-fi
-
-which gosec>/dev/null 2>&1
-if [ $? -ne 0 ]; then
-	go get -u github.com/securego/gosec/cmd/gosec
-fi
-
-which staticcheck>/dev/null 2>&1
-if [ $? -ne 0 ]; then
-	go get -u honnef.co/go/tools/cmd/staticcheck 
-fi
-
 # Move to repo root directory
 cd $gitd
-
-#-----------------------------------
-# Build the application 
-#-----------------------------------
-#go build ./...
-#if [ $? -ne 0 ]; then
-#	echo "build failed"
-#fi
 
 #-----------------------------------
 # Execute the linters 
 #-----------------------------------
 
-
-echo "executing golint"
-golint -set_exit_status ./... 
-if [ $? -ne 0 ]; then
-    echo "lint err"
-    has_error=1
-fi
-
-echo "executing go vet"
-go vet -race ./...
-if [ $? -ne 0 ]; then
-    echo "vet err"
+# Determine if golangci-lint is installed and execute
+# it against the directory
+which golangci-lint>/dev/null 2>&1
+if [ $? -e 0 ]; then
+	golangci-lint run
+	if [ $? -ne 0 ]; then
         has_error=1
-fi
-
-echo "executing misspell"
-misspell -error . 
-if [ $? -ne 0 ]; then
-    echo "misspell err"
-    has_error=1
-fi
-
-echo "executing ineffassign"
-ineffassign . 
-if [ $? -ne 0 ]; then
-    echo "ineffassign err"
-    has_error=1
-fi
-
-echo "executing errcheck"
-errcheck ./...
-if [ $? -ne 0 ]; then
-    echo "errcheck err"
-    has_error=1
-fi
-
-echo "executing gosec"
-gosec -quiet ./...
-if [ $? -ne 0 ]; then
-    echo "gosec error"
-    has_error=1
-fi
-
-echo "executing staticcheck"
-staticcheck -tests=0 ./...
-if [ $? -ne 0 ]; then
-    echo "staticcheck error"
-    has_error=1
+    fi
 fi
 
 #-----------------------------------
