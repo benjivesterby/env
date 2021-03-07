@@ -345,20 +345,12 @@ if [ $? -ne 0 ]; then
 	chmod +x ~/.env.shared
 fi
 
-# NODE installs
-#echo "Installing Typescript and Angular CLI"
-#sudo npm install -g typescript@latest
-#sudo npm install typescript@latest --save-dev
-#sudo npm uninstall -g @angular/cli
-#sudo npm install -g @angular/cli@latest
-
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
 	if [ $? -ne 0 ]; then
 		echo "Updating .env.bash"
 	        cp -f ./.env.bash ~/
         	chmod +x ~/.env.bash
-                echo 'source <(golangci-lint completion bash)' >>~/.env.bash
 
         	if ! grep -q "source ~/.env.bash" ~/.bashrc; then
 	            echo "source ~/.env.bash" >> ~/.bashrc
