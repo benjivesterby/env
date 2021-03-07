@@ -49,7 +49,6 @@ if [ -f "$LICENSE_HEADER" ]; then
 	done	
 else
 	echo "LICENSE_HEADER not found at $LICENSE_HEADER"
-	has_error=1
 fi
 
 # Move to repo root directory
@@ -62,7 +61,7 @@ cd $gitd
 # Determine if golangci-lint is installed and execute
 # it against the directory
 which golangci-lint>/dev/null 2>&1
-if [ $? -e 0 ]; then
+if [ $? == 0 ]; then
 	golangci-lint run
 	if [ $? -ne 0 ]; then
         has_error=1
