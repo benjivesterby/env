@@ -263,39 +263,39 @@ then
 
         echo "Installing golint"
 	sudo rm -rf ~/go/src/golang.org/x/lint
-        go get -u golang.org/x/lint/...
+        go install golang.org/x/lint/...@latest
 
         echo 'Installing staticcheck'
 	sudo rm -rf ~/go/src/honnef.co/go/tools
-        go get -u honnef.co/go/tools/...
+        go install honnef.co/go/tools/...@latest
 	
         echo "Installing go tools"
 	sudo rm -rf ~/go/src/golang.org/x/tools
-	go get -u golang.org/x/tools/...
+	go install golang.org/x/tools/...@latest
 
         echo "Installing gopsutil"
 	sudo rm -rf ~/go/src/github.com/shirou/gopsutil
-	go get -u github.com/shirou/gopsutil
+	go install github.com/shirou/gopsutil@latest
 
         echo "Installing ineffassign"
 	sudo rm -rf ~/go/src/github.com/gordonklaus/ineffassign
-        go get -u github.com/gordonklaus/ineffassign
+        go install github.com/gordonklaus/ineffassign@latest
 
         echo "Installing misspell"
 	sudo rm -rf ~/go/src/github.com/client9/misspell
-        go get -u github.com/client9/misspell/...
+        go install github.com/client9/misspell/...@latest
 
         echo "Installing errcheck"
 	sudo rm -rf ~/go/src/github.com/kisielk/errcheck
-        go get -u github.com/kisielk/errcheck
+        go install github.com/kisielk/errcheck@latest
 
         echo "Installing gosec"
 	sudo rm -rf ~/go/src/github.com/securego/gosec
-        go get -u github.com/securego/gosec/...
+        go install github.com/securego/gosec/...@latest
 
         echo "Installing powerline-go"
 	sudo rm -rf ~/go/src/github.com/justjanne/powerline-go
-        go get -u github.com/justjanne/powerline-go
+        go install github.com/justjanne/powerline-go@latest
 
         echo 'Setting up git global'
         git config --global commit.gpgsign true
