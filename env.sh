@@ -354,11 +354,11 @@ if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 		echo "Updating .env.bash"
 	        cp -f ./.env.bash ~/
         	chmod +x ~/.env.bash
-
-        	if ! grep -q "source ~/.env.bash" ~/.bashrc; then
-	            echo "source ~/.env.bash" >> ~/.bashrc
-        	fi
 	fi
+
+        if ! grep -q "source ~/.env.bash" ~/.bashrc; then
+	        echo "source ~/.env.bash" >> ~/.bashrc
+        fi
 
         # Update the running terminal instance
         exec bash
@@ -368,11 +368,11 @@ elif [[ "$OSTYPE" == "darwin"* ]] ; then
 		echo "Updating .env.darwin"
         	cp -f ./.env.darwin ~/
         	chmod +x ~/.env.darwin
-
-        	if ! grep -q "source ~/.env.darwin" ~/.zshrc; then
-        	    echo "source ~/.env.darwin" >> ~/.zshrc
-        	fi
 	fi
+
+        if ! grep -q "source ~/.env.darwin" ~/.zshrc; then
+            echo "source ~/.env.darwin" >> ~/.zshrc
+        fi
 
         # Update the running terminal instance
         exec zsh
