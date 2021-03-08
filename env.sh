@@ -181,6 +181,9 @@ then
 
                 echo "Installing / Updating golangci-lint"
                 install_or_upgrade "golangci-lint"
+
+		echo "Installing oh-my-zsh"
+		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
                 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
