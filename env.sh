@@ -257,7 +257,7 @@ then
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         git config --global core.hookspath ${HOME}/hooks
-        git config --global core.editor "code"
+        git config --global core.editor "vi"
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
 	git config --global init.defaultBranch main 
