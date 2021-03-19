@@ -7,11 +7,12 @@ checkgov() {
 }
 
 # Install Go into the correct directory
-function install_go() {
+function install_go_linux() {
         wget https://dl.google.com/go/$1
 
 	sudo rm -rf $s
-        sudo installer -pkg ./$1 -target /
+        sudo mkdir -p $2
+        sudo tar -C $2 -xzf $1
 	rm ./$1
 }
 
