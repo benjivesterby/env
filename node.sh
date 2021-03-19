@@ -32,7 +32,7 @@ check $?
 which go>/dev/null
 if [ $? -ne 0 ]; then
         echo "Installing Go"
-        install_go_linux "go$goversion.linux-amd64.tar.gz" "/usr/local"
+        install_go_linux "go$goversion.linux-arm64.tar.gz" "/usr/local"
         check $?
 fi
 
@@ -40,7 +40,7 @@ checkgov
 if [ $? -ne 0 ]; then
         echo "Upgrading Go"
         sudo rm -rf /usr/local/go
-        install_go_linux "go$goversion.linux-amd64.tar.gz" "/usr/local"
+        install_go_linux "go$goversion.linux-arm64.tar.gz" "/usr/local"
         check $?
 fi
 
