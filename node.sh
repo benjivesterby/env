@@ -47,5 +47,5 @@ fi
 cat ~/.bashrc | grep /usr/local/go/bin
 if [ $? -ne 0 ]; then
     echo "Adding go to the path variable"
-    echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
+    echo "export PATH=$PATH:/usr/local/go/bin:~/bin" >> ~/.bashrc
 fi
