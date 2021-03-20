@@ -89,5 +89,5 @@ will not work in the lint script.
 ## Nodes
 
 ```bash
- mkdir ~/bin && wget -x https://raw.githubusercontent.com/benjivesterby/env/main/node.sh -O ~/bin/up.sh && chmod +x ~/bin/up.sh && ~/bin/up.sh
+curl https://raw.githubusercontent.com/benjivesterby/env/main/node.sh -o ~/bin/up && chmod +x ~/bin/up && ~/bin/up
 ```
