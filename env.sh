@@ -136,10 +136,18 @@ then
                 echo 'MAC Environment Installation'
                 echo '############################################'
 
-                # Checking for brew and installing
-                # Check to see if Homebrew is installed, and install it if it is not
-                # command from: https://gist.github.com/ryanmaclean/4094dfdbb13e43656c3d41eccdceae05
-                command -v brew >/dev/null 2>&1 || { echo >&2 "Installing Homebrew Now"; \ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }>/dev/null 2>&1 
+                which brew &> /dev/null
+                if [ $? -ne 0 ]; then
+                        echo "Install Homebrew"
+                        exit 1
+                fi
+
+                which gpg &> /dev/null
+                if [ $? -ne 0 ]; then
+                        echo "Install GPG (gnupg.org)"
+                        exit 1
+                fi
+
                 echo "Updating brew"
                 brew update>/dev/null 2>&1
 
@@ -167,9 +175,6 @@ then
                 echo "Installing / Updating tmux"
                 install_or_upgrade "tmux"
 
-                echo "Installing / Updating gnupg"
-                install_or_upgrade "gnupg"
-
                 echo "Installing / Updating tree"
                 install_or_upgrade "tree"
 
@@ -181,6 +186,21 @@ then
 
                 echo "Installing / Updating golangci-lint"
                 install_or_upgrade "golangci-lint"
+
+                echo "Installing / Updating pinentry-mac"
+                install_or_upgrade "pinentry-mac"
+		
+		grep pinentry-mac ~/.gnupg/gpg-agent.conf
+                if [ $? -ne 0 ]; then
+                        echo "Configuring pinentry-mac"
+			echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+                fi
+
+		grep "reader-port Yubico Yubi" ~/.gnupg/scdaemon.conf 
+                if [ $? -ne 0 ]; then
+                        echo "Configuring scdaemon.conf"
+			echo "reader-port Yubico Yubi" >> ~/.gnupg/scdaemon.conf
+                fi
 
 		echo "Installing oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
