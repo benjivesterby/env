@@ -202,6 +202,18 @@ then
 			echo "reader-port Yubico Yubi" >> ~/.gnupg/scdaemon.conf
                 fi
 
+                if [ ! -f /.ssh/config ]; then
+                        touch ~/.ssh/config
+                fi
+
+
+		grep "UseKeychain" ~/.ssh/config 
+                if [ $? -ne 0 ]; then
+                        echo "Configuring SSH for Keychain Access"
+			echo "Host *" >> ~/.ssh/config 
+			echo "    UseKeychain yes" >> ~/.ssh/config 
+                fi
+
 		echo "Installing oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
                 
