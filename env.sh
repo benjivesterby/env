@@ -17,7 +17,7 @@ function install_or_upgrade() {
 
 # Install Go into the correct directory
 function install_go() {
-        wget https://dl.google.com/go/$1
+        curl https://dl.google.com/go/$1 > $1
 
 	sudo rm -rf $s
         sudo installer -pkg ./$1 -target /
@@ -26,7 +26,7 @@ function install_go() {
 
 # Install Go into the correct directory
 function install_go_linux() {
-        wget https://dl.google.com/go/$1
+        curl https://dl.google.com/go/$1 > $1
 
 	sudo rm -rf $s
         sudo mkdir -p $2
@@ -163,9 +163,6 @@ then
                 echo "Installing / Updating pip3"
                 install_or_upgrade "pip3"
 
-                echo "Installing / Updating wget"
-                install_or_upgrade "wget"
-
                 echo "Installing / Updating git"
                 install_or_upgrade "git"
 
@@ -189,6 +186,9 @@ then
 
                 echo "Installing / Updating pinentry-mac"
                 install_or_upgrade "pinentry-mac"
+
+                echo "Installing / Updating jq"
+                install_or_upgrade "jq"
 		
 		grep pinentry-mac ~/.gnupg/gpg-agent.conf
                 if [ $? -ne 0 ]; then
@@ -250,8 +250,8 @@ then
                 fi
 
 		echo 'Upgrading pynvim support'
-		pip install --user --upgrade pip
-		pip install --user --upgrade pynvim
+		pip3 install --user --upgrade pip
+		pip3 install --user --upgrade pynvim
 
 
         elif [[ "$OSTYPE" == "cygwin" ]] ; then
