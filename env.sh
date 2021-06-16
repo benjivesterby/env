@@ -73,6 +73,26 @@ then
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
 
+                if [[ "$2" == "wsl" ]]
+                then
+                        sudo apt-get install -y socat
+                        mkdir ~/.ssh
+                        wget https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/download/v1.2.0/wsl2-ssh-pageant.exe -O ~/.ssh/wsl2-ssh-pageant.exe
+                        chmod +x ~/.ssh/wsl2-ssh-pageant.exe
+
+                        diff ./.env.wsl ~/.env.wsl&> /dev/null
+                        if [ $? -ne 0 ]; then
+                                echo "Updating .env.wsl"
+                                cp -f ./.env.wsl ~/
+                                chmod +x ~/.env.wsl
+                        fi
+
+                        if ! grep -q "source ~/.env.wsl" ~/.bashrc; then
+                                echo "source ~/.env.wsl" >> ~/.bashrc
+                        fi
+                fi
+
+
 		check $?
 
                 which go>/dev/null
