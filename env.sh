@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.16.4
+goversion=1.16.5
 
 checkgov() {
 	go version | grep $goversion
@@ -76,9 +76,14 @@ then
                 if [[ "$2" == "wsl" ]]
                 then
                         sudo apt-get install -y socat
-                        mkdir ~/.ssh
-                        wget https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/download/v1.2.0/wsl2-ssh-pageant.exe -O ~/.ssh/wsl2-ssh-pageant.exe
-                        chmod +x ~/.ssh/wsl2-ssh-pageant.exe
+                        if [ ! -d ~/.ssh ]; then
+                                mkdir ~/.ssh
+                        fi
+
+                        if [ ! -f ~/.ssh/wsl2-ssh-pageant.exe ]; then
+                                wget https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/download/v1.2.0/wsl2-ssh-pageant.exe -O ~/.ssh/wsl2-ssh-pageant.exe
+                                chmod +x ~/.ssh/wsl2-ssh-pageant.exe
+                        fi
 
                         diff ./.env.wsl ~/.env.wsl&> /dev/null
                         if [ $? -ne 0 ]; then
@@ -90,6 +95,24 @@ then
                         if ! grep -q "source ~/.env.wsl" ~/.bashrc; then
                                 echo "source ~/.env.wsl" >> ~/.bashrc
                         fi
+
+                        # Create the folder structure
+                        if [ ! -d ~/.gnupg ]; then
+                                echo "Adding ~/.gnupg"
+                                mkdir ~/.gnupg
+                        fi
+
+                        if ! grep -q "allow-loopback-pinentry" ~/.gnupg/gpg-agent.conf; then
+                                echo "Adding loopback to ~/.gnupg/gpg-agent.conf"
+                                echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+                        fi
+
+                        if ! grep -q "pinentry-mode loopback" ~/.gnupg/gpg.conf; then
+                                echo "Adding loopback to ~/.gnupg/gpg.conf"
+                                echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+                        fi
+                        
+                        gpgconf --reload gpg-agent
                 fi
 
 
