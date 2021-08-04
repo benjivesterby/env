@@ -70,7 +70,7 @@ then
                 sudo apt-get install -y net-tools nscd resolvconf neovim tmux nodejs \
 		npm autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip curl \
-                tree kazam nmap graphviz network-manager-l2tp \
+                tree kazam nmap graphviz network-manager-l2tp keychain \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
 
                 if [[ "$2" == "wsl" ]]
