@@ -70,8 +70,15 @@ then
                 sudo apt-get install -y net-tools nscd resolvconf neovim tmux nodejs \
 		npm autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip curl \
-                tree kazam nmap graphviz network-manager-l2tp keychain \
+                tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
+
+		check $?
+
+                if ! grep -q "AddKeysToAgent yes" ~/.ssh/config; then
+                        echo "Adding 'AddKeysToAgent yes' to ~/.ssh/config"
+			sed -i '1s/^/AddKeysToAgent yes\n/' ~/.ssh/config
+                fi
 
                 if [[ "$2" == "wsl" ]]
                 then
@@ -115,8 +122,6 @@ then
                         gpgconf --reload gpg-agent
                 fi
 
-
-		check $?
 
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
