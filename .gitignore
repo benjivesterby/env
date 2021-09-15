@@ -2,4 +2,5 @@
 *.tar.gz
 nerd-fonts/
 fonts/
+.DS_Store
 ~

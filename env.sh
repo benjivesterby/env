@@ -265,17 +265,24 @@ then
 		echo "Installing oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
                 
+                arch="amd64"
+                uname -a | grep amd64
+                if [ $? -ne 0 ]; then
+                        echo "Configuring for ARM64 Architecture"
+			arch="arm64"
+                fi
+
                 which go>/dev/null
                 if [ $? -ne 0 ]; then
                         echo "Installing Go"
-                        install_go "go$goversion.darwin-amd64.pkg" "/usr/local"
+                        install_go "go$goversion.darwin-$arch.pkg" "/usr/local"
                 fi
 
 		checkgov
                 if [ $? -ne 0 ]; then
 			echo "Upgrading Go"
 			sudo rm -rf /usr/local/go
-                        install_go "go$goversion.darwin-amd64.pkg" "/usr/local"
+                        install_go "go$goversion.darwin-$arch.pkg" "/usr/local"
 			check $?
 		fi
 
