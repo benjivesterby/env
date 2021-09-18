@@ -202,6 +202,9 @@ then
                 echo "Installing / Updating python"
                 install_or_upgrade "python"
 
+                echo "Installing / Updating wget"
+                install_or_upgrade "wget"
+
                 echo "Installing / Updating python3"
                 install_or_upgrade "python3"
 
