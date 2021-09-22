@@ -269,7 +269,7 @@ then
 		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
                 
                 arch="amd64"
-                uname -a | grep amd64
+                uname -a | grep "x86_64"
                 if [ $? -ne 0 ]; then
                         echo "Configuring for ARM64 Architecture"
 			arch="arm64"
