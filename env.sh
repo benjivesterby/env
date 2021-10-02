@@ -217,6 +217,9 @@ then
                 echo "Installing / Updating git"
                 install_or_upgrade "git"
 
+                # Link GIT into the path properly
+                brew link --force git
+
                 echo "Installing / Updating neovim"
                 install_or_upgrade "neovim"
 
