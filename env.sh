@@ -243,6 +243,9 @@ then
 
                 echo "Installing / Updating jq"
                 install_or_upgrade "jq"
+
+                echo "Installing / Updating nvm"
+                install_or_upgrade "nvm"
 		
 		grep pinentry-mac ~/.gnupg/gpg-agent.conf
                 if [ $? -ne 0 ]; then
