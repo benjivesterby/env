@@ -246,6 +246,9 @@ then
 
                 echo "Installing / Updating nvm"
                 install_or_upgrade "nvm"
+                
+                echo "Installing / Updating pre-commit"
+                install_or_upgrade "pre-commit"
 		
 		grep pinentry-mac ~/.gnupg/gpg-agent.conf
                 if [ $? -ne 0 ]; then
