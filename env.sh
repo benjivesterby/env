@@ -177,6 +177,7 @@ then
                 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.37.1
                 golangci-lint --version
         
+                pip install pre-commit
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
@@ -246,7 +247,7 @@ then
 
                 echo "Installing / Updating nvm"
                 install_or_upgrade "nvm"
-                
+
                 echo "Installing / Updating pre-commit"
                 install_or_upgrade "pre-commit"
 		
