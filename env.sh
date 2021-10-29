@@ -75,6 +75,8 @@ then
 
 		check $?
 
+                pip install git+https://github.com/Contrast-Labs/detect-secrets
+
                 if ! grep -q "AddKeysToAgent yes" ~/.ssh/config; then
                         echo "Adding 'AddKeysToAgent yes' to ~/.ssh/config"
 			sed -i '1s/^/AddKeysToAgent yes\n/' ~/.ssh/config
@@ -211,6 +213,8 @@ then
 
                 echo "Installing / Updating pip"
                 install_or_upgrade "pip"
+
+                pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
                 echo "Installing / Updating pip3"
                 install_or_upgrade "pip3"
