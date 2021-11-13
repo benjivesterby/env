@@ -1,6 +1,6 @@
 #!/bin/sh
 
-go test -v -race -cover -covermode=atomic -coverprofile=./c.out ./... && go tool cover -html=./c.out
+go test -v -cover -covermode=atomic -coverprofile=./c.out ./... && go tool cover -html=./c.out
 
 # gitd=$(git rev-parse --show-toplevel)
 
