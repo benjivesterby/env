@@ -6,15 +6,6 @@ checkgov() {
 	go version | grep $goversion
 }
 
-# Mac update / install function
-function install_or_upgrade() {
-    if brew ls --versions "$1" >/dev/null; then
-        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade "$1">/dev/null 2>&1
-    else
-        HOMEBREW_NO_AUTO_UPDATE=1 brew install "$1">/dev/null 2>&1
-    fi
-} 
-
 # Install Go into the correct directory
 function install_go() {
         curl https://dl.google.com/go/$1 > $1
@@ -71,7 +62,8 @@ then
 		npm autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip curl \
                 tree kazam nmap graphviz network-manager-l2tp \
-		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd bolt
+		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
+                bolt vue-cli
 
 		check $?
 
@@ -202,58 +194,14 @@ then
                 echo "Updating brew"
                 brew update>/dev/null 2>&1
 
-                echo "Installing / Updating python"
-                install_or_upgrade "python"
-
-                echo "Installing / Updating wget"
-                install_or_upgrade "wget"
-
-                echo "Installing / Updating python3"
-                install_or_upgrade "python3"
-
-                echo "Installing / Updating pip"
-                install_or_upgrade "pip"
+                brew install python wget python3 git neovim tmux \
+                tree graphviz golangci-lint pinentry-mac jq nvm \
+                pre-commit vue-cli
 
                 pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
-                echo "Installing / Updating pip3"
-                install_or_upgrade "pip3"
-
-                echo "Installing / Updating git"
-                install_or_upgrade "git"
-
                 # Link GIT into the path properly
                 brew link --force git
-
-                echo "Installing / Updating neovim"
-                install_or_upgrade "neovim"
-
-                echo "Installing / Updating tmux"
-                install_or_upgrade "tmux"
-
-                echo "Installing / Updating tree"
-                install_or_upgrade "tree"
-
-                echo "Installing / Updating pbcopy"
-                install_or_upgrade "pbcopy"
-
-                echo "Installing / Updating graphviz"
-                install_or_upgrade "graphviz"
-
-                echo "Installing / Updating golangci-lint"
-                install_or_upgrade "golangci-lint"
-
-                echo "Installing / Updating pinentry-mac"
-                install_or_upgrade "pinentry-mac"
-
-                echo "Installing / Updating jq"
-                install_or_upgrade "jq"
-
-                echo "Installing / Updating nvm"
-                install_or_upgrade "nvm"
-
-                echo "Installing / Updating pre-commit"
-                install_or_upgrade "pre-commit"
 		
 		grep pinentry-mac ~/.gnupg/gpg-agent.conf
                 if [ $? -ne 0 ]; then
