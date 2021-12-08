@@ -63,7 +63,7 @@ then
 		ng-common gcc g++ make python3 python3-pip curl \
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
-                bolt vue-cli
+                bolt
 
 		check $?
 
@@ -196,7 +196,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit vue-cli
+                pre-commit nodejs
 
                 pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
@@ -290,6 +290,9 @@ then
                 # Unknown.
                 echo $OSTYPE
         fi
+
+        npm install -g @vue/cli
+        npm i -g @vue/cli-service-global
 
         folder="${HOME}/bin"
         if [ ! -d $folder ]; then
