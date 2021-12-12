@@ -1,0 +1,60 @@
+#!/bin/sh
+
+wd=$(pwd)
+gvmroot="$HOME/.gvm"
+srcd="$gvmroot/next"
+symln=$gvmroot/go
+versionroot="$gvmroot/$1"
+
+if [ ! -d $gvmroot ]; then
+        echo "Adding ~/.gvm directory for go installs"
+        mkdir $gvmroot
+fi
+
+symlink() {
+    if [[ ! -L "$symln"  ]]
+    then
+        rm -rf $symln
+    fi
+
+    echo "updating symlink $symln => $versionroot"
+    sudo ln -s $gvmroot/go $versionroot
+
+    if ! echo $PATH | grep -q $symln; then
+        echo "$symln not in path"
+    fi
+}
+
+
+if [[ "$1" == "next" ]]
+then
+    version="next"
+    # which go>/dev/null
+    # if [ $? -ne 0 ]; then
+    #     echo "Installing go from source requires an existing go installation"
+    # fi
+
+    # if [ ! -d $srcd ]; then
+    #     echo "Cloning go source"
+    #     git clone https://github.com/golang/go.git $srcd
+    # fi
+    
+    # cd $srcd
+
+    # git checkout master
+    # git pull
+
+    # cd $srcd/src/
+    # ./all.bash
+
+    # cd $wd
+else
+    echo "Installing go from binary"
+    version="$1"
+fi
+
+symlink
+
+bin="$gvmroot/$version/bin"
+
+echo $bin
