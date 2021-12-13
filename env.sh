@@ -404,7 +404,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Updating GVM"
-curl https://raw.githubusercontent.com/devnw/gvm/main/gvm > ~/bin/gvm && chmod +x ~/bin/gvm
+curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > $HOME/bin/gvm && chmod +x $HOME/bin/gvm
 
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
