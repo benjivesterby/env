@@ -403,6 +403,9 @@ if [ $? -ne 0 ]; then
 	chmod +x ~/.env.shared
 fi
 
+echo "Updating GVM"
+curl https://raw.githubusercontent.com/devnw/gvm/main/gvm > ~/bin/gvm && chmod +x ~/bin/gvm
+
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
 	if [ $? -ne 0 ]; then
