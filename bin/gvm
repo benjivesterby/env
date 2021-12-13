@@ -88,7 +88,16 @@ if ! echo $PATH | grep -q $symln/bin; then
     if [[ "$SHELL" == "/bin/zsh" ]]
     then
         echo "export PATH=\"$symln/bin:\$PATH\"" >> $HOME/.zshrc
+        exec zsh
     else
         echo "export PATH=\"$symln/bin:\$PATH\"" >> $HOME/.bashrc
+        source $HOME/.bashrc
     fi
+fi
+
+pathgo=$(which go)
+
+if [[ $pathgo != "$symln/bin/go" ]]
+then
+    echo "GVM is shadowed by $pathgo in your PATH. Please update your PATH to use $symln/bin first"
 fi
