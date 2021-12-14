@@ -6,25 +6,6 @@ checkgov() {
 	go version | grep $goversion
 }
 
-# Install Go into the correct directory
-function install_go() {
-        curl https://dl.google.com/go/$1 > $1
-
-	sudo rm -rf $s
-        sudo installer -pkg ./$1 -target /
-	rm ./$1
-}
-
-# Install Go into the correct directory
-function install_go_linux() {
-        curl https://dl.google.com/go/$1 > $1
-
-	sudo rm -rf $s
-        sudo mkdir -p $2
-        sudo tar -C $2 -xzf $1
-	rm ./$1
-}
-
 function check() {
 	if [ $1 -ne 0 ]; then
 		exit 0
@@ -32,6 +13,9 @@ function check() {
 }
 
 wd=$(pwd)
+
+echo "Updating GVM"
+curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > $HOME/bin/gvm && chmod +x $HOME/bin/gvm
 
 if [[ "$1" == "-i" ]]
 then
@@ -63,7 +47,7 @@ then
 		ng-common gcc g++ make python3 python3-pip curl \
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
-                bolt
+                bolt shellcheck
 
 		check $?
 
@@ -196,7 +180,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit nodejs
+                pre-commit nodejs shellcheck
 
                 pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
@@ -237,19 +221,7 @@ then
 			arch="arm64"
                 fi
 
-                which go>/dev/null
-                if [ $? -ne 0 ]; then
-                        echo "Installing Go"
-                        install_go "go$goversion.darwin-$arch.pkg" "/usr/local"
-                fi
-
-		checkgov
-                if [ $? -ne 0 ]; then
-			echo "Upgrading Go"
-			sudo rm -rf /usr/local/go
-                        install_go "go$goversion.darwin-$arch.pkg" "/usr/local"
-			check $?
-		fi
+                gvm $goversion
 
                 echo "Installing Git Auto Completion"
                 # Create the folder structure
@@ -402,9 +374,6 @@ if [ $? -ne 0 ]; then
 	cp -f ./.env.shared ~/
 	chmod +x ~/.env.shared
 fi
-
-echo "Updating GVM"
-curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > $HOME/bin/gvm && chmod +x $HOME/bin/gvm
 
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
