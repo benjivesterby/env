@@ -21,7 +21,7 @@ if [[ "$1" == "-i" ]]
 then
 
         echo 'Mode: Install Environment'
-        if [[ "$OSTYPE" == "linux-gnu" ]] ; then
+        if [[ "$OSTYPE" == "linux"* ]] ; then
                 echo '############################################'
                 echo 'Linux Environment Installation'
                 echo '############################################'
@@ -47,7 +47,7 @@ then
 		ng-common gcc g++ make python3 python3-pip curl \
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
-                bolt shellcheck
+                bolt shellcheck lefthook
 
 		check $?
 
@@ -180,7 +180,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit nodejs shellcheck
+                pre-commit nodejs shellcheck lefthook gsed
 
                 pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
