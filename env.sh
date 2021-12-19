@@ -283,6 +283,10 @@ then
 	sudo rm -rf ~/go/src/github.com/shirou/gopsutil
 	go install github.com/shirou/gopsutil@latest
 
+        echo "Installing act"
+	sudo rm -rf ~/go/src/github.com/nektos/act
+        go install github.com/nektos/act@latest
+
         echo 'Setting up git global'
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
