@@ -47,7 +47,7 @@ then
 		ng-common gcc g++ make python3 python3-pip curl \
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
-                bolt shellcheck lefthook
+                bolt shellcheck lefthook hugo
 
 		check $?
 
@@ -180,7 +180,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit nodejs shellcheck lefthook gsed
+                pre-commit nodejs shellcheck lefthook gsed hugo
 
                 pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
