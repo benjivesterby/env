@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.17.5
+goversion=next
 
 checkgov() {
 	go version | grep $goversion
@@ -180,7 +180,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit nodejs shellcheck lefthook gsed hugo
+                pre-commit nodejs shellcheck lefthook gsed hugo webp
 
                 pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
