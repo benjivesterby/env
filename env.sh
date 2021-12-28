@@ -266,6 +266,9 @@ then
         npm install -g npm
         npm install -g @vue/cli
         npm i -g @vue/cli-service-global
+        
+        # SEO Tools
+        npm i -g keywordsextract
 
         folder="${HOME}/bin"
         if [ ! -d $folder ]; then
