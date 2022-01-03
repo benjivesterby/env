@@ -270,6 +270,7 @@ then
         # SEO Tools
         npm i -g keywordsextract
         npm install -g lighthouse
+        npm install netlify-cli -g
 
         folder="${HOME}/bin"
         if [ ! -d $folder ]; then
