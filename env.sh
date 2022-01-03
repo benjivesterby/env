@@ -271,6 +271,7 @@ then
         npm i -g keywordsextract
         npm install -g lighthouse
         npm install netlify-cli -g
+        npm install lighthouse-batch -g
 
         folder="${HOME}/bin"
         if [ ! -d $folder ]; then
