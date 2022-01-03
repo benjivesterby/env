@@ -269,6 +269,7 @@ then
         
         # SEO Tools
         npm i -g keywordsextract
+        npm install -g lighthouse
 
         folder="${HOME}/bin"
         if [ ! -d $folder ]; then
