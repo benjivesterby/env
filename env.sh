@@ -357,6 +357,9 @@ then
   	  fi
   	fi
 
+        # Setup node to use latest for installs
+        nvm use --lts
+
         npm install -g npm
         npm install -g @vue/cli
         npm i -g @vue/cli-service-global
@@ -364,8 +367,9 @@ then
         # SEO Tools
         npm i -g keywordsextract
         npm install -g lighthouse
-        npm install netlify-cli -g
-        npm install lighthouse-batch -g
+        npm install -g netlify-cli
+        npm install -g lighthouse-batch
+        npm install -g broken-link-checker
 
         folder="${HOME}/bin"
         if [ ! -d "$folder" ]; then
