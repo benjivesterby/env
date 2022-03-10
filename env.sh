@@ -26,6 +26,13 @@ then
                 echo 'Linux Environment Installation'
                 echo '############################################'
 
+                sudo apt-get update
+                sudo apt-get install -y apt-transport-https \
+    			ca-certificates \
+    			curl \
+    			gnupg2 gnupg-agent \
+    			software-properties-common
+
 		echo 'adding correct repository for git'
 		sudo add-apt-repository -y ppa:git-core/ppa
 
@@ -33,6 +40,20 @@ then
 		# control button that swaps with capslock
         	echo 'updating caps-swap with RCTRL'
 		sudo cp ./ctrl /usr/share/X11/xkb/symbols
+
+
+                echo "Adding Docker repository"
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+		sudo add-apt-repository -y \
+   			"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   			$(lsb_release -cs) \
+   			stable"
+
+                echo "Adding Terraform repository"
+                curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+                sudo apt-add-repository -y \
+                        "deb [arch=amd64] https://apt.releases.hashicorp.com \
+                        $(lsb_release -cs) main"
 
         	echo 'apt-get update'
 		sudo apt-get -y update
@@ -48,10 +69,12 @@ then
 
                 sudo apt-get install -y net-tools nscd resolvconf neovim tmux \
                 autotools-dev ecryptfs-utils cryptsetup \
-		ng-common gcc g++ make python3 python3-pip curl \
+		ng-common gcc g++ make python3 python3-pip \
                 tree kazam nmap graphviz network-manager-l2tp \
-		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
-                bolt shellcheck hugo xclip
+		network-manager-l2tp-gnome scdaemon pcscd \
+                bolt shellcheck hugo xclip libpam-u2f docker-ce docker-ce-cli \
+                containerd.io terraform
+
 
 		check $?
 
@@ -117,33 +140,17 @@ then
 
 		echo "Setting gpg2 as default GIT gpg handler"
         	git config --global gpg.program gpg2 
-
-
-		##### DOCKER INSTALLATION / Configuration
-		echo "INSTALLING DOCKER"
-		sudo apt-get install -y \
-    			apt-transport-https \
-    			ca-certificates \
-    			curl \
-    			gnupg-agent \
-    			software-properties-common
-
-		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-		sudo add-apt-repository -y \
-   			"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   			$(lsb_release -cs) \
-   			stable"
-
-		sudo apt-get -y update
-
-		sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+                
+                echo "Configuring Docker"
 
 		sudo groupadd docker
 
 		sudo usermod -aG docker $USER
 
 		sudo systemctl enable docker
+
+                echo "Configuring Terraform Auto-Completion"
+                terraform -install-autocomplete
 
                 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.37.1
                 golangci-lint --version
@@ -414,11 +421,3 @@ else
         # Unknown.
         echo $OSTYPE
 fi
-
-# if [ -f "~/.zshrc" ]; then
-# 	# echo env loader to .zshrc here
-# elif [ -f "~/.bashrc" ]; then
-# 	# echo to bashrc here
-# else 
-# 	# echo to .profile here
-# fi
