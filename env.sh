@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=next
+goversion=1.17.8
 
 checkgov() {
 	go version | grep $goversion
@@ -40,14 +40,18 @@ then
 	
 		echo "Installing pre-reqs"
 
+                wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+                nvm install --lts
+
 		sudo add-apt-repository -y ppa:nm-l2tp/network-manager-l2tp
 
-                sudo apt-get install -y net-tools nscd resolvconf neovim tmux nodejs \
-		npm autotools-dev ecryptfs-utils cryptsetup \
+                sudo apt-get install -y net-tools nscd resolvconf neovim tmux \
+                autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip curl \
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome gnupg2 gnupg-agent scdaemon pcscd \
-                bolt shellcheck lefthook hugo
+                bolt shellcheck hugo xclip
 
 		check $?
 
@@ -101,20 +105,9 @@ then
                 fi
 
 
-                which go>/dev/null
-                if [ $? -ne 0 ]; then
-                        echo "Installing Go"
-                        install_go_linux "go$goversion.linux-amd64.tar.gz" "/usr/local"
-			check $?
-                fi
-
-		checkgov
-                if [ $? -ne 0 ]; then
-			echo "Upgrading Go"
-			sudo rm -rf /usr/local/go
-                        install_go_linux "go$goversion.linux-amd64.tar.gz" "/usr/local"
-			check $?
-		fi
+                echo "Installing / Updating Go"
+                gvm $goversion
+                check $?
 
                 echo "Installing Git Auto Completion"
                 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null
@@ -294,10 +287,14 @@ then
 	sudo rm -rf ~/go/src/github.com/nektos/act
         go install github.com/nektos/act@latest
 
+	#NOTE: This doesn't work on linux
+	#echo "Installing smimesign for x509 Signing"
+	#go get github.com/github/smimesign
+
         echo 'Setting up git global'
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
-        git config --global core.hookspath ${HOME}/hooks
+        #git config --global core.hookspath ${HOME}/hooks
         git config --global core.editor "vi"
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
@@ -342,19 +339,6 @@ fi
 echo '############################################'
 echo 'Global Environment Installation'
 echo '############################################'
-
-folder="${HOME}/hooks"
-if [ ! -d $folder ]; then
-        # Remove the existing Git Hooks installation if it exists and reinstall
-        echo 'Installing GIT hooks'
-        [ -e $folder ] && rm -rf $folder
-        git clone https://github.com/devnw/hooks $folder &> /dev/null
-else
-	echo 'Updating hooks *master* branch'
-	cd $folder
-	git pull origin master &> /dev/null
-	cd $wd
-fi
 
 
 # override the environment settings
