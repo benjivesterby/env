@@ -38,8 +38,8 @@ then
 
 		# update the symbols file so that it's the right
 		# control button that swaps with capslock
-        	echo 'updating caps-swap with RCTRL'
-		sudo cp ./ctrl /usr/share/X11/xkb/symbols
+        	# echo 'updating caps-swap with RCTRL'
+		# sudo cp ./ctrl /usr/share/X11/xkb/symbols
 
 
                 echo "Adding Docker repository"
@@ -152,7 +152,7 @@ then
                 echo "Configuring Terraform Auto-Completion"
                 terraform -install-autocomplete
 
-                curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.37.1
+                curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$(go env GOPATH)"/bin v1.37.1
                 golangci-lint --version
         
                 pip install pre-commit
@@ -213,13 +213,6 @@ then
 
 		echo "Installing oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-                
-                arch="amd64"
-                uname -a | grep "x86_64"
-                if [ $? -ne 0 ]; then
-                        echo "Configuring for ARM64 Architecture"
-			arch="arm64"
-                fi
 
                 gvm $goversion
 
@@ -315,9 +308,9 @@ then
                 git clone https://github.com/tmux-plugins/tpm $folder &> /dev/null
 	else
 		echo 'Updating tmux plugin manager *master* branch'
-		cd $folder
+		cd "$folder" || exit
 		git pull origin master &> /dev/null
-		cd $wd
+		cd "$wd" || exit
         fi
 
 	file="${HOME}/.local/share/nvim/site/autoload/plug.vim" 
@@ -331,9 +324,9 @@ then
 		git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	else
 		echo 'Updating fzf plugin repository'
-		cd ~/.fzf 
+		cd ~/.fzf || exit
 		git pull origin master
-		cd $wd
+		cd "$wd" || exit
 	fi
 
 	echo 'Executing fzf plugin installer'
