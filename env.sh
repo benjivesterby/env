@@ -1,13 +1,13 @@
 #!/bin/bash
 
-goversion=1.17.8
+goversion=1.18
 
 checkgov() {
 	go version | grep $goversion
 }
 
 function check() {
-	if [ $1 -ne 0 ]; then
+	if [ "$1" -ne 0 ]; then
 		exit 0
 	fi
 }
@@ -15,7 +15,7 @@ function check() {
 wd=$(pwd)
 
 echo "Updating GVM"
-curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > $HOME/bin/gvm && chmod +x $HOME/bin/gvm
+curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > "$HOME"/bin/gvm && chmod +x "$HOME"/bin/gvm
 
 if [[ "$1" == "-i" ]]
 then
@@ -98,7 +98,7 @@ then
                         fi
 
                         diff ./.env.wsl ~/.env.wsl&> /dev/null
-                        if [ $? -ne 0 ]; then
+                        if [ ! $? ]; then
                                 echo "Updating .env.wsl"
                                 cp -f ./.env.wsl ~/
                                 chmod +x ~/.env.wsl
@@ -145,7 +145,7 @@ then
 
 		sudo groupadd docker
 
-		sudo usermod -aG docker $USER
+		sudo usermod -aG docker "$USER"
 
 		sudo systemctl enable docker
 
@@ -156,6 +156,9 @@ then
                 golangci-lint --version
         
                 pip install pre-commit
+                
+                echo "Initializing Pre-Commit Global Hooks"
+                pre-commit init-templatedir ~
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
@@ -164,13 +167,13 @@ then
                 echo '############################################'
 
                 which brew &> /dev/null
-                if [ $? -ne 0 ]; then
+                if [ ! $? ]; then
                         echo "Install Homebrew"
                         exit 1
                 fi
 
                 which gpg &> /dev/null
-                if [ $? -ne 0 ]; then
+                if [ ! $? ]; then
                         echo "Install GPG (gnupg.org)"
                         exit 1
                 fi
@@ -188,13 +191,13 @@ then
                 brew link --force git
 		
 		grep pinentry-mac ~/.gnupg/gpg-agent.conf
-                if [ $? -ne 0 ]; then
+                if [ ! $? ]; then
                         echo "Configuring pinentry-mac"
 			echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
                 fi
 
 		grep "reader-port Yubico Yubi" ~/.gnupg/scdaemon.conf 
-                if [ $? -ne 0 ]; then
+                if [ ! $? ]; then
                         echo "Configuring scdaemon.conf"
 			echo "reader-port Yubico Yubi" >> ~/.gnupg/scdaemon.conf
                 fi
@@ -205,7 +208,7 @@ then
 
 
 		grep "UseKeychain" ~/.ssh/config 
-                if [ $? -ne 0 ]; then
+                if [ ! $? ]; then
                         echo "Configuring SSH for Keychain Access"
 			echo "Host *" >> ~/.ssh/config 
 			echo "    UseKeychain yes" >> ~/.ssh/config 
@@ -241,19 +244,19 @@ then
 
         elif [[ "$OSTYPE" == "cygwin" ]] ; then
                 # POSIX compatibility layer and Linux environment emulation for Windows
-                echo $OSTYPE
+                echo "$OSTYPE"
         elif [[ "$OSTYPE" == "msys" ]] ; then
                 # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
-                echo $OSTYPE
+                echo "$OSTYPE"
         elif [[ "$OSTYPE" == "win32" ]] ; then
                 # I'm not sure this can happen.
-                echo $OSTYPE
+                echo "$OSTYPE"
         elif [[ "$OSTYPE" == "freebsd"* ]] ; then
                 # ...
-                echo $OSTYPE
+                echo "$OSTYPE"
         else
                 # Unknown.
-                echo $OSTYPE
+                echo "$OSTYPE"
         fi
 
         npm install -g npm
@@ -267,9 +270,9 @@ then
         npm install lighthouse-batch -g
 
         folder="${HOME}/bin"
-        if [ ! -d $folder ]; then
+        if [ ! -d "$folder" ]; then
 		echo "Creating ~/bin directory"
-		mkdir $folder
+		mkdir "$folder"
         fi
         echo '############################################'
         echo 'Installing Go Linters'
@@ -301,11 +304,11 @@ then
 	git config --global init.defaultBranch main 
 
         folder="${HOME}/.tmux/plugins/tpm"
-        if [ ! -d $folder ]; then
+        if [ ! -d "$folder" ]; then
                 # Remove the existing tpm installation if it exists and reinstall
                 echo 'Installing tmux plugin manager'
-                [ -e $folder ] && rm -rf $folder
-                git clone https://github.com/tmux-plugins/tpm $folder &> /dev/null
+                [ -e "$folder" ] && rm -rf "$folder"
+                git clone https://github.com/tmux-plugins/tpm "$folder" &> /dev/null
 	else
 		echo 'Updating tmux plugin manager *master* branch'
 		cd "$folder" || exit
@@ -314,7 +317,7 @@ then
         fi
 
 	file="${HOME}/.local/share/nvim/site/autoload/plug.vim" 
-	if [ ! -f $file ]; then
+	if [ ! -f "$file" ]; then
         	echo 'Installing vim-plug'
 	        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>/dev/null 2>&1
 	fi
@@ -343,7 +346,7 @@ echo '############################################'
 
 # override the environment settings
 diff -r ./nvim/ ~/.config/nvim/ &> /dev/null
-if [ $? -ne 0 ]; then
+if [ ! $? ]; then
 	echo 'Updating nvim configuration'
 	cp -Rf ./nvim ~/.config/
 
@@ -358,13 +361,13 @@ nvim +GoUpdateBinaries +qall &> /dev/null
 cp -rpf ./bin/* ~/bin
 
 diff ./.tmux.conf ~/.tmux.conf&> /dev/null
-if [ $? -ne 0 ]; then
+if [ ! $? ]; then
 	echo 'Updating tmux configuration'
 	cp -f ./.tmux.conf ~/
 fi
 
 diff ./.env.shared ~/.env.shared&> /dev/null
-if [ $? -ne 0 ]; then
+if [ ! $? ]; then
 	echo 'Updating environment script'
 	cp -f ./.env.shared ~/
 	chmod +x ~/.env.shared
@@ -372,7 +375,7 @@ fi
 
 if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	diff ./.env.bash ~/.env.bash&> /dev/null
-	if [ $? -ne 0 ]; then
+	if [ ! $? ]; then
 		echo "Updating .env.bash"
 	        cp -f ./.env.bash ~/
         	chmod +x ~/.env.bash
@@ -386,7 +389,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]] ; then
         exec bash
 elif [[ "$OSTYPE" == "darwin"* ]] ; then
 	diff ./.env.darwin ~/.env.darwin&> /dev/null
-	if [ $? -ne 0 ]; then
+	if [ ! $? ]; then
 		echo "Updating .env.darwin"
         	cp -f ./.env.darwin ~/
         	chmod +x ~/.env.darwin
@@ -400,17 +403,17 @@ elif [[ "$OSTYPE" == "darwin"* ]] ; then
         exec zsh
 elif [[ "$OSTYPE" == "cygwin" ]] ; then
         # POSIX compatibility layer and Linux environment emulation for Windows
-        echo $OSTYPE
+        echo "$OSTYPE"
 elif [[ "$OSTYPE" == "msys" ]] ; then
         # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
-        echo $OSTYPE
+        echo "$OSTYPE"
 elif [[ "$OSTYPE" == "win32" ]] ; then
         # I'm not sure this can happen.
-        echo $OSTYPE
+        echo "$OSTYPE"
 elif [[ "$OSTYPE" == "freebsd"* ]] ; then
         # ...
-        echo $OSTYPE
+        echo "$OSTYPE"
 else
         # Unknown.
-        echo $OSTYPE
+        echo "$OSTYPE"
 fi
