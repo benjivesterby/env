@@ -73,7 +73,7 @@ then
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome scdaemon pcscd \
                 bolt shellcheck hugo xclip libpam-u2f docker-ce docker-ce-cli \
-                containerd.io terraform
+                containerd.io terraform build-essential linux-headers-generic
 
 
 		check $?
@@ -159,6 +159,13 @@ then
                 
                 echo "Initializing Pre-Commit Global Hooks"
                 pre-commit init-templatedir ~
+
+                # Source: https://linuxize.com/post/how-to-install-vmware-workstation-player-on-ubuntu-20-04/
+                # echo "Installing VMWare Workstation"
+                # wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0" https://www.vmware.com/go/getplayer-linux
+                # chmod +x getplayer-linux
+                # sudo ./getplayer-linux --required --eulas-agreed
+                # rm ./getplayer-linux
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
