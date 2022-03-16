@@ -167,6 +167,11 @@ then
                 # sudo ./getplayer-linux --required --eulas-agreed
                 # rm ./getplayer-linux
 
+                echo "Installing Keybase"
+                curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
+                sudo apt install -y ./keybase_amd64.deb
+                rm ./keybase_amd64.deb
+
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
