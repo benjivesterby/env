@@ -73,7 +73,8 @@ then
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome scdaemon pcscd \
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
-                containerd.io terraform build-essential linux-headers-generic
+                containerd.io terraform build-essential linux-headers-generic \
+                libbpf-dev make clang llvm libelf-dev #eBPF 
 
 		check $?
 
