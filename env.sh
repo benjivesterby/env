@@ -72,9 +72,12 @@ then
 		ng-common gcc g++ make python3 python3-pip \
                 tree kazam nmap graphviz network-manager-l2tp \
 		network-manager-l2tp-gnome scdaemon pcscd \
-                bolt shellcheck hugo xclip libpam-u2f docker-ce docker-ce-cli \
+                bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic
 
+		check $?
+
+                snap install hugo --channel=extended
 
 		check $?
 
