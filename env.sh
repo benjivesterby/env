@@ -75,6 +75,8 @@ then
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic \
                 libbpf-dev make clang llvm libelf-dev #eBPF 
+                
+                sudo apt-get install -y gnome-keyring #https://github.com/microsoft/vscode-docker/issues/1515
 
 		check $?
 
