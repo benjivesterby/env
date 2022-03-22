@@ -308,6 +308,9 @@ then
 	sudo rm -rf ~/go/src/github.com/nektos/act
         go install github.com/nektos/act@latest
 
+        echo "Installing Benchstat"
+        go install golang.org/x/perf/cmd/benchstat@latest
+
 	#NOTE: This doesn't work on linux
 	#echo "Installing smimesign for x509 Signing"
 	#go get github.com/github/smimesign
