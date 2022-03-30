@@ -41,6 +41,14 @@ then
         	# echo 'updating caps-swap with RCTRL'
 		# sudo cp ./ctrl /usr/share/X11/xkb/symbols
 
+                # 1. Install our official public software signing key
+                wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+                cat signal-desktop-keyring.gpg > /usr/share/keyrings/signal-desktop-keyring.gpg
+
+                # 2. Add our repository to your list of repositories
+                echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+                sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+
 
                 echo "Adding Docker repository"
 		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -54,10 +62,6 @@ then
                 sudo apt-add-repository -y \
                         "deb [arch=amd64] https://apt.releases.hashicorp.com \
                         $(lsb_release -cs) main"
-
-        	echo 'apt-get update'
-		sudo apt-get -y update
-		check $?
 	
 		echo "Installing pre-reqs"
 
@@ -67,6 +71,10 @@ then
 
 		sudo add-apt-repository -y ppa:nm-l2tp/network-manager-l2tp
 
+        	echo 'apt-get update'
+		sudo apt-get -y update
+		check $?
+
                 sudo apt-get install -y net-tools nscd resolvconf neovim tmux \
                 autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip \
@@ -74,7 +82,8 @@ then
 		network-manager-l2tp-gnome scdaemon pcscd \
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic \
-                libbpf-dev make clang llvm libelf-dev libpcap-dev wireguard
+                libbpf-dev make clang llvm libelf-dev libpcap-dev wireguard \
+                yubikey-luks signal-desktop
                 
                 sudo apt-get install -y gnome-keyring #https://github.com/microsoft/vscode-docker/issues/1515
 

@@ -4,3 +4,4 @@ nerd-fonts/
 fonts/
 .DS_Store
 ~
+*.gpg
