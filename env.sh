@@ -71,6 +71,8 @@ then
 
 		sudo add-apt-repository -y ppa:nm-l2tp/network-manager-l2tp
 
+                sudo add-apt-repository -y ppa:wireshark-dev/stable
+
         	echo 'apt-get update'
 		sudo apt-get -y update
 		check $?
@@ -83,7 +85,11 @@ then
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
-                yubikey-luks signal-desktop
+                yubikey-luks signal-desktop tcpdump wireshark
+                
+		check $?
+
+		sudo usermod -aG wireshark "$USER"
                 
 		check $?
 
