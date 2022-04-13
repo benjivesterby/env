@@ -50,6 +50,9 @@ then
                 sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
 
 
+                # Adding Go Releaser
+                echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
+
                 echo "Adding Docker repository"
 		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 		sudo add-apt-repository -y \
@@ -85,7 +88,7 @@ then
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
-                yubikey-luks signal-desktop tcpdump wireshark
+                yubikey-luks signal-desktop tcpdump wireshark goreleaser
                 
 		check $?
 
@@ -341,7 +344,7 @@ then
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         #git config --global core.hookspath ${HOME}/hooks
-        git config --global core.editor "vi"
+        git config --global core.editor "nvim"
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
 	git config --global init.defaultBranch main 
