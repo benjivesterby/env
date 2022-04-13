@@ -88,7 +88,8 @@ then
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
-                yubikey-luks signal-desktop tcpdump wireshark goreleaser
+                yubikey-luks signal-desktop tcpdump wireshark goreleaser \
+		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf
                 
 		check $?
 
