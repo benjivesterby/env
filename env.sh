@@ -89,7 +89,7 @@ then
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
-		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf
+		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose
                 
 		check $?
 
