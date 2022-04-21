@@ -6,12 +6,6 @@ checkgov() {
 	go version | grep $goversion
 }
 
-function check() {
-	if [ "$1" -ne 0 ]; then
-		exit 0
-	fi
-}
-
 wd=$(pwd)
 
 echo "Updating GVM"
@@ -77,10 +71,12 @@ then
                 sudo add-apt-repository -y ppa:wireshark-dev/stable
 
         	echo 'apt-get update'
-		sudo apt-get -y update
-		check $?
+		if ! sudo apt-get -y update; then
+                        echo 'apt-get update failed'
+                        exit 0
+                fi
 
-                sudo apt-get install -y net-tools nscd resolvconf neovim tmux \
+                if ! sudo apt-get install -y net-tools nscd resolvconf neovim tmux \
                 autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip \
                 tree kazam nmap graphviz network-manager-l2tp \
@@ -89,26 +85,30 @@ then
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
-		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose
-                
-		check $?
+		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose; then
+                        echo 'apt-get install failed'
+                        exit 0
+                fi
 
-		sudo usermod -aG wireshark "$USER"
-                
-		check $?
+		
+		if ! sudo usermod -aG wireshark "$USER"; then
+                        echo 'wireshark usermod failed'
+                fi
 
                 # unable to find libbpf-dev 
 
-                sudo apt-get install -y gnome-keyring #https://github.com/microsoft/vscode-docker/issues/1515
+                if ! sudo apt-get install -y gnome-keyring; then #https://github.com/microsoft/vscode-docker/issues/1515
+                        echo 'gnome-keyring install failed'
+                fi
 
-		check $?
-
-                snap install hugo --channel=extended
+                if ! snap install hugo --channel=extended; then
+                        echo 'hugo install failed'
+                fi
 
                 echo "Adding GH CLI Repository"
-                sudo snap install gh 
-
-		check $?
+                if ! sudo snap install gh; then
+                        echo 'github CLI install failed'
+                fi
 
                 pip install git+https://github.com/Contrast-Labs/detect-secrets
 
@@ -129,8 +129,7 @@ then
                                 chmod +x ~/.ssh/wsl2-ssh-pageant.exe
                         fi
 
-                        diff ./.env.wsl ~/.env.wsl&> /dev/null
-                        if [ ! $? ]; then
+                        if ! diff ./.env.wsl ~/.env.wsl&> /dev/null; then
                                 echo "Updating .env.wsl"
                                 cp -f ./.env.wsl ~/
                                 chmod +x ~/.env.wsl
@@ -161,8 +160,10 @@ then
 
 
                 echo "Installing / Updating Go"
-                gvm $goversion
-                check $?
+                if ! gvm $goversion; then
+                        printf "gvm %s install failed" "$goversion"
+                        exit 0
+                fi
 
                 echo "Installing Git Auto Completion"
                 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null
@@ -204,20 +205,41 @@ then
                 sudo apt install -y ./keybase_amd64.deb
                 rm ./keybase_amd64.deb
 
+                # benji | ~ $ sudo update-alternatives --config editor
+                # There are 8 choices for the alternative editor (providing /usr/bin/editor).
+
+                # Selection    Path               Priority   Status
+                # ------------------------------------------------------------
+                # * 0            /usr/bin/ng         80        auto mode
+                # 1            /bin/ed            -100       manual mode
+                # 2            /bin/nano           40        manual mode
+                # 3            /usr/bin/code       0         manual mode
+                # 4            /usr/bin/ng         80        manual mode
+                # 5            /usr/bin/nvim       30        manual mode
+                # 6            /usr/bin/vim.gtk3   50        manual mode
+                # 7            /usr/bin/vim.nox    40        manual mode
+                # 8            /usr/bin/vim.tiny   15        manual mode
+
+                # Press <enter> to keep the current choice[*], or type selection number: 5
+                # update-alternatives: using /usr/bin/nvim to provide /usr/bin/editor (editor) in manual mode
+                # benji | ~ $ 
+
+                # sudo visudo 
+                # %sudo   ALL=(ALL:ALL) ALL replace with ->  %sudo   ALL=(ALL:ALL) NOPASSWD:ALL
+
+
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
                 echo '############################################'
                 echo 'MAC Environment Installation'
                 echo '############################################'
 
-                which brew &> /dev/null
-                if [ ! $? ]; then
+                if ! which brew &> /dev/null; then
                         echo "Install Homebrew"
                         exit 1
                 fi
 
-                which gpg &> /dev/null
-                if [ ! $? ]; then
+                if ! which gpg &> /dev/null; then
                         echo "Install GPG (gnupg.org)"
                         exit 1
                 fi
@@ -234,14 +256,12 @@ then
                 # Link GIT into the path properly
                 brew link --force git
 		
-		grep pinentry-mac ~/.gnupg/gpg-agent.conf
-                if [ ! $? ]; then
+                if ! grep pinentry-mac ~/.gnupg/gpg-agent.conf; then
                         echo "Configuring pinentry-mac"
 			echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
                 fi
 
-		grep "reader-port Yubico Yubi" ~/.gnupg/scdaemon.conf 
-                if [ ! $? ]; then
+                if ! grep "reader-port Yubico Yubi" ~/.gnupg/scdaemon.conf; then
                         echo "Configuring scdaemon.conf"
 			echo "reader-port Yubico Yubi" >> ~/.gnupg/scdaemon.conf
                 fi
@@ -250,9 +270,7 @@ then
                         touch ~/.ssh/config
                 fi
 
-
-		grep "UseKeychain" ~/.ssh/config 
-                if [ ! $? ]; then
+                if ! grep "UseKeychain" ~/.ssh/config ; then
                         echo "Configuring SSH for Keychain Access"
 			echo "Host *" >> ~/.ssh/config 
 			echo "    UseKeychain yes" >> ~/.ssh/config 
@@ -392,8 +410,7 @@ echo '############################################'
 
 
 # override the environment settings
-diff -r ./nvim/ ~/.config/nvim/ &> /dev/null
-if [ ! $? ]; then
+if ! diff -r ./nvim/ ~/.config/nvim/ &> /dev/null; then
 	echo 'Updating nvim configuration'
 	cp -Rf ./nvim ~/.config/
 
@@ -407,22 +424,19 @@ nvim +GoUpdateBinaries +qall &> /dev/null
 
 cp -rpf ./bin/* ~/bin
 
-diff ./.tmux.conf ~/.tmux.conf&> /dev/null
-if [ ! $? ]; then
+if ! diff ./.tmux.conf ~/.tmux.conf&> /dev/null; then
 	echo 'Updating tmux configuration'
 	cp -f ./.tmux.conf ~/
 fi
 
-diff ./.env.shared ~/.env.shared&> /dev/null
-if [ ! $? ]; then
+if ! diff ./.env.shared ~/.env.shared&> /dev/null; then
 	echo 'Updating environment script'
 	cp -f ./.env.shared ~/
 	chmod +x ~/.env.shared
 fi
 
-if [[ "$OSTYPE" == "linux-gnu" ]] ; then
-	diff ./.env.bash ~/.env.bash&> /dev/null
-	if [ ! $? ]; then
+if [[ "$OSTYPE" == "linux"* ]] ; then
+	if ! diff ./.env.bash ~/.env.bash&> /dev/null; then
 		echo "Updating .env.bash"
 	        cp -f ./.env.bash ~/
         	chmod +x ~/.env.bash
@@ -432,11 +446,13 @@ if [[ "$OSTYPE" == "linux-gnu" ]] ; then
 	        echo "source ~/.env.bash" >> ~/.bashrc
         fi
 
+        # shellcheck disable=SC1091
+        source "$HOME/.bashrc"
+
         # Update the running terminal instance
         exec bash
 elif [[ "$OSTYPE" == "darwin"* ]] ; then
-	diff ./.env.darwin ~/.env.darwin&> /dev/null
-	if [ ! $? ]; then
+	if ! diff ./.env.darwin ~/.env.darwin&> /dev/null; then
 		echo "Updating .env.darwin"
         	cp -f ./.env.darwin ~/
         	chmod +x ~/.env.darwin

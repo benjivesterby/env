@@ -1,7 +1,8 @@
 #!/bin/bash
 
 if [ -f ~/.git-completion.bash ]; then
-  . ~/.git-completion.bash
+  # shellcheck disable=SC1091
+  . "$HOME/.git-completion.bash"
 fi
 
 eval "$(ssh-agent -s)">/dev/null 2>&1
@@ -12,7 +13,13 @@ eval "$(ssh-agent -s)">/dev/null 2>&1
 export PS1="\u | \[\033[32m\]\W\[\033[33m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/')\[\033[00m\] $ "
 
 re() {
-	source ~/.bashrc
+  # shellcheck disable=SC1091
+	source "$HOME/.bashrc"
 }
 
-source ~/.env.shared
+renet() {
+  sudo /etc/init.d/network-manager restart
+}
+
+# shellcheck disable=SC1091
+source "$HOME/.env.shared"
