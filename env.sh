@@ -87,11 +87,22 @@ then
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
-		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose; then
+		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
+                unattended-upgrades apt-listchanges; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
 
+
+                if ! sudo dpkg-reconfigure -plow unattended-upgrades; then
+                        echo 'dpkg-reconfigure failed'
+                        exit 0
+                fi
+
+                if ! sudo cp ./50unattended-upgrades /etc/apt/apt.conf.d/; then
+                        echo 'Auto upgrade configuration failed'
+                        exit 0
+                fi
 		
 		if ! sudo usermod -aG wireshark "$USER"; then
                         echo 'wireshark usermod failed'
