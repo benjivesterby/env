@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.18
+goversion=1.18.3
 
 checkgov() {
 	go version | grep $goversion
@@ -37,34 +37,29 @@ then
 
                 # 1. Install our official public software signing key
                 wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
-                cat signal-desktop-keyring.gpg > /usr/share/keyrings/signal-desktop-keyring.gpg
+                cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
 
-                SIGNAL_REPO='deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main'
-
-                # 2. Add our repository to your list of repositories
-                echo "$SIGNAL_REPO" |\
-                sudo tee /etc/apt/sources.list.d/signal-xenial.list
-
+                echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | sudo tee /etc/apt/sources.list.d/signal-xenial.list
 
                 # Adding Go Releaser
                 echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
 
                 echo "Adding Docker repository"
-		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-		sudo add-apt-repository -y \
-   			"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   			$(lsb_release -cs) \
-   			stable"
+                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+                sudo apt update
+                apt-cache policy docker-ce
 
                 echo "Adding Terraform repository"
-                curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-                sudo apt-add-repository -y \
-                        "deb [arch=amd64] https://apt.releases.hashicorp.com \
-                        $(lsb_release -cs) main"
+                curl https://apt.releases.hashicorp.com/gpg | gpg --dearmor > hashicorp.gpg
+                sudo install -o root -g root -m 644 hashicorp.gpg /etc/apt/trusted.gpg.d/
+                sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com focal main"
 	
 		echo "Installing pre-reqs"
 
                 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+		source ~/.bashrc
 
                 nvm install --lts
 
