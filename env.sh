@@ -84,7 +84,7 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom; then
+                minicom zsh; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
@@ -390,6 +390,9 @@ then
 		cd "$wd" || exit
         fi
 
+	# installing oh-my-zsh
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 	file="${HOME}/.local/share/nvim/site/autoload/plug.vim" 
 	if [ ! -f "$file" ]; then
         	echo 'Installing vim-plug'
@@ -433,9 +436,9 @@ nvim +GoUpdateBinaries +qall &> /dev/null
 
 cp -rpf ./bin/* ~/bin
 
-if ! diff ./.tmux.conf ~/.tmux.conf&> /dev/null; then
+if ! diff ./.tmux.conf.local ~/.tmux.conf.local&> /dev/null; then
 	echo 'Updating tmux configuration'
-	cp -f ./.tmux.conf ~/
+	cp -f ./.tmux.conf.local ~/
 fi
 
 if ! diff ./.env.shared ~/.env.shared&> /dev/null; then
