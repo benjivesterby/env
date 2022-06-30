@@ -59,6 +59,10 @@ then
 
                 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
+		# Activate NVM as part of the current run
+		export NVM_DIR="$HOME/.nvm"
+		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+		[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 		source ~/.bashrc
 
                 nvm install --lts
@@ -84,7 +88,7 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom zsh; then
+                minicom zsh qwe; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
@@ -412,6 +416,19 @@ then
 	echo 'Executing fzf plugin installer'
 	~/.fzf/install --all
 
+	# If copilot doesn't currently exist then clone it
+	if [ ! -d ~/.config/nvim/pack/github/start/ ]; then
+		echo 'Installing copilot'
+		git clone https://github.com/github/copilot.vim.git \
+			~/.config/nvim/pack/github/start/copilot.vim
+	else 
+		echo 'Updating copilot'
+
+		cd ~/.config/nvim/pack/github/start/ || exit
+		git pull origin release
+
+		cd "$wd" || exit
+	fi
 else
         echo 'Mode: Update Environment'
 fi
