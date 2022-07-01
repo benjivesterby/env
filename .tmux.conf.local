@@ -457,6 +457,10 @@ bind r source-file ~/.tmux.conf |; display "Reloaded!"
 # do nothing with it
 bind C-a send-prefix
 
+set -g prefix C-a
+unbind-key C-b
+bind-key C-a send-prefix
+
 setw -g mode-keys vi
 
 # change the key combinations for vertical (|) and horizontal (-) splitting to make more sense
