@@ -179,7 +179,22 @@ then
                 fi
 
                 echo "Installing Git Auto Completion"
-                curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash>/dev/null
+		if [ ! -d ~/.zsh ]; then
+			mkdir -p ~/.zsh
+		fi
+
+		if [ ! -f ~/.zsh/git-completion.bash ]; then
+			cd ~/.zsh || exit
+			curl -o git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+			cd "$wd" || exit
+		fi
+
+		if [ ! -f ~/.zsh/git-completion.zsh ]; then
+			cd ~/.zsh || exit
+			curl -o _git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+			cd "$wd" || exit
+		fi
+
 
 		echo "Yarn installation"
 		curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --nightly
@@ -289,23 +304,8 @@ then
 			echo "    UseKeychain yes" >> ~/.ssh/config 
                 fi
 
-		echo "Installing oh-my-zsh"
-		sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
                 gvm $goversion
-
-                echo "Installing Git Auto Completion"
-                # Create the folder structure
-                if [ -d ~/.zsh ]; then
-                        sudo rm -rf ~/.zsh
-                fi
-
-                mkdir -p ~/.zsh
-
-                # Download the scripts
-                echo 'Pulling Git Auto Completion Scripts'
-                curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash>/dev/null 2>&1
-                curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh>/dev/null 2>&1
                 
                 # Clear out auto complete cache
                 if [ -d ~/.zcompdump ]; then
@@ -333,6 +333,31 @@ then
                 # Unknown.
                 echo "$OSTYPE"
         fi
+
+	echo "Installing oh-my-zsh"
+	# installing oh-my-zsh
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+        echo "Installing Git Auto Completion"
+        # Create the folder structure
+        if [ -d ~/.zsh ]; then
+                sudo rm -rf ~/.zsh
+        fi
+
+        mkdir -p ~/.zsh
+
+        # Download the scripts
+        echo 'Pulling Git Auto Completion Scripts'
+        curl -o ~/.zsh/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash>/dev/null 2>&1
+        curl -o ~/.zsh/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh>/dev/null 2>&1
+
+  	if which zsh > /dev/null
+  	then
+  	  if [[ $(echo $SHELL) != $(which zsh) ]]; then
+  	    chsh -s $(which zsh)
+  	    export SHELL=$(which zsh)
+  	  fi
+  	fi
 
         npm install -g npm
         npm install -g @vue/cli
@@ -394,8 +419,6 @@ then
 		cd "$wd" || exit
         fi
 
-	# installing oh-my-zsh
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 	file="${HOME}/.local/share/nvim/site/autoload/plug.vim" 
 	if [ ! -f "$file" ]; then
@@ -471,15 +494,9 @@ if [[ "$OSTYPE" == "linux"* ]] ; then
         	chmod +x ~/.env.bash
 	fi
 
-        if ! grep -q "source ~/.env.bash" ~/.bashrc; then
-	        echo "source ~/.env.bash" >> ~/.bashrc
+        if ! grep -q "source ~/.env.bash" ~/.zshrc; then
+	        echo "source ~/.env.bash" >> ~/.zshrc
         fi
-
-        # shellcheck disable=SC1091
-        source "$HOME/.bashrc"
-
-        # Update the running terminal instance
-        exec bash
 elif [[ "$OSTYPE" == "darwin"* ]] ; then
 	if ! diff ./.env.darwin ~/.env.darwin&> /dev/null; then
 		echo "Updating .env.darwin"
@@ -490,9 +507,6 @@ elif [[ "$OSTYPE" == "darwin"* ]] ; then
         if ! grep -q "source ~/.env.darwin" ~/.zshrc; then
             echo "source ~/.env.darwin" >> ~/.zshrc
         fi
-
-        # Update the running terminal instance
-        exec zsh
 elif [[ "$OSTYPE" == "cygwin" ]] ; then
         # POSIX compatibility layer and Linux environment emulation for Windows
         echo "$OSTYPE"
@@ -509,3 +523,6 @@ else
         # Unknown.
         echo "$OSTYPE"
 fi
+
+# Update the running terminal instance
+exec zsh
