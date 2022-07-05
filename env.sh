@@ -88,7 +88,7 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom zsh qwe; then
+                minicom zsh jq; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
