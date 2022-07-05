@@ -88,7 +88,7 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom zsh jq; then
+                minicom zsh jq pre-commit; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
@@ -216,8 +216,6 @@ then
                 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$(go env GOPATH)"/bin v1.37.1
                 golangci-lint --version
         
-                pip install pre-commit
-                
                 echo "Initializing Pre-Commit Global Hooks"
                 pre-commit init-templatedir ~
 
