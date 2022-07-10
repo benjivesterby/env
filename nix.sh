@@ -161,9 +161,6 @@ fi
 git clone https://github.com/gpakosz/.tmux.git ~/.tmux
 ln -s -f .tmux/.tmux.conf ~/.tmux.conf
 
-#mkdir -p ~/.config/alacritty
-#cp -f ./alacritty.yml ~/.config/alacritty/
-
 if ! diff ./.tmux.conf.local ~/.tmux.conf.local&> /dev/null; then
 	echo 'Updating tmux configuration'
 	cp -f ./.tmux.conf.local ~/
