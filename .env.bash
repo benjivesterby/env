@@ -14,5 +14,10 @@ renet() {
   sudo /etc/init.d/network-manager restart
 }
 
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi
+
 # shellcheck disable=SC1091
 source "$HOME/.env.shared"

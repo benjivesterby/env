@@ -15,6 +15,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/12f17ac7-8f52-44d7-8622-00a072312160"; }
+    ];
 
   networking.hostName = "Gopher"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -110,7 +113,7 @@
 
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.enable = false;
   services.xserver.displayManager.autoLogin.user = "benji";
   services.logind.extraConfig = "HandleLidSwitchExternalPower=ignore";
 
@@ -147,6 +150,7 @@
     python3.pkgs.pip
     nettools
     gnupg
+    pinentry-curses
     tmux
     cryptsetup
     gcc 
@@ -196,7 +200,18 @@
     keybase
     steam                              # Games
     nodejs
+
+
+    libcap
+    go_1_18
   ];
+
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+     enable = true;
+     pinentryFlavor = "curses";
+     enableSSHSupport = true;
+  };
 
   #system.activationScripts = {
   #  localBin = {
@@ -227,7 +242,7 @@
   programs.zsh = {
     enable = true;
     shellAliases = {
-      ll = "ls -l";
+      ll = "ls -al";
       update = "sudo nixos-rebuild switch";
       vi = "nvim";
       vim = "nvim";

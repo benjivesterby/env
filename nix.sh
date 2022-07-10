@@ -1,5 +1,3 @@
-goversion=1.18.3
-
 # fail accepts a string argument, prints it and exits with a non-zero exit code
 function fail() {
     printf "%s\n" "$1"
@@ -12,10 +10,17 @@ function checkgov() {
 
 wd=$(pwd)
 
-echo "Adding /bin/bash symlink"
-if ! sudo ln -sf "$(which bash)" /bin/bash 
-then
-    fail "$(printf "Unable to symlink directory /bin/bash\n" "$lnsrc")"
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+	echo "Generating SSH Key Pair"
+	ssh-keygen -q -t ed25519 -N '' -f ~/.ssh/id_ed25519 <<<y >/dev/null 2>&1
+fi
+
+if [ ! -f /bin/bash ]; then
+	echo "Adding /bin/bash symlink"
+	if ! sudo ln -sf "$(which bash)" /bin/bash 
+	then
+	    fail "$(printf "Unable to symlink directory /bin/bash\n" "$lnsrc")"
+	fi
 fi
 
 folder="${HOME}/bin"
@@ -24,24 +29,12 @@ if [ ! -d "$folder" ]; then
 	mkdir "$folder"
 fi
 
-echo "Updating GVM"
-curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > "$HOME"/bin/gvm && chmod +x "$HOME"/bin/gvm
-
-echo "Adding Local Bin to PATH for Script"
-export PATH=$PATH:"$HOME"/bin
-
-echo "Installing / Updating Go"
-if ! gvm $goversion; then
-        printf "gvm %s install failed" "$goversion"
-        exit 0
-fi
-
-echo "Installing Git Auto Completion"
 if [ ! -d ~/.zsh ]; then
 	mkdir -p ~/.zsh
 fi
 
 if [ ! -f ~/.zsh/git-completion.bash ]; then
+	echo "Installing Git Auto Completion for ZSH"
 	cd ~/.zsh || exit
 	curl -o git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 	cd "$wd" || exit
@@ -67,6 +60,11 @@ then
   fi
 fi
 
+if ! which detect-secrets > /dev/null
+then
+	nix-env -i detect-secrets
+fi
+
 # SEO Tools
 # TODO: Install these in SEO env
 #npm i -g keywordsextract
@@ -74,7 +72,7 @@ fi
 #npm install lighthouse-batch -g
 
 echo '############################################'
-echo 'Installing Go Linters'
+echo 'Installing Go Tools'
 echo '############################################'
 
 echo "Installing go tools"
@@ -93,7 +91,7 @@ echo "Installing Delve Debugger"
 go install github.com/go-delve/delve/cmd/dlv@latest
 
 echo 'Setting up git global'
-git config --global core.hookspath ${HOME}/hooks
+git config --global core.hookspath "${HOME}"/hooks
 git config --global core.editor "nvim"
 git config --global rerere.enabled true
 git config --global pull.rebase true
@@ -138,22 +136,24 @@ else
 	cd "$wd" || exit
 fi
 
-echo 'Setting Up Neovim'
 if ! diff -r ./nvim/ ~/.config/nvim/ &> /dev/null; then
+	echo 'Setting Up Neovim'
 	echo 'Updating nvim configuration'
 	cp -Rf ./nvim ~/.config/
 
 	echo 'VIM plugin installation'
 	nvim +'PlugInstall --sync' +qall &> /dev/null
+
+	echo 'VIM-GO Install / Update Binaries'
+	nvim +GoInstallBinaries +qall &> /dev/null
+	nvim +GoUpdateBinaries +qall &> /dev/null
 fi
 
-echo 'VIM-GO Install / Update Binaries'
-nvim +GoInstallBinaries +qall &> /dev/null
-nvim +GoUpdateBinaries +qall &> /dev/null
 
 echo 'Copying Environment Binaries'
 cp -rpf ./bin/* ~/bin
 
+echo "Updating TMUX Environment"
 if [ -d ~/.tmux ]; then
 	rm -rf ~/.tmux
 fi
@@ -161,6 +161,8 @@ fi
 git clone https://github.com/gpakosz/.tmux.git ~/.tmux
 ln -s -f .tmux/.tmux.conf ~/.tmux.conf
 
+#mkdir -p ~/.config/alacritty
+#cp -f ./alacritty.yml ~/.config/alacritty/
 
 if ! diff ./.tmux.conf.local ~/.tmux.conf.local&> /dev/null; then
 	echo 'Updating tmux configuration'
@@ -183,6 +185,8 @@ if ! grep -q "source ~/.env.bash" ~/.zshrc; then
         echo "source ~/.env.bash" >> ~/.zshrc
 fi
 
+cp -rf ./.icons "$HOME"/
+cp ./gpg-agent.conf ~/.gnupg
 
 # Update the running terminal instance
 exec zsh

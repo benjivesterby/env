@@ -13,8 +13,7 @@ curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > "$HOME"/bin/
 
 if [[ "$1" == "-i" ]]
 then
-
-        echo 'Mode: Install Environment'
+echo 'Mode: Install Environment'
         if [[ "$OSTYPE" == "linux"* ]] ; then
                 echo '############################################'
                 echo 'Linux Environment Installation'
