@@ -122,20 +122,6 @@ fi
 #echo 'Executing fzf plugin installer'
 #~/.fzf/install --all
 
-# If copilot doesn't currently exist then clone it
-if [ ! -d ~/.config/nvim/pack/github/start/ ]; then
-	echo 'Installing copilot'
-	git clone https://github.com/github/copilot.vim.git \
-		~/.config/nvim/pack/github/start/copilot.vim
-else 
-	echo 'Updating copilot'
-
-	cd ~/.config/nvim/pack/github/start/ || exit
-	git pull origin release
-
-	cd "$wd" || exit
-fi
-
 if ! diff -r ./nvim/ ~/.config/nvim/ &> /dev/null; then
 	echo 'Setting Up Neovim'
 	echo 'Updating nvim configuration'

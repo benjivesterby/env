@@ -435,20 +435,6 @@ echo 'Mode: Install Environment'
 
 	echo 'Executing fzf plugin installer'
 	~/.fzf/install --all
-
-	# If copilot doesn't currently exist then clone it
-	if [ ! -d ~/.config/nvim/pack/github/start/ ]; then
-		echo 'Installing copilot'
-		git clone https://github.com/github/copilot.vim.git \
-			~/.config/nvim/pack/github/start/copilot.vim
-	else 
-		echo 'Updating copilot'
-
-		cd ~/.config/nvim/pack/github/start/ || exit
-		git pull origin release
-
-		cd "$wd" || exit
-	fi
 else
         echo 'Mode: Update Environment'
 fi
