@@ -35,7 +35,7 @@ Plug 'onsails/lspkind.nvim'
 "Plug 'hrsh7th/cmp-nvim-lua'
 "Plug 'hrsh7th/cmp-path'
 "Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf.vim'
 "Plug 'L3MON4D3/LuaSnip'
 Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
@@ -47,7 +47,7 @@ Plug 'fatih/vim-go'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Install the fzf plugin that is cloned in from git
-" Plug '~/.fzf'
+Plug '~/.fzf'
 
 call plug#end()
 

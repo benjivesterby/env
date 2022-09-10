@@ -88,7 +88,7 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom zsh jq pre-commit; then
+                minicom zsh jq pre-commit fd; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
@@ -273,7 +273,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit nodejs shellcheck lefthook gsed hugo webp
+                pre-commit nodejs shellcheck lefthook gsed hugo webp fd
 
                 # Link GIT into the path properly
                 brew link --force git
