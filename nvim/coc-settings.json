@@ -1,9 +1,27 @@
 {
-  "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"]
-    }
-  }
+	"languageserver": {
+		"clangd": {
+			"command": "clangd",
+			"args": ["--background-index"],
+			"rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+			"filetypes": ["c", "cpp", "objc", "objcpp"]
+		}
+	},
+	"diagnostic.displayByAle": true,
+	"diagnostic.errorSign": "E",
+	"diagnostic.warningSign": "W",
+
+	"javascript.suggestionActions.enabled": false,
+	"javascript.showUnused": false,
+	"javascript.validate.enable": false,
+	"prettier.eslintIntegration": true,
+
+	"coc.preferences.formatOnSaveFiletypes": ["Markdown"],
+
+	"git.enableGutters": false,
+
+	"java.errors.incompleteClasspath.severity": "ignore",
+
+	"yaml.format.enable": true
 }
+

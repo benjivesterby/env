@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.18.3
+goversion=1.19
 
 checkgov() {
 	go version | grep $goversion
@@ -122,8 +122,6 @@ then
                 if ! sudo snap install gh; then
                         echo 'github CLI install failed'
                 fi
-
-                pip install git+https://github.com/Contrast-Labs/detect-secrets
 
                 if ! grep -q "AddKeysToAgent yes" ~/.ssh/config; then
                         echo "Adding 'AddKeysToAgent yes' to ~/.ssh/config"
@@ -276,8 +274,6 @@ then
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm \
                 pre-commit nodejs shellcheck lefthook gsed hugo webp
-
-                pip3 install git+https://github.com/Contrast-Labs/detect-secrets
 
                 # Link GIT into the path properly
                 brew link --force git
