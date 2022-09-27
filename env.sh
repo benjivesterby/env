@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.19
+goversion=1.19.1
 
 checkgov() {
 	go version | grep $goversion
@@ -268,12 +268,21 @@ then
                         exit 1
                 fi
 
+				if ! which nvm &> /dev/null; then
+					echo "Installing NVM"
+					curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+					export NVM_DIR="$HOME/.nvm"
+					[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+					[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+				fi
+
                 echo "Updating brew"
                 brew update>/dev/null 2>&1
 
                 brew install python wget python3 git neovim tmux \
-                tree graphviz golangci-lint pinentry-mac jq nvm \
-                pre-commit nodejs shellcheck lefthook gsed hugo webp fd atuin
+                tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
+                pre-commit nodejs shellcheck lefthook gsed hugo webp fd \
+				atuin kitty
 
                 # Link GIT into the path properly
                 brew link --force git
@@ -354,7 +363,7 @@ then
   	fi
 
         # Setup node to use latest for installs
-        nvm use --lts
+        nvm install --lts
 
         npm install -g npm
         npm install -g @vue/cli
