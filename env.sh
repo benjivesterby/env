@@ -114,10 +114,6 @@ then
                         echo 'gnome-keyring install failed'
                 fi
 
-                if ! snap install hugo --channel=extended; then
-                        echo 'hugo install failed'
-                fi
-
                 echo "Adding GH CLI Repository"
                 if ! sudo snap install gh; then
                         echo 'github CLI install failed'
@@ -281,7 +277,7 @@ then
 
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
-                pre-commit nodejs shellcheck lefthook gsed hugo webp fd \
+                pre-commit nodejs shellcheck lefthook gsed webp fd \
 				atuin kitty
 
                 # Link GIT into the path properly
@@ -409,6 +405,7 @@ then
         git config --global tag.gpgsign true
         #git config --global core.hookspath ${HOME}/hooks
         git config --global core.editor "nvim"
+		git config --global push.autoSetupRemote true
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
 	git config --global init.defaultBranch main 
