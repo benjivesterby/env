@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.19.1
+goversion=1.19.4
 
 checkgov() {
 	go version | grep $goversion
@@ -278,7 +278,7 @@ then
                 brew install python wget python3 git neovim tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
                 pre-commit nodejs shellcheck lefthook gsed webp fd \
-				atuin kitty
+				atuin kitty tailscale
 
                 # Link GIT into the path properly
                 brew link --force git
