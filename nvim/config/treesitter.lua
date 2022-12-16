@@ -1,8 +1,6 @@
-require'nvim-treesitter.configs'.setup {
-	ensure_installed = "all", -- "all", or a list of languages
-	-- ignore_install = { "go" }, -- List of parsers to ignore installing
+require 'nvim-treesitter.configs'.setup {
 	highlight = {
-		enable = true,              -- false will disable the whole extension
+		enable = true, -- false will disable the whole extension
 		additional_vim_regex_highlighting = false,
 	},
 	indent = {
@@ -115,8 +113,8 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/6
-local move = require'nvim-treesitter.textobjects.move'
-local opt = { silent = true}
+local move = require 'nvim-treesitter.textobjects.move'
+local opt = { silent = true }
 vim.keymap.set('v', '[C', function() move.goto_previous_end('@comment.outer') end, opt)
 vim.keymap.set('v', '[F', function() move.goto_previous_end('@function.outer') end, opt)
 vim.keymap.set('v', '[]', function() move.goto_previous_end('@function.outer') end, opt)

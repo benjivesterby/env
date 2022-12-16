@@ -88,7 +88,7 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom zsh jq pre-commit fd atuin; then
+                minicom zsh jq pre-commit lua-nvim; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
@@ -409,6 +409,7 @@ then
 	git config --global rerere.enabled true
 	git config --global pull.rebase true
 	git config --global init.defaultBranch main 
+  git config --global push.autoSetupRemote true 
 
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d "$folder" ]; then
@@ -471,12 +472,12 @@ if ! diff -r ./nvim/ ~/.config/nvim/ &> /dev/null; then
 	cp -Rf ./nvim ~/.config/
 
 	echo 'VIM plugin installation'
-	nvim +'PlugInstall --sync' +qall &> /dev/null
+	#nvim +'PlugInstall --sync' +qall &> /dev/null
 fi
 
 echo 'VIM-GO Install / Update Binaries'
-nvim +GoInstallBinaries +qall &> /dev/null
-nvim +GoUpdateBinaries +qall &> /dev/null
+#nvim +GoInstallBinaries +qall &> /dev/null
+#nvim +GoUpdateBinaries +qall &> /dev/null
 
 cp -rpf ./bin/* ~/bin
 
