@@ -24,9 +24,9 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'neovim/nvim-lspconfig'
+"Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+"Plug 'neovim/nvim-lspconfig'
 Plug 'windwp/nvim-autopairs'
 Plug 'mfussenegger/nvim-lint'
 Plug 'onsails/lspkind.nvim'
@@ -71,11 +71,11 @@ let g:coc_global_extensions = [
 	"\ 'coc-prettier']
 
 
-augroup highlight_yank
-	autocmd!
-	" type :hi to see other higroup options
-	au TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=150 }
-augroup END
+"augroup highlight_yank
+"	autocmd!
+"	" type :hi to see other higroup options
+"	au TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=150 }
+"augroup END
 
 set undodir=~/.vimdid
 set undofile
@@ -100,7 +100,7 @@ autocmd FileType proto setlocal ts=2 expandtab
 set foldlevelstart=99
 " folding with treesitter
 set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+"set foldexpr=nvim_treesitter#foldexpr()
 "set nofoldenable
 
 " yank to clipboard
@@ -363,12 +363,12 @@ endif
 
 " nvim-autopairs
 
-lua << EOF
-require('nvim-autopairs').setup({
-  check_ts = true, -- check treesitter
-  disable_in_macro = true,
-})
-EOF
+"lua << EOF
+"require('nvim-autopairs').setup({
+"  check_ts = true, -- check treesitter
+"  disable_in_macro = true,
+"})
+"EOF
 
 " nvim lint
 
