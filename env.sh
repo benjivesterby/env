@@ -406,10 +406,10 @@ then
         #git config --global core.hookspath ${HOME}/hooks
         git config --global core.editor "nvim"
 		git config --global push.autoSetupRemote true
-	git config --global rerere.enabled true
-	git config --global pull.rebase true
-	git config --global init.defaultBranch main 
-  git config --global push.autoSetupRemote true 
+	    git config --global rerere.enabled true
+	    git config --global pull.rebase true
+	    git config --global init.defaultBranch main 
+        git config --global push.autoSetupRemote true 
 
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d "$folder" ]; then
@@ -482,8 +482,13 @@ echo 'VIM-GO Install / Update Binaries'
 cp -rpf ./bin/* ~/bin
 
 if ! diff ./.tmux.conf.local ~/.tmux.conf.local&> /dev/null; then
-	echo 'Updating tmux configuration'
+	echo 'Updating tmux.conf.local configuration'
 	cp -f ./.tmux.conf.local ~/
+fi
+
+if ! diff ./.tmux.conf ~/.tmux.conf&> /dev/null; then
+	echo 'Updating tmux.conf configuration'
+	cp -f ./.tmux.conf ~/
 fi
 
 if ! diff ./.env.shared ~/.env.shared&> /dev/null; then
