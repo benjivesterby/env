@@ -2,6 +2,7 @@ source ~/.config/nvim/config/quickload.vim
 
 call plug#begin('~/.vim/plugged')
 
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'preservim/nerdtree'
 Plug 'nvim-lualine/lualine.nvim'
@@ -27,7 +28,7 @@ Plug 'christoomey/vim-tmux-navigator'
 "Plug 'nvim-treesitter/nvim-treesitter'
 "Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 "Plug 'neovim/nvim-lspconfig'
-Plug 'windwp/nvim-autopairs'
+"Plug 'windwp/nvim-autopairs'
 Plug 'mfussenegger/nvim-lint'
 Plug 'onsails/lspkind.nvim'
 "Plug 'hrsh7th/cmp-buffer'
@@ -44,31 +45,32 @@ Plug 'github/copilot.vim'
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'fatih/vim-go'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Install the fzf plugin that is cloned in from git
 Plug '~/.fzf'
 
 call plug#end()
 
-let g:coc_global_extensions = [
-	\ 'coc-css',
-	\ 'coc-git',
-	\ 'coc-html',
-	\ 'coc-json',
-	\ 'coc-markdownlint',
-	\ 'coc-actions',
-	\ 'coc-snippets',
-	\ 'coc-spell-checker',
-	\ 'coc-stylelint',
-	\ 'coc-tag',
-	\ 'coc-tabnine',
-	\ 'coc-todolist',
-	\ 'coc-tsserver',
-	\ 'coc-yaml',
-	\ 'coc-yank',
-	\ 'coc-eslint']
-	"\ 'coc-prettier']
+"let g:coc_global_extensions = [
+"	\ 'coc-css',
+"	\ 'coc-git',
+"	\ 'coc-html',
+"	\ 'coc-json',
+"	\ 'coc-markdownlint',
+"	\ 'coc-actions',
+"	\ 'coc-snippets',
+"	\ 'coc-spell-checker',
+"	\ 'coc-stylelint',
+"	\ 'coc-tag',
+"	\ 'coc-tabnine',
+"	\ 'coc-todolist',
+"	\ 'coc-tsserver',
+"	\ 'coc-yaml',
+"	\ 'coc-yank',
+"	\ 'coc-eslint',
+"	\ 'coc-prettier',
+"	\ 'coc-tsserver',
+"    \ 'coc-go']
 
 
 "augroup highlight_yank
@@ -95,6 +97,19 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType rust setlocal expandtab
 autocmd FileType markdown setlocal textwidth=80 expandtab wrap spell
 autocmd FileType proto setlocal ts=2 expandtab
+
+autocmd FileType go nnoremap <buffer><leader>g :GoGenerate<CR>
+autocmd FileType go nnoremap <buffer><leader>i :GoInstallBinaries<CR>
+autocmd FileType go nnoremap <buffer><leader>u :GoUpdateBinaries<CR>
+autocmd FileType go nnoremap <buffer><leader>b :GoBuild<CR>
+autocmd FileType go nnoremap <buffer><leader>t :GoTest<CR>
+autocmd FileType go nnoremap <buffer><leader>tf :GoTestFunc<CR>
+autocmd FileType go nnoremap <buffer><leader>l :GoLint<CR>
+autocmd FileType go nnoremap <buffer><leader>c :GoCoverage<CR>
+autocmd FileType go nnoremap <buffer>gr :GoReferrers<CR>
+autocmd FileType go nnoremap <buffer>gi :GoImplements<CR>
+autocmd FileType go nnoremap <buffer>gd :GoDef<CR>
+autocmd FileType go nnoremap <buffer>dd :GoDoc<CR>
 
 " set so files are not folded when vim starts
 set foldlevelstart=99
@@ -133,11 +148,12 @@ set nu
 set clipboard=unnamedplus
 
 " Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+"nmap <leader>rn <Plug>(coc-rename)
 
 " Add go bindings 
 nmap <leader><tab> :GoImports<CR>
 nmap <leader>b :GoBuild<CR>
+"au FileType go nmap gr :GoReferrers<CR>
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -151,26 +167,26 @@ set shortmess+=c
 set signcolumn=yes
 
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+"let g:coc_snippet_prev = '<c-k>'
+"
+"" Use <C-j> for both expand and jump (make expand higher priority.)
+"imap <C-j> <Plug>(coc-snippets-expand-jump)
+"
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? coc#_select_confirm() :
+"      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
+"let g:coc_snippet_next = '<tab>'
 
 " Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+"nmap <leader>rn <Plug>(coc-rename)
 
 " ----- BENJI END -----
 " plugin
