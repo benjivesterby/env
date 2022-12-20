@@ -194,9 +194,9 @@ then
 		curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --nightly
 
 		echo "Setting gpg2 as default GIT gpg handler"
-        	git config --global gpg.program gpg2 
+        git config --global gpg.program gpg2 
                 
-                echo "Configuring Docker"
+        echo "Configuring Docker"
 
 		sudo groupadd docker
 
@@ -410,6 +410,7 @@ then
 	    git config --global pull.rebase true
 	    git config --global init.defaultBranch main 
         git config --global push.autoSetupRemote true 
+		git config --global credential.helper store
 
         folder="${HOME}/.tmux/plugins/tpm"
         if [ ! -d "$folder" ]; then
