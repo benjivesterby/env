@@ -2,7 +2,7 @@ source ~/.config/nvim/config/quickload.vim
 
 call plug#begin('~/.vim/plugged')
 
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'preservim/nerdtree'
 Plug 'nvim-lualine/lualine.nvim'
@@ -51,26 +51,25 @@ Plug '~/.fzf'
 
 call plug#end()
 
-"let g:coc_global_extensions = [
-"	\ 'coc-css',
-"	\ 'coc-git',
-"	\ 'coc-html',
-"	\ 'coc-json',
-"	\ 'coc-markdownlint',
-"	\ 'coc-actions',
-"	\ 'coc-snippets',
-"	\ 'coc-spell-checker',
-"	\ 'coc-stylelint',
-"	\ 'coc-tag',
-"	\ 'coc-tabnine',
-"	\ 'coc-todolist',
-"	\ 'coc-tsserver',
-"	\ 'coc-yaml',
-"	\ 'coc-yank',
-"	\ 'coc-eslint',
-"	\ 'coc-prettier',
-"	\ 'coc-tsserver',
-"    \ 'coc-go']
+let g:coc_global_extensions = [
+	\ 'coc-css',
+	\ 'coc-git',
+	\ 'coc-html',
+	\ 'coc-json',
+	\ 'coc-markdownlint',
+	\ 'coc-actions',
+	\ 'coc-snippets',
+	\ 'coc-spell-checker',
+	\ 'coc-stylelint',
+	\ 'coc-tag',
+	\ 'coc-tabnine',
+	\ 'coc-todolist',
+	\ 'coc-tsserver',
+	\ 'coc-yaml',
+	\ 'coc-yank',
+	\ 'coc-eslint',
+	\ 'coc-prettier',
+	\ 'coc-tsserver',]
 
 
 "augroup highlight_yank
@@ -106,10 +105,10 @@ autocmd FileType go nnoremap <buffer><leader>t :GoTest<CR>
 autocmd FileType go nnoremap <buffer><leader>tf :GoTestFunc<CR>
 autocmd FileType go nnoremap <buffer><leader>l :GoLint<CR>
 autocmd FileType go nnoremap <buffer><leader>c :GoCoverage<CR>
+autocmd FileType go nnoremap <buffer><leader>dd :GoDoc<CR>
 autocmd FileType go nnoremap <buffer>gr :GoReferrers<CR>
 autocmd FileType go nnoremap <buffer>gi :GoImplements<CR>
 autocmd FileType go nnoremap <buffer>gd :GoDef<CR>
-autocmd FileType go nnoremap <buffer>dd :GoDoc<CR>
 
 " set so files are not folded when vim starts
 set foldlevelstart=99
@@ -148,7 +147,7 @@ set nu
 set clipboard=unnamedplus
 
 " Remap for rename current word
-"nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rn <Plug>(coc-rename)
 
 " Add go bindings 
 nmap <leader><tab> :GoImports<CR>
@@ -167,10 +166,10 @@ set shortmess+=c
 set signcolumn=yes
 
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-"let g:coc_snippet_prev = '<c-k>'
+let g:coc_snippet_prev = '<c-k>'
 "
 "" Use <C-j> for both expand and jump (make expand higher priority.)
-"imap <C-j> <Plug>(coc-snippets-expand-jump)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
 "
 "inoremap <silent><expr> <TAB>
 "      \ pumvisible() ? coc#_select_confirm() :
@@ -183,7 +182,7 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_next = '<tab>'
 
 " Remap for rename current word
 "nmap <leader>rn <Plug>(coc-rename)
