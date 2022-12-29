@@ -296,6 +296,21 @@ then
 
                 # Link GIT into the path properly
                 brew link --force git
+
+				if ! curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz; then
+					echo 'wget nvim failed'
+					exit 0
+				fi
+
+				if ! tar xzf nvim-macos.tar.gz -C $HOME; then
+					echo 'extraction failed'
+					exit 0
+				fi
+
+				if ! rm ./nvim-macos.tar.gz; then
+					echo 'unable to remove neovim tarball'
+					exit 0
+				fi
 		
                 if ! grep pinentry-mac ~/.gnupg/gpg-agent.conf; then
                         echo "Configuring pinentry-mac"

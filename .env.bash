@@ -14,5 +14,7 @@ renet() {
   sudo /etc/init.d/network-manager restart
 }
 
+export PATH=$PATH:$HOME/nvim-linux64/bin
+
 # shellcheck disable=SC1091
 source "$HOME/.env.shared"
