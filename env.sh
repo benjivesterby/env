@@ -77,7 +77,7 @@ then
                         exit 0
                 fi
 
-                if ! sudo apt-get install -y net-tools nscd resolvconf neovim tmux \
+                if ! sudo apt-get install -y net-tools nscd resolvconf tmux \
                 autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip \
                 tree kazam nmap graphviz network-manager-l2tp \
@@ -88,11 +88,25 @@ then
                 yubikey-luks signal-desktop tcpdump wireshark goreleaser \
 		gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
                 unattended-upgrades apt-listchanges setserial cu screen putty \
-                minicom zsh jq pre-commit lua-nvim; then
+                minicom zsh jq pre-commit lua-nvim clangd; then
                         echo 'apt-get install failed'
                         exit 0
                 fi
 
+				if ! wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz; then
+					echo 'wget nvim failed'
+					exit 0
+				fi
+
+				if ! tar xzvf nvim-linux64.tar.gz -C $HOME; then
+					echo 'extraction failed'
+					exit 0
+				fi
+
+				if ! rm ./nvim-linux64.tar.gz; then
+					echo 'unable to remove neovim tarball'
+					exit 0
+				fi
 
                 if ! sudo dpkg-reconfigure -plow unattended-upgrades; then
                         echo 'dpkg-reconfigure failed'
@@ -275,7 +289,7 @@ then
                 echo "Updating brew"
                 brew update>/dev/null 2>&1
 
-                brew install python wget python3 git neovim tmux \
+                brew install python wget python3 git tmux \
                 tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
                 pre-commit nodejs shellcheck lefthook gsed webp fd \
 				atuin kitty tailscale anaconda

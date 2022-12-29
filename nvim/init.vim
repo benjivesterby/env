@@ -26,20 +26,16 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 Plug 'christoomey/vim-tmux-navigator'
 "Plug 'nvim-treesitter/nvim-treesitter'
-"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-"Plug 'neovim/nvim-lspconfig'
-"Plug 'windwp/nvim-autopairs'
+Plug 'neovim/nvim-lspconfig'
+Plug 'windwp/nvim-autopairs'
 Plug 'mfussenegger/nvim-lint'
 Plug 'onsails/lspkind.nvim'
-"Plug 'hrsh7th/cmp-buffer'
-"Plug 'hrsh7th/cmp-nvim-lsp'
-"Plug 'hrsh7th/cmp-nvim-lua'
-"Plug 'hrsh7th/cmp-path'
-"Plug 'saadparwaiz1/cmp_luasnip'
 "Plug 'junegunn/fzf.vim'
-"Plug 'L3MON4D3/LuaSnip'
+Plug 'L3MON4D3/LuaSnip'
 Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 Plug 'github/copilot.vim'
 
@@ -69,6 +65,8 @@ let g:coc_global_extensions = [
 	\ 'coc-yank',
 	\ 'coc-eslint',
 	\ 'coc-prettier',
+	\ 'coc-clangd',
+	\ 'coc-rls',
 	\ 'coc-tsserver',]
 
 

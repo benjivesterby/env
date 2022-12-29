@@ -8,12 +8,6 @@
         "usePlaceholders": true
       }
     },
-		"clangd": {
-			"command": "clangd",
-			"args": ["--background-index"],
-			"rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-			"filetypes": ["c", "cpp", "objc", "objcpp"]
-		}
 	},
 	"diagnostic.displayByAle": true,
 	"diagnostic.errorSign": "E",
