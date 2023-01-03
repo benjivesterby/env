@@ -261,6 +261,9 @@ then
                 # sudo visudo 
                 # %sudo   ALL=(ALL:ALL) ALL replace with ->  %sudo   ALL=(ALL:ALL) NOPASSWD:ALL
 
+				echo 'Upgrading pynvim support'
+				pip3 install --user --upgrade pip
+				pip3 install --user --upgrade pynvim
 
         elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
