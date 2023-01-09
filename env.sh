@@ -81,7 +81,7 @@ then
                 autotools-dev ecryptfs-utils cryptsetup \
 		ng-common gcc g++ make python3 python3-pip \
                 tree kazam nmap graphviz network-manager-l2tp \
-		network-manager-l2tp-gnome scdaemon pcscd \
+		network-manager-l2tp-gnome scdaemon pcscd python-is-python3 \
                 bolt shellcheck xclip libpam-u2f docker-ce docker-ce-cli \
                 containerd.io terraform build-essential linux-headers-generic \
                 make clang llvm libelf-dev libpcap-dev wireguard \
