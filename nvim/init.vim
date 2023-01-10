@@ -1,9 +1,7 @@
-source ~/.config/nvim/config/quickload.vim
-
-source ./bv.lua
-
 call plug#begin('~/.vim/plugged')
 
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'neovim/nvim-lspconfig'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'preservim/nerdtree'
@@ -28,7 +26,6 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 Plug 'christoomey/vim-tmux-navigator'
 "Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'neovim/nvim-lspconfig'
 Plug 'windwp/nvim-autopairs'
 Plug 'mfussenegger/nvim-lint'
 Plug 'onsails/lspkind.nvim'
@@ -53,6 +50,11 @@ Plug 'fatih/vim-go'
 Plug '~/.fzf'
 
 call plug#end()
+
+source ./bv.lua
+
+source ~/.config/nvim/config/quickload.vim
+
 
 let g:coc_global_extensions = [
 	\ 'coc-css',
