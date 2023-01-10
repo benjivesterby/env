@@ -51,10 +51,8 @@ Plug '~/.fzf'
 
 call plug#end()
 
-source ./bv.lua
-
+source ~/.config/nvim/bv.lua
 source ~/.config/nvim/config/quickload.vim
-
 
 let g:coc_global_extensions = [
 	\ 'coc-css',

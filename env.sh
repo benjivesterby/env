@@ -412,6 +412,7 @@ then
         npm install -g lighthouse-batch
         npm install -g broken-link-checker
         npm install -g tree-sitter-cli
+		npm install -g typescript-language-server typescript
 
         folder="${HOME}/bin"
         if [ ! -d "$folder" ]; then
