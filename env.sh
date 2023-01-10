@@ -44,16 +44,20 @@ then
                 # Adding Go Releaser
                 echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
 
-                echo "Adding Docker repository"
-                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-                sudo apt update
-                apt-cache policy docker-ce
+		if [ ! -f /usr/share/keyrings/docker-archive-keyring.gpg ]; then
+                	echo "Adding Docker repository"
+                	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+                	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+                	sudo apt update
+                	apt-cache policy docker-ce
+		fi
 
+		if [ ! -f /etc/apt/trusted.gpg.d/hashicorp.gpg]; then
                 echo "Adding Terraform repository"
                 curl https://apt.releases.hashicorp.com/gpg | gpg --dearmor > hashicorp.gpg
                 sudo install -o root -g root -m 644 hashicorp.gpg /etc/apt/trusted.gpg.d/
                 sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com focal main"
+		fi
 	
 		echo "Installing pre-reqs"
 
@@ -108,7 +112,7 @@ then
 					exit 0
 				fi
 
-                if ! sudo dpkg-reconfigure -plow unattended-upgrades; then
+                if ! sudo dpkg-reconfigure -plow unattended-upgrades -u; then
                         echo 'dpkg-reconfigure failed'
                         exit 0
                 fi
@@ -369,6 +373,10 @@ then
 	# installing oh-my-zsh
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+
+  echo "Installing Packer"
+  git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
         echo "Installing Git Auto Completion"
         # Create the folder structure
         if [ -d ~/.zsh ]; then
@@ -403,6 +411,7 @@ then
         npm install -g netlify-cli
         npm install -g lighthouse-batch
         npm install -g broken-link-checker
+        npm install -g tree-sitter-cli
 
         folder="${HOME}/bin"
         if [ ! -d "$folder" ]; then
