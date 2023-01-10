@@ -8,8 +8,10 @@ checkgov() {
 
 wd=$(pwd)
 
-echo "Updating GVM"
-curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > "$HOME"/bin/gvm && chmod +x "$HOME"/bin/gvm
+if ! which gvm; then
+    echo "Updating GVM"
+    curl -L https://github.com/devnw/gvm/releases/download/latest/gvm > "$HOME"/bin/gvm && chmod +x "$HOME"/bin/gvm
+fi
 
 if [[ "$1" == "-i" ]]
 then
@@ -29,11 +31,6 @@ then
 
 		echo 'adding correct repository for git'
 		sudo add-apt-repository -y ppa:git-core/ppa
-
-		# update the symbols file so that it's the right
-		# control button that swaps with capslock
-        	# echo 'updating caps-swap with RCTRL'
-		# sudo cp ./ctrl /usr/share/X11/xkb/symbols
 
                 # 1. Install our official public software signing key
                 wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
@@ -215,11 +212,8 @@ then
         git config --global gpg.program gpg2 
                 
         echo "Configuring Docker"
-
 		sudo groupadd docker
-
 		sudo usermod -aG docker "$USER"
-
 		sudo systemctl enable docker
 
                 echo "Configuring Terraform Auto-Completion"
@@ -230,40 +224,6 @@ then
         
                 echo "Initializing Pre-Commit Global Hooks"
                 pre-commit init-templatedir ~
-
-                # Source: https://linuxize.com/post/how-to-install-vmware-workstation-player-on-ubuntu-20-04/
-                # echo "Installing VMWare Workstation"
-                # wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0" https://www.vmware.com/go/getplayer-linux
-                # chmod +x getplayer-linux
-                # sudo ./getplayer-linux --required --eulas-agreed
-                # rm ./getplayer-linux
-
-                echo "Installing Keybase"
-                curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
-                sudo apt install -y ./keybase_amd64.deb
-                rm ./keybase_amd64.deb
-
-                # benji | ~ $ sudo update-alternatives --config editor
-                # There are 8 choices for the alternative editor (providing /usr/bin/editor).
-
-                # Selection    Path               Priority   Status
-                # ------------------------------------------------------------
-                # * 0            /usr/bin/ng         80        auto mode
-                # 1            /bin/ed            -100       manual mode
-                # 2            /bin/nano           40        manual mode
-                # 3            /usr/bin/code       0         manual mode
-                # 4            /usr/bin/ng         80        manual mode
-                # 5            /usr/bin/nvim       30        manual mode
-                # 6            /usr/bin/vim.gtk3   50        manual mode
-                # 7            /usr/bin/vim.nox    40        manual mode
-                # 8            /usr/bin/vim.tiny   15        manual mode
-
-                # Press <enter> to keep the current choice[*], or type selection number: 5
-                # update-alternatives: using /usr/bin/nvim to provide /usr/bin/editor (editor) in manual mode
-                # benji | ~ $ 
-
-                # sudo visudo 
-                # %sudo   ALL=(ALL:ALL) ALL replace with ->  %sudo   ALL=(ALL:ALL) NOPASSWD:ALL
 
 				echo 'Upgrading pynvim support'
 				pip3 install --user --upgrade pip
@@ -400,19 +360,10 @@ then
 
         # Setup node to use latest for installs
         nvm install --lts
-
         npm install -g npm
-        npm install -g @vue/cli
-        npm i -g @vue/cli-service-global
         
-        # SEO Tools
-        npm i -g keywordsextract
-        npm install -g lighthouse
-        npm install -g netlify-cli
-        npm install -g lighthouse-batch
-        npm install -g broken-link-checker
-        npm install -g tree-sitter-cli
-		npm install -g typescript-language-server typescript
+		npm install -g typescript-language-server typescript lighthouse \
+            lighthouse-batch broken-link-checker tree-sitter-cli keywordsextract
 
         folder="${HOME}/bin"
         if [ ! -d "$folder" ]; then
