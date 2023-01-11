@@ -1,3 +1,6 @@
+"source ~/.config/nvim/bv.lua
+"source ~/.config/nvim/config/quickload.vim
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'williamboman/nvim-lsp-installer'
@@ -29,13 +32,10 @@ Plug 'windwp/nvim-autopairs'
 Plug 'mfussenegger/nvim-lint'
 Plug 'onsails/lspkind.nvim'
 Plug 'L3MON4D3/LuaSnip'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
 Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 Plug 'github/copilot.vim'
 
@@ -47,8 +47,17 @@ Plug '~/.fzf'
 
 call plug#end()
 
-source ~/.config/nvim/bv.lua
-source ~/.config/nvim/config/quickload.vim
+" vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
+if exists('$TMUX')
+    autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window " . expand("%:t"))
+    autocmd VimLeave * call system("tmux setw automatic-rename")
+endif
 
 let g:coc_global_extensions = [
             \ 'coc-css',
@@ -175,7 +184,7 @@ set signcolumn=yes
 let g:coc_snippet_prev = '<c-k>'
 "
 "" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+"imap <C-j> <Plug>(coc-snippets-expand-jump)
 "
 "inoremap <silent><expr> <TAB>
 "      \ pumvisible() ? coc#_select_confirm() :
@@ -361,19 +370,6 @@ let g:copilot_filetypes = {
 " lua << EOF\n"
 "      + builtins.readFile "${root}/nvim/config/treesitter.lua"
 "      + "\nEOF";
-
-" vim-tmux-navigator
-
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
-if exists('$TMUX')
-    autocmd BufReadPost,FileReadPost,BufNewFile,BufEnter * call system("tmux rename-window " . expand("%:t"))
-    autocmd VimLeave * call system("tmux setw automatic-rename")
-endif
 
 " nvim-lspconfig
 "
