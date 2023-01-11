@@ -25,11 +25,9 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 Plug 'christoomey/vim-tmux-navigator'
-"Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'windwp/nvim-autopairs'
 Plug 'mfussenegger/nvim-lint'
 Plug 'onsails/lspkind.nvim'
-"Plug 'junegunn/fzf.vim'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -38,8 +36,6 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 Plug 'github/copilot.vim'
 
@@ -355,7 +351,6 @@ let g:copilot_filetypes = {
             \ '*': v:true,
             \ 'markdown': v:true,
             \ }
-
 
 " comment-nvim
 "lua << EOF
