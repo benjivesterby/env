@@ -89,7 +89,8 @@ then
             yubikey-luks signal-desktop tcpdump wireshark goreleaser \
             gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
             unattended-upgrades apt-listchanges setserial cu screen putty \
-            minicom zsh jq pre-commit lua-nvim clangd; then
+            minicom zsh jq pre-commit lua-nvim clangd pinentry-curses \
+			pinentry-tty; then
                     echo 'apt-get install failed'
                     exit 0
         fi
