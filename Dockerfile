@@ -87,8 +87,7 @@ RUN git clone https://github.com/github/copilot.vim.git \
 		~/.config/nvim/pack/github/start/copilot.vim
 
 
-RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$(go env GOPATH)"/bin v1.37.1
-RUN golangci-lint --version
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.52.1
 RUN pre-commit init-templatedir ~
 RUN pip3 install --user --upgrade pip
 RUN pip3 install --user --upgrade pynvim
