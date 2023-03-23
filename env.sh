@@ -260,7 +260,7 @@ then
                 brew install python wget python3 git tmux \
                     tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
                     pre-commit nodejs shellcheck lefthook gsed webp fd \
-                    atuin kitty tailscale anaconda
+                    atuin kitty tailscale anaconda postgresql
 
                 # Link GIT into the path properly
                 brew link --force git
