@@ -92,6 +92,7 @@ RUN golangci-lint --version
 RUN pre-commit init-templatedir ~
 RUN pip3 install --user --upgrade pip
 RUN pip3 install --user --upgrade pynvim
+RUN pip3 install -U Commitizen
 
 COPY ./nvim /root/.config/nvim
 COPY ./bin/* /root/bin/
