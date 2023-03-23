@@ -106,4 +106,4 @@ RUN chmod +x /root/.env.bash
 RUN echo "source ~/.env.bash" >> ~/.zshrc
 
 # Execute the env.sh script
-RUN /bin/bash 
+RUN /bin/zsh
