@@ -21,7 +21,7 @@
 # sync_frequency = "5m"
 
 ## address of the sync server
-sync_address = "https://atuin.kolhar.net"
+#sync_address = "https://atuin.kolhar.net"
 
 ## which search mode to use
 ## possible values: prefix, fulltext, fuzzy
