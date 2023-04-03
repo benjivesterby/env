@@ -89,7 +89,7 @@ then
             yubikey-luks signal-desktop tcpdump wireshark goreleaser \
             gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
             unattended-upgrades apt-listchanges setserial cu screen putty \
-            minicom zsh jq pre-commit lua-nvim clangd pinentry-curses \
+            minicom zsh jq lua-nvim clangd pinentry-curses \
 			pinentry-tty; then
                     echo 'apt-get install failed'
                     exit 0
@@ -223,12 +223,6 @@ then
                 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b "$(go env GOPATH)"/bin v1.37.1
                 golangci-lint --version
 
-                echo "Initializing Pre-Commit Global Hooks"
-                pre-commit init-templatedir ~
-
-                echo 'Upgrading pynvim support'
-                pip3 install --user --upgrade pip
-                pip3 install --user --upgrade pynvim
 
             elif [[ "$OSTYPE" == "darwin"* ]] ; then
 
@@ -259,8 +253,8 @@ then
 
                 brew install python wget python3 git tmux \
                     tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
-                    pre-commit nodejs shellcheck lefthook gsed webp fd \
-                    atuin kitty tailscale anaconda postgresql
+                    nodejs shellcheck lefthook gsed webp fd \
+                    atuin kitty tailscale anaconda
 
                 # Link GIT into the path properly
                 brew link --force git
@@ -308,10 +302,6 @@ then
                     sudo rm ~/.zcompdump
                 fi
 
-                echo 'Upgrading pynvim support'
-                pip3 install --user --upgrade pip
-                pip3 install --user --upgrade pynvim
-
 
             elif [[ "$OSTYPE" == "cygwin" ]] ; then
                 # POSIX compatibility layer and Linux environment emulation for Windows
@@ -329,6 +319,16 @@ then
                 # Unknown.
                 echo "$OSTYPE"
     fi
+
+	pip3 install pre-commit -U
+	sudo pip3 install -U Commitizen
+	
+	echo "Initializing Pre-Commit Global Hooks"
+	pre-commit init-templatedir ~
+	
+	echo 'Upgrading pynvim support'
+	pip3 install --user --upgrade pip
+	pip3 install --user --upgrade pynvim
 
     echo "Installing oh-my-zsh"
     # installing oh-my-zsh
