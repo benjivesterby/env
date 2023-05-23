@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion=1.20.1
+goversion=1.20.2
 
 checkgov() {
     go version | grep $goversion
@@ -90,7 +90,7 @@ then
             gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
             unattended-upgrades apt-listchanges setserial cu screen putty \
             minicom zsh jq lua-nvim clangd pinentry-curses \
-			pinentry-tty; then
+			pinentry-tty protobuf-compiler; then
                     echo 'apt-get install failed'
                     exit 0
         fi
@@ -378,6 +378,12 @@ then
         echo "Installing go tools"
         sudo rm -rf ~/go/src/golang.org/x/tools
         go install golang.org/x/tools/...@latest
+
+		sudo rm -rf ~/go/src/google.golang.org/protobuf
+		go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+
+		sudo rm -rf ~/go/src/google.golang.org/grpc
+		go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
         echo "Installing gopsutil"
         sudo rm -rf ~/go/src/github.com/shirou/gopsutil
