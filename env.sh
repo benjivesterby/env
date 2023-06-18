@@ -89,8 +89,8 @@ then
             yubikey-luks signal-desktop tcpdump wireshark goreleaser \
             gcc-9-arm-linux-gnueabi gcc-9-arm-linux-gnueabihf docker-compose \
             unattended-upgrades apt-listchanges setserial cu screen putty \
-            minicom zsh jq lua-nvim clangd pinentry-curses \
-			pinentry-tty protobuf-compiler; then
+            minicom zsh jq pre-commit lua-nvim clangd pinentry-curses \
+			pinentry-tty kubectl; then
                     echo 'apt-get install failed'
                     exit 0
         fi
@@ -253,11 +253,12 @@ then
 
                 brew install python wget python3 git tmux \
                     tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
-                    nodejs shellcheck lefthook gsed webp fd \
-                    atuin kitty tailscale anaconda
+                    pre-commit nodejs shellcheck lefthook gsed webp fd \
+                    atuin kitty tailscale anaconda postgresql tig kubectl
 
                 # Link GIT into the path properly
                 brew link --force git
+				brew install --cask altair-graphql-client
 
                 if ! curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz; then
                     echo 'wget nvim failed'
