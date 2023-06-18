@@ -1,29 +1,34 @@
 {
 	"languageserver": {
-"golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.work", "go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"],
-      "initializationOptions": {
-        "usePlaceholders": true
-      }
-    },
+		"golang": {
+			"command": "gopls",
+			"rootPatterns": ["go.work", "go.mod", ".vim/", ".git/", ".hg/"],
+			"filetypes": ["go"],
+			"initializationOptions": {
+				"usePlaceholders": true
+			}
+		}
 	},
 	"diagnostic.displayByAle": true,
 	"diagnostic.errorSign": "E",
 	"diagnostic.warningSign": "W",
-
 	"javascript.suggestionActions.enabled": false,
 	"javascript.showUnused": false,
 	"javascript.validate.enable": false,
 	"prettier.eslintIntegration": true,
-
-	"coc.preferences.formatOnSaveFiletypes": ["Markdown"],
-
 	"git.enableGutters": false,
-
 	"java.errors.incompleteClasspath.severity": "ignore",
-
-	"yaml.format.enable": true
+	"yaml.format.enable": true,
+	"eslint.autoFixOnSave": true,
+	"eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+	"prettier.disableSuccessMessage": true,
+	"tsserver.formatOnType": true,
+	"coc.preferences.formatOnType": true,
+	"coc.preferences.formatOnSaveFiletypes": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"Markdown"
+	]
 }
-
