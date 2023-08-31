@@ -69,6 +69,9 @@ install_linux_packages() {
     echo "Installing / Updating Go"
     $HOME/bin/gvm $goversion || { printf "gvm %s install failed" "$goversion"; exit 0; }
 
+	echo "Installing Atuin"
+	bash <(curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh)
+
     echo "Configuring Docker"
     sudo groupadd docker
     sudo usermod -aG docker "$USER"
@@ -104,6 +107,13 @@ install_mac_packages() {
     [ -d ~/.zcompdump ] && rm ~/.zcompdump
 }
 
+install_py_packages() {
+	pip3 install --user --upgrade pip pynvim pre-commit Commitizen
+	
+	echo "Initializing Pre-Commit Global Hooks"
+	pre-commit init-templatedir ~
+}
+
 install_fzf() {
 	if [ ! -d ~/.fzf ]; then
         echo 'Cloning fzf plugin'
@@ -117,6 +127,25 @@ install_fzf() {
     cd "$wd" || exit
     echo 'Executing fzf plugin installer'
     ~/.fzf/install --all
+}
+
+install_ohmyzsh() {
+ 	echo "Installing oh-my-zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+}
+
+configure_git() {
+ 	echo 'Setting up git global'
+    git config --global commit.gpgsign true
+    git config --global tag.gpgsign true
+    git config --global core.hookspath ${HOME}/hooks
+    git config --global core.editor "nvim"
+    git config --global push.autoSetupRemote true
+    git config --global rerere.enabled true
+    git config --global pull.rebase true
+    git config --global init.defaultBranch main 
+    git config --global push.autoSetupRemote true 
+    git config --global credential.helper store
 }
 
 install_go_tools(){
@@ -178,7 +207,10 @@ if [[ "$1" == "-i" ]]; then
     esac
 
     handle_nvm_installation
+	install_ohmyzsh
 	install_fzf
+	install_py_packages
+	configure_git
 	install_go_tools
     
      # Setup node to use latest for installs
@@ -210,11 +242,22 @@ update_config ./nvim ~/.config/nvim
 [ $? -eq 0 ] && echo 'VIM plugin installation'
 echo 'VIM-GO Install / Update Binaries'
 
+nvim +'PlugInstall --sync' +qall &> /dev/null
+nvim +'TSInstall all' +qall &> /dev/null
+nvim +GoInstallBinaries +qall &> /dev/null
+nvim +GoUpdateBinaries +qall &> /dev/null
+
 cp -rpf ./bin/* ~/bin
 
 update_config ./.tmux.conf.local ~/.tmux.conf.local
 update_config ./.tmux.conf ~/.tmux.conf
 update_config ./.env.shared ~/.env.shared
+
+
+
+echo "Configuring Terraform Auto-Completion"
+terraform -install-autocomplete &> /dev/null
+
 
 env_source=".env.bash"
 [[ "$OSTYPE" == "darwin"* ]] && env_source=".env.darwin"
@@ -226,6 +269,7 @@ if ! grep -q "source $HOME/$env_source" ~/.zshrc; then
 fi
 
 
+echo "Configuring .profile sourcing"
 if ! grep -q "source $HOME/.profile" ~/.bashrc; then
     echo "source $HOME/.profile" >> ~/.bashrc
 fi
