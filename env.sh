@@ -44,6 +44,8 @@ install_linux_packages() {
         protobuf-compiler solaar terraform fd-find)
 
     sudo apt-get install -y "${packages[@]}" || { echo 'apt-get install failed'; exit 1; }
+	
+	ln -s $(which fdfind) ~/.local/bin/fd
 
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
