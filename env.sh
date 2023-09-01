@@ -41,7 +41,7 @@ install_linux_packages() {
         libelf-dev libpcap-dev yubikey-luks tcpdump wireshark
         docker-compose unattended-upgrades apt-listchanges setserial cu
         screen putty minicom zsh jq pre-commit lua-nvim clangd pinentry-curses
-        protobuf-compiler solaar terraform)
+        protobuf-compiler solaar terraform fd-find)
 
     sudo apt-get install -y "${packages[@]}" || { echo 'apt-get install failed'; exit 1; }
 
