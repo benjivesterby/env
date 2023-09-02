@@ -14,18 +14,6 @@ install_linux_packages() {
         curl \
         software-properties-common || { echo 'apt-get update failed'; exit 0; }
         
-    wget -O- https://apt.releases.hashicorp.com/gpg | \
-	sudo gpg --dearmor > /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-
-    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-	rm ./kubectl
-
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-	https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
-
-
     sudo add-apt-repository -y ppa:git-core/ppa ppa:wireshark-dev/stable
     
     if ! which docker &> /dev/null; then
@@ -41,7 +29,7 @@ install_linux_packages() {
         libelf-dev libpcap-dev yubikey-luks tcpdump wireshark
         docker-compose unattended-upgrades apt-listchanges setserial cu
         screen putty minicom zsh jq pre-commit lua-nvim clangd pinentry-curses
-        protobuf-compiler solaar terraform fd-find)
+        protobuf-compiler solaar fd-find neovim kitty)
 
     sudo apt-get install -y "${packages[@]}" || { echo 'apt-get install failed'; exit 1; }
 	
@@ -242,23 +230,30 @@ update_config() {
 
 update_config ./nvim ~/.config/nvim
 [ $? -eq 0 ] && echo 'VIM plugin installation'
-echo 'VIM-GO Install / Update Binaries'
 
+echo 'VIM-GO Install / Update Binaries'
 nvim +'PlugInstall --sync' +qall &> /dev/null
+
+echo "Installing TreeSitter"
 nvim +'TSInstall all' +qall &> /dev/null
+
+
+echo "Installing Go Binaries"
 nvim +GoInstallBinaries +qall &> /dev/null
 nvim +GoUpdateBinaries +qall &> /dev/null
 
+echo "Copying Bin"
 cp -rpf ./bin/* ~/bin
 
+echo "Update tmux config"
 update_config ./.tmux.conf.local ~/.tmux.conf.local
+
+echo "Update tmux config 2"
 update_config ./.tmux.conf ~/.tmux.conf
+
+echo "Update env.shared"
 update_config ./.env.shared ~/.env.shared
 
-
-
-echo "Configuring Terraform Auto-Completion"
-terraform -install-autocomplete &> /dev/null
 
 
 env_source=".env.bash"
@@ -266,6 +261,12 @@ env_source=".env.bash"
 
 update_config "./$env_source" ~/"$env_source"
 
+#echo "override caplock with ctrl"
+#if ! grep -q '/usr/bin/setxkbmap -option "ctrl:nocaps"'; then
+#    echo '/usr/bin/setxkbmap -option "ctrl:nocaps"' >> ~/.zshrc
+#fi
+
+echo "source bash src"
 if ! grep -q "source $HOME/$env_source" ~/.zshrc; then
     echo "source $HOME/$env_source" >> ~/.zshrc
 fi
