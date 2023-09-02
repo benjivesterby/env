@@ -29,11 +29,11 @@ install_linux_packages() {
         libelf-dev libpcap-dev yubikey-luks tcpdump wireshark
         docker-compose unattended-upgrades apt-listchanges setserial cu
         screen putty minicom zsh jq pre-commit lua-nvim clangd pinentry-curses
-        protobuf-compiler solaar fd-find neovim kitty)
+        protobuf-compiler solaar fd-find kitty)
 
     sudo apt-get install -y "${packages[@]}" || { echo 'apt-get install failed'; exit 1; }
 	
-	ln -s $(which fdfind) ~/.local/bin/fd
+	sudo ln -s $(which fdfind) /usr/bin/fd
 
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -42,7 +42,7 @@ install_linux_packages() {
 		tar xzvf nvim-linux64.tar.gz -C $HOME && \
 		rm ./nvim-linux64.tar.gz || \
 		{ echo 'nvim installation or extraction failed'; exit 0; }
-
+	
     sudo dpkg-reconfigure -plow unattended-upgrades -u || { echo 'dpkg-reconfigure failed'; exit 0; }
     sudo cp ./50unattended-upgrades /etc/apt/apt.conf.d/ || { echo 'Auto upgrade configuration failed'; exit 0; }
 
@@ -237,7 +237,6 @@ nvim +'PlugInstall --sync' +qall &> /dev/null
 echo "Installing TreeSitter"
 nvim +'TSInstall all' +qall &> /dev/null
 
-
 echo "Installing Go Binaries"
 nvim +GoInstallBinaries +qall &> /dev/null
 nvim +GoUpdateBinaries +qall &> /dev/null
@@ -281,6 +280,9 @@ if ! grep -q "source $HOME/.profile" ~/.zshrc; then
     echo "source $HOME/.profile" >> ~/.zshrc
 fi
 
+if ! grep -q 'nvim-linux64/bin' ~/.profile; then
+    echo 'PATH="$HOME/nvim-linux64/bin:$PATH"' >> ~/.profile
+fi
 
 case "$OSTYPE" in
     "cygwin"|"msys"|"win32"|"freebsd"*)
