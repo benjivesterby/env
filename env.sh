@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion="1.21.0"
+goversion="1.21.1"
 
 wd=$(pwd)
 
@@ -79,12 +79,11 @@ install_mac_packages() {
     fi
 
     brew update
-    brew install python wget python3 git tmux \
-        tree graphviz golangci-lint pinentry-mac jq nvm libpcap \
+    brew install python wget python3 tmux \
+        tree graphviz golangci-lint jq nvm libpcap \
         pre-commit nodejs shellcheck lefthook gsed webp fd \
-        atuin kitty tailscale anaconda postgresql tig kubectl
+        atuin tailscale tig kubectl
 
-    brew link --force git
     brew install --cask altair-graphql-client
 
     curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz && \
@@ -231,15 +230,15 @@ update_config() {
 update_config ./nvim ~/.config/nvim
 [ $? -eq 0 ] && echo 'VIM plugin installation'
 
-echo 'VIM-GO Install / Update Binaries'
-nvim +'PlugInstall --sync' +qall &> /dev/null
-
-echo "Installing TreeSitter"
-nvim +'TSInstall all' +qall &> /dev/null
-
-echo "Installing Go Binaries"
-nvim +GoInstallBinaries +qall &> /dev/null
-nvim +GoUpdateBinaries +qall &> /dev/null
+#echo 'VIM-GO Install / Update Binaries'
+#nvim +'PlugInstall --sync' +qall &> /dev/null
+#
+#echo "Installing TreeSitter"
+#nvim +'TSInstall all' +qall &> /dev/null
+#
+#echo "Installing Go Binaries"
+#nvim +GoInstallBinaries +qall &> /dev/null
+#nvim +GoUpdateBinaries +qall &> /dev/null
 
 echo "Copying Bin"
 cp -rpf ./bin/* ~/bin
