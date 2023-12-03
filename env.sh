@@ -52,9 +52,6 @@ install_packages() {
 
 install_py_packages() {
 	pip3 install --user --upgrade pip pynvim 
-	
-	echo "Initializing Pre-Commit Global Hooks"
-	pre-commit init-templatedir ~
 }
 
 install_fzf() {
