@@ -109,6 +109,9 @@ if [[ "$1" == "-i" ]]; then
 	
 	# Overwrite the top of the resolve file so that localhost is used as primary
 	echo "127.0.0.1" >> /etc/resolvconf/resolv.conf.d/head
+
+	# restart the resolver
+ 	systemctl restart resolvconf.service
 	
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 	
