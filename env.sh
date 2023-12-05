@@ -102,7 +102,7 @@ if [[ "$1" == "-i" ]]; then
 	install_packages 
 	
 	# install void for dns
-	apt install -y ./void_0.0.11_linux_amd64.deb
+        apt install -y ./void_0.0.12_d1a74f5_linux_amd64.deb
 	
 	# Overwrite the top of the resolve file so that localhost is used as primary
 	echo "127.0.0.1" >> /etc/resolvconf/resolv.conf.d/head
