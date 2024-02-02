@@ -36,7 +36,6 @@ Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-Plug 'codota/tabnine-nvim', { 'do': './dl_binaries.sh' }
 
 Plug 'github/copilot.vim'
 
@@ -125,18 +124,6 @@ set lazyredraw
 
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-lua <<EOF
-require('tabnine').setup({
-  disable_auto_comment=true,
-  accept_keymap="<C-y>",
-  dismiss_keymap = "<C-]>",
-  debounce_ms = 800,
-  suggestion_color = {gui = "#808080", cterm = 244},
-  exclude_filetypes = {"TelescopePrompt"},
-  log_file_path = "/Users/benji/tabnine.log", -- absolute path to Tabnine log file
-})
-EOF
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType rust setlocal expandtab

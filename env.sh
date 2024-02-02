@@ -86,6 +86,10 @@ configure_git() {
     git config --global init.defaultBranch main 
     git config --global push.autoSetupRemote true 
     git config --global credential.helper store
+	git config --global user.email "benji@codepros.org"
+	git config --global user.name  "Benji Vesterby"
+	git config --global user.signingkey "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFW0H8K+Sg5iCzLEGbqQ7Enrb6nOqHjfDsTLumsjsrtG"
+	git config --global gpg.format ssh
 }
 
 if [[ "$1" == "-i" ]]; then
