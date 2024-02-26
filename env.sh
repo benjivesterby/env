@@ -252,7 +252,26 @@ update_config ./.tmux.conf ~/.tmux.conf
 echo "Update env.shared"
 update_config ./.env.shared ~/.env.shared
 
+echo "Creating ~/src directory"
+if [ ! -d ~/src ]; then
+	mkdir ~/src
+fi
 
+echo "Copying over repo pull scripts"
+cp ./src/* ~/src
+
+echo "Setting up crontab for repo pull"
+# Define the command to be executed in the cron job
+CRON_COMMAND="$HOME/src/pull.sh"
+
+# Check if the crontab entry exists
+if ! crontab -l | grep -q "$CRON_COMMAND"; then
+	# run the command every 5 minutes
+    (crontab -l ; echo "*/5 * * * * $CRON_COMMAND") | crontab -
+    echo "Cron job added successfully."
+else
+    echo "Cron job already exists."
+fi
 
 env_source=".env.bash"
 [[ "$OSTYPE" == "darwin"* ]] && env_source=".env.darwin"
