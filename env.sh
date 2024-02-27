@@ -267,7 +267,7 @@ CRON_COMMAND="$HOME/src/pull.sh"
 # Check if the crontab entry exists
 if ! crontab -l | grep -q "$CRON_COMMAND"; then
 	# run the command every 5 minutes
-    (crontab -l ; echo "*/5 * * * * $CRON_COMMAND") | crontab -
+    (crontab -l ; echo "*/15 * * * * $CRON_COMMAND") | crontab -
     echo "Cron job added successfully."
 else
     echo "Cron job already exists."
