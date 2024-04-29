@@ -42,6 +42,7 @@ install_linux_packages() {
 		tar xzvf nvim-linux64.tar.gz -C $HOME && \
 		rm ./nvim-linux64.tar.gz || \
 		{ echo 'nvim installation or extraction failed'; exit 0; }
+	ln -s $HOME/nvim-linux64 $HOME/nvim
 	
     sudo dpkg-reconfigure -plow unattended-upgrades -u || { echo 'dpkg-reconfigure failed'; exit 0; }
     sudo cp ./50unattended-upgrades /etc/apt/apt.conf.d/ || { echo 'Auto upgrade configuration failed'; exit 0; }
@@ -86,10 +87,13 @@ install_mac_packages() {
 
     brew install --cask altair-graphql-client
 
-    curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz && \
-		tar xzf nvim-macos.tar.gz -C $HOME && \
-		rm ./nvim-macos.tar.gz || \
-		{ echo 'nvim installation or extraction failed'; exit 0; }
+	curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz && \
+	tar xzvf nvim-macos-arm64.tar.gz -C $HOME #&& \
+	#rm ./nvim-macos-arm64.tar.gz && \
+		#{ echo 'nvim installation or extraction failed'; exit 0; }
+
+	# Create a symlink to nvim directory in home
+	ln -s $HOME/nvim-macos-arm64 $HOME/nvim
 
     gvm $goversion
 
@@ -298,8 +302,8 @@ if ! grep -q "source $HOME/.profile" ~/.zshrc; then
     echo "source $HOME/.profile" >> ~/.zshrc
 fi
 
-if ! grep -q 'nvim-linux64/bin' ~/.profile; then
-    echo 'PATH="$HOME/nvim-linux64/bin:$PATH"' >> ~/.profile
+if ! grep -q 'nvim/bin' ~/.profile; then
+    echo 'PATH="$HOME/nvim/bin:$PATH"' >> ~/.profile
 fi
 
 case "$OSTYPE" in
