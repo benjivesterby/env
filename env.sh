@@ -129,10 +129,15 @@ install_ohmyzsh() {
 
 configure_git() {
  	echo 'Setting up git global'
+	git config --global gpg.format ssh
+	git config --global user.signingKey ~/.ssh/id_ed25519_cs
+	git config --glboal gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+
     git config --global commit.gpgsign true
     git config --global tag.gpgsign true
     git config --global core.hookspath ${HOME}/hooks
     git config --global core.editor "nvim"
+
     git config --global push.autoSetupRemote true
     git config --global rerere.enabled true
     git config --global pull.rebase true
