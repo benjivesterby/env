@@ -34,8 +34,8 @@ Plug 'onsails/lspkind.nvim'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+"Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 Plug 'github/copilot.vim'
 
