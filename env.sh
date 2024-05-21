@@ -130,6 +130,7 @@ install_ohmyzsh() {
 configure_git() {
  	echo 'Setting up git global'
 	git config --global gpg.format ssh
+
 	git config --global user.signingKey ~/.ssh/id_ed25519_cs
 	git config --glboal gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 
