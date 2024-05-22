@@ -34,8 +34,6 @@ Plug 'onsails/lspkind.nvim'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'jikkujose/vim-visincr'
 Plug 'christianrondeau/vim-base64'
-"Plug 'nvim-treesitter/nvim-treesitter'
-"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 Plug 'github/copilot.vim'
 
@@ -54,12 +52,9 @@ Plug 'jparise/vim-graphql'
 
 call plug#end()
 
-"
+
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-
-set mouse=
-set ttymouse=
 
 nnoremap <silent> K :call CocAction('doHover')<CR>
 nmap <silent> gd <Plug>(coc-definition)
@@ -113,6 +108,7 @@ let g:coc_global_extensions = [
 
 set undodir=~/.vimdid
 set undofile
+set mouse=
 
 " syntax on
 syntax off
