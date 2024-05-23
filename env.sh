@@ -1,6 +1,6 @@
 #!/bin/bash
 
-goversion="1.21.1"
+goversion="1.22.3"
 
 wd=$(pwd)
 
