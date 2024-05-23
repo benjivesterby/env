@@ -5,3 +5,5 @@ fonts/
 .DS_Store
 ~
 *.gpg
+hackrf/
+gr-osmosdr/

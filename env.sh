@@ -4,6 +4,102 @@ goversion="1.21.1"
 
 wd=$(pwd)
 
+install_sdr_linux() {
+    echo '############################################'
+    echo 'Software Defined Radio Installation'
+    echo '############################################'
+
+	echo "Configuring SDR"
+	sudo apt-get install -y cmake gnuradio hackrf latexmk \
+		texlive-latex-extra libusb-1.0-0-dev
+
+	echo "Cloning hackrf to build libhackrf"
+	if [ -d hackrf ]; then
+		cd hackrf
+		git pull
+		cd host/libhackrf
+	else
+		if ! git clone https://github.com/greatscottgadgets/hackrf.git; then
+			echo "Cloning hackrf failed"
+			exit 1
+		fi
+		cd hackrf/host/libhackrf
+	fi
+
+	if [ -d build ]; then
+		rm -rf build
+	fi
+
+	echo "Building libhackrf"
+	mkdir build && cd build
+	if ! cmake ../; then
+		echo "CMake failed"
+		exit 1
+	fi
+
+	if ! make; then
+		echo "Make failed"
+		exit 1
+	fi
+
+	if ! sudo make install; then
+		echo "Make install failed"
+		exit 1
+	fi
+
+	if ! sudo ldconfig; then
+		echo "ldconfig failed"
+		exit 1
+	fi
+
+	cd "$wd" 
+
+	if [ -d gr-osmosdr ]; then
+		cd gr-osmosdr
+		git pull
+	else
+		if ! git clone https://gitea.osmocom.org/sdr/gr-osmosdr.git; then
+			echo "Cloning gr-osmosdr failed"
+			exit 1
+		fi
+
+		cd gr-osmosdr
+	fi
+
+	if [ -d build ]; then
+		rm -rf build
+	fi
+
+	echo "Building gr-osmosdr"
+	mkdir build && cd build
+	if ! cmake ../; then
+		echo "CMake failed"
+		exit 1
+	fi
+
+	if ! make; then
+		echo "Make failed"
+		exit 1
+	fi
+
+	if ! sudo make install; then
+		echo "Make install failed"
+		exit 1
+	fi
+
+	if ! sudo ldconfig; then
+		echo "ldconfig failed"
+		exit 1
+	fi
+
+	cd "$wd"
+}
+
+if [[ "$1" == "-sdr" ]]; then
+	install_sdr_linux
+	exit 0
+fi
+
 install_linux_packages() {
     echo '############################################'
     echo 'Linux Environment Installation'
